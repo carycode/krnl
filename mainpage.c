@@ -1,4 +1,6 @@
 /*! \mainpage KRNL - a Simple portable kernel for Ardunio 
+ * this file only for doxygen use
+ *
  *
  * my own small KeRNeL adapted for Arduino - now known as KRNL
 * (old name was SNOT)
