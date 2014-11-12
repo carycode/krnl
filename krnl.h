@@ -414,14 +414,6 @@ struct k_t * k_crt_task(void (*pTask)(void), char prio, char *pStk, int stkSize)
 */
 int k_set_prio(char prio);
 
-/**
-* returns nr of unbytes bytes on stak.
-* For chekking if stak is too big or to small...
-* @param[in] t Reference to task (by task handle)
-* @return: nr of unused bytes on stak (int)
-* @remark only to be called after start of KRNL
-*/
-int k_stk_chk(struct k_t *t);
 
 /**
 * creates a standard Dijkstra semaphore. It can be initialized to values in range [0..maxvalue]
@@ -612,9 +604,17 @@ int k_init(int nrTask, int nrSem, int nrMsg);
 */
 void k_bugblink13(char on);
 
-/**
-* returns number of unused space on a task stak
+ /**
+* returns nr of unbytes bytes on stak.
+* For chekking if stak is too big or to small...
+* @param[in] t Reference to task (by task handle) If null then yourself
+* @return: nr of unused bytes on stak (int)
+* @remark only to be called after start of KRNL
+* @remark no chk of if it is a valid task
 */
+int k_stk_chk(struct k_t *t);
+
+
 int k_unused_stak(struct k_t *t);
 
 /**

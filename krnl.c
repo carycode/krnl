@@ -350,27 +350,14 @@ k_sleep (int time)
 int
 k_unused_stak (struct k_t *t)
 {
-  int i;
-  volatile char *p;
-  p = (char *) (t->cnt1);
-  i = 0;
-
-  while (*(p++) == STAK_HASH)	// cnt hash codes on stak == amount of unused stak pr dft :-)
-    i++;
-  return (i);
-}
-
-//----------------------------------------------------------------------------
-
-int
-k_stk_chk (struct k_t *t)
-{
-
   int i = 0;
   char *pstk;
-
-  pstk = (char *) (t->cnt1);
-
+  
+  if (t) // another task or yourself - NO CHK of validity !
+    pstk = (char *) (t->cnt1);
+  else 
+    pstk = (char *) (pRun->cnt1);
+  
   DI ();
   while (*pstk == STAK_HASH) {
     pstk++;
@@ -391,6 +378,7 @@ k_set_prio (char prio)
     return (-1);
 
   DI ();
+
   if ((prio <= 0) || (DMY_PRIO <= prio)) {
     // not legal value my friend
     EI ();
@@ -400,6 +388,7 @@ k_set_prio (char prio)
   pRun->prio = prio;
   prio_enQ (pAQ, deQ (pRun));
   ki_task_shift ();
+
   EI ();
 
   return (0);
