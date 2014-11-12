@@ -2,10 +2,8 @@
  * krnl.c  part of kernel KRNL                        *
  *   based on "snot"                                  *
  *                                                    *
- *                                                    *
  *  June,               2014                          *
  *      Author: jdn                                   *
- *                                                    *
  *                                                    *
  ******************************************************
  *                                                    *
