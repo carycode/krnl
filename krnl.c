@@ -38,7 +38,7 @@
 
 #include "krnl.h"
 
-#if (KRNL_VRS != 1234)
+#if (KRNL_VRS != 1235)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
  
@@ -57,18 +57,18 @@ main_el,  // procesdecriptor for main
 *pRun,    // who is running ?
 *pSleepSem; // one semaphor for all to sleep at
 
-struct k_msg_t *send_pool;   // prt to array for msg sem pool
+struct k_msg_t *send_pool;   // ptr to array for msg sem pool
 
 int k_task, k_sem, k_msg; // how many di you request in k_init of descriptors ?
 char nr_task = 0,nr_sem = 0,	nr_send = 0;	// counters for created KeRNeL items
+
+char dmy_stk[DMY_STK_SZ];
 
 volatile char k_running = 0,	k_err_cnt = 0;
 volatile unsigned int tcnt2;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
 	fakecnt_preset;
-
-volatile char bugblink=0;
-
+ 
 int tmr_indx; // for travelling Qs in tmr isr
 
 
@@ -80,6 +80,7 @@ char k_eat_time(unsigned int eatTime)
 {
 	unsigned long l;
 	// tested on uno for 5 msec and 500 msec
+   
 	// quants in milli seconds
 	// not 100% precise !!!
   l = eatTime;
@@ -217,20 +218,7 @@ ISR (TIMER2_OVF_vect, ISR_NAKED)
   POPREGS ();
   RETI ();
 }
-
-void k_bugblink13(char blink)
-{ // always reset by dummy
-#ifdef DMYBLINK
-  if (blink) {
- 	  DDRB=0x00;  // of LED 13
-	  bugblink=1;
-  }
-  else {
-	  bugblink=0;
-  }
-  #endif
-}
-
+ 
 //----------------------------------------------------------------------------
 // inspired from ...  
 // http://arduinomega.blogspot.dk/2011/05/timer2-and-overflow-interrupt-lets-get.html
@@ -250,17 +238,8 @@ void __attribute__ ((naked, noinline)) ki_task_shift (void)
 
   PUSHREGS ();		        // push task regs on stak so we are rdy to task shift
 
-  if (pAQ->next == pRun)	// need to change task ?
-    goto exitt;
+  K_CHG_STAK();
 
-  pRun->sp_lo = SPL;		  // save stak ptr
-  pRun->sp_hi = SPH;
-
-  pRun = pAQ->next;		    // find next to run == front task in active Q
-
-  SPL = pRun->sp_lo;		  // restablish stk ptr
-  SPH = pRun->sp_hi;
- exitt:
   POPREGS ();			        // restore regs
 
   RETI ();			          // and do a reti NB this also enables interrupt !!!
@@ -909,20 +888,17 @@ k_round_robbin (void)
   EI ();
 }
 
-char dmy_stk[DMY_STK_SZ];
+//----------------------------------------------------------------------------
+
+void k_bugblink13(char blink)
+{  /*not impl anymore */}
 
 //----------------------------------------------------------------------------
 
 void
-dmy_task (void)
+dummy_task (void)
 {
-
-  while (1) {
-  #ifdef DMYBLINK
-//    if (bugblink)
-//	    PORTB = PORTB | 0b00100000; // on LED 13
-	#endif
-  }
+  while (1) { }
 }
 
 //----------------------------------------------------------------------------
@@ -953,7 +929,7 @@ k_init (int nrTask, int nrSem, int nrMsg)
   pAQ->next = pAQ->pred = pAQ;
   pAQ->prio = QHD_PRIO;
 
-  pDmy = k_crt_task (dmy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
+  pDmy = k_crt_task (dummy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
 
   pSleepSem = k_crt_sem (0, 2000);
 

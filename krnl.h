@@ -9,7 +9,7 @@
  *            (simple not - not ?! :-) )              *
  * my own small KeRNeL adapted for Arduino            *
  *                                                    *
- * previous known as SNOT                             * 
+ * previous known as KRNL                             * 
  *                                                    *
  * this version adapted for Arduino                   *
  *                                                    *
@@ -37,7 +37,6 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 
-
 #ifndef KRNL
 #define KRNL
 
@@ -45,8 +44,8 @@
 extern "C" {
 #endif
 
-// remember to update in snot.c !!!
-#define KRNL_VRS 1234
+// remember to update in krnl.c !!!
+#define KRNL_VRS 1235
 
 
 // if you are using k_mutex with prio inheritance
@@ -95,6 +94,8 @@ extern int k_msg;
 #define MAX_SEM_VAL 50          // NB is also max for nr elem in msgQ !
 #define MAX_INT 0x7FFF
 #define SEM_MAX_DEFAULT 50
+
+extern char dmy_stk[DMY_STK_SZ];
 
 /***** KeRNeL data types *****/
 struct k_t {
@@ -390,7 +391,7 @@ void ki_task_shift(void) __attribute__ ((naked));
 /**
 * Set task asleep for a number of ticks.
 * @param[in] time nr of ticks to sleep < 0
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_sleep(int time);
 
@@ -401,15 +402,15 @@ int k_sleep(int time);
 * @param[in] pStk Reference to data area to be used as stak
 * @param[in] stkSize size of data area(in bytes) to be used for stak
 * @return: pointer to task handle or NULL if no success
-* @remark only to be called before start of SNOT but after k_init
+* @remark only to be called before start of KRNL but after k_init
 */
 struct k_t * k_crt_task(void (*pTask)(void), char prio, char *pStk, int stkSize);
 
 /**
 * change priority of calling task)
 * @param[in] prio new prio, Priority 1: highest (QHEAD_PRIO-1): lowest
-* @return: 0: ok, -1: SNOT not running, -2: illegal value
-* @remark only to be called after start of SNOT
+* @return: 0: ok, -1: KRNL not running, -2: illegal value
+* @remark only to be called after start of KRNL
 */
 int k_set_prio(char prio);
 
@@ -418,7 +419,7 @@ int k_set_prio(char prio);
 * For chekking if stak is too big or to small...
 * @param[in] t Reference to task (by task handle)
 * @return: nr of unused bytes on stak (int)
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_stk_chk(struct k_t *t);
 
@@ -427,17 +428,17 @@ int k_stk_chk(struct k_t *t);
 * @param[in] init_val startvalue of semaphore 0,1,2,... maxvalue
 * @param[in] maxvalue which is maxvalue semaphore can reach
 * @return handle to semaphore or NULL pointer
-* @remark only to be called before start of SNOT
+* @remark only to be called before start of KRNL
 */
 struct k_t * k_crt_sem(char init_val, int maxvalue);
 
 /**
-* attach a timer to the semaphore so SNOT will signal the semaphore with regular intervals.
+* attach a timer to the semaphore so KRNL will signal the semaphore with regular intervals.
 * Can be used for cyclic real time run of a task.
 * @param[in] sem semaphore handle
-* @param[in] val interval in quant of SNOT ticks (0: disable cyclic timer, 1,2,3... cyclic quant)
+* @param[in] val interval in quant of KRNL ticks (0: disable cyclic timer, 1,2,3... cyclic quant)
 * @return -1: negative val, 0. ok
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_set_sem_timer(struct k_t * sem, int val);
 
@@ -445,7 +446,7 @@ int k_set_sem_timer(struct k_t * sem, int val);
 * Signal a semaphore. Can be called from an ISR when interrupt is disabled. No task shift will occur - only queue manipulation.
 * @param[in] sem semaphore handle
 * @return 0: ok , -1: max value of semaphore reached
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int ki_signal(struct k_t * sem);
 
@@ -454,7 +455,7 @@ int ki_signal(struct k_t * sem);
 * @param[in] sem semaphore handle
 * @return 0: ok , -1: max value of semaphore reached
 * @remark The ki_ indicates that interrups is NOT enabled when leaving ki_signal
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_signal(struct k_t * sem);
 
@@ -463,7 +464,7 @@ int k_signal(struct k_t * sem);
 * @param[in] sem semaphore handle
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
 * @return 0: ok , -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_wait(struct k_t * sem, int timeout);
 
@@ -473,7 +474,7 @@ int k_wait(struct k_t * sem, int timeout);
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
 * @param[out] lost if  not eq NULL it resturns how many signals has been lost
 * @return 0: ok , -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int k_wait_lost(struct k_t * sem, int timeout, int *lost);
 
@@ -482,7 +483,7 @@ int k_wait_lost(struct k_t * sem, int timeout, int *lost);
 * @param[in] sem semaphore handle
 * @return 0: ok , -1: could do wait bw blocking would have taken place
 * @remark The ki_ indicates that interrups is NOT enabled when leaving ki_nowait
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int ki_nowait(struct k_t * sem);
 
@@ -492,7 +493,7 @@ int ki_nowait(struct k_t * sem);
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
 * @return 0: ok , -1: could do wait bw blocking would have taken place
 * @remark The ki_ indicates that interrups is NOT enabled when leaving ki_wait
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int ki_wait(struct k_t * sem, int timeout);
 
@@ -500,7 +501,7 @@ int ki_wait(struct k_t * sem, int timeout);
 * returns value of semaphore
 * @param[in] sem semaphore handle
 * @return 0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ...
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 int ki_semval(struct k_t * sem);
 
@@ -510,7 +511,7 @@ int ki_semval(struct k_t * sem);
 * It is  advised only to access one mutex at time. Inheritance protocol is not designed for more than one mutex.
 * @param[in] sem semaphore handle
 * @return 0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ...
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 char k_mutex_entry(struct k_t * sem, int timeout);
 
@@ -518,7 +519,7 @@ char k_mutex_entry(struct k_t * sem, int timeout);
 * Priority inheritance based signal on semaphore for mutex use
 * It is  advised only to access one mutex at time. Inheritance protocol is not designed for more than one mutex.
 * @param[in] sem semaphore handle
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 
 char k_mutex_leave(struct k_t * sem);
@@ -529,7 +530,7 @@ char k_mutex_leave(struct k_t * sem);
 * @param[in] el_size Size of each element in bytes
 * @param[in] pBuf Pointer to memory for holding the buffer (size nr_el*el_size). Caller has to come with the memory for the buffer.
 * @return Reference to message buffer or NULL if if was not possible to create the buffer.
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 
 #endif
@@ -543,7 +544,7 @@ struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf);
 * @param[in] el Reference to data to be put in buffer. Size if already given in k_crt_send
 * @return 0: operation did succed, -1: no room in ringbuffer
 * @remark Interrupt will not enabled upon leaving, so ki_send is intended to be used from an ISR
-* @remark only to be called before start of SNOT
+* @remark only to be called before start of KRNL
 */
 char ki_send(struct k_msg_t *pB, void *el);
 
@@ -554,7 +555,7 @@ char ki_send(struct k_msg_t *pB, void *el);
 * @param[in] pB Ref to message buffer
 * @param [in] el Reference to data to be put in buffer. Size if already given in k_crt_send
 * @return 0: operation did succed, -1: no room in ringbuffer
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 * @remark k_send does not block if no space in buffer. Instead -1 is returned
 */
 char k_send(struct k_msg_t *pB, void *el);
@@ -564,11 +565,11 @@ char k_send(struct k_msg_t *pB, void *el);
 * DONE BY COPY !
 * @param[in] pB Ref to message buffer
 * @param [out] el Reference to where data shall be copied to at your site
-* @param[in] timeout Max time you want to wait on data, -1: never, 0: forever, positive: nr of SNOT timer quants
+* @param[in] timeout Max time you want to wait on data, -1: never, 0: forever, positive: nr of KRNL timer quants
 * @param[out] lost_msg nr of lost messages since last receive. will clip at 10000. If lost_msg ptr is NULL then overrun counter
 * is not reset to 0.
 * @return 0: operation did succed, -1: no data in ringbuffer
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 char k_receive(struct k_msg_t *pB, void *el, int timeout, int * lost_msg);
 
@@ -583,20 +584,20 @@ char k_receive(struct k_msg_t *pB, void *el, int timeout, int * lost_msg);
 * is not reset to 0
 * @return 0: operation did succed, -1: no data in ringbuffer
 * @remark can be used from ISR
-* @remark only to be called after start of SNOT
+* @remark only to be called after start of KRNL
 */
 char ki_receive(struct k_msg_t *pB, void *el, int * lost_msg);
 
 /**
-* start SNOT with tm tick speed (1= 1 msec, 5 = 5 msec)
+* start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)
 * @param[in] tm Tick length in milli seconds
-* @remark only to be called after init of SNOT
-* @remark SNOT WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!
+* @remark only to be called after init of KRNL
+* @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!
 */
 int k_start(int tm); // tm in milliseconds
 
 /**
-* Initialise SNOT. First function to be called.
+* Initialise KRNL. First function to be called.
 * You have to give max number of tasks, semaphores and message queues you will use
 * @param[in] nrTask ...
 * @param[in] nrSem ...
@@ -607,6 +608,7 @@ int k_init(int nrTask, int nrSem, int nrMsg);
 /**
 * Initialise blink on pin 13
 * ON when dummy is running
+* NOv 2014 - fake do not use it bq it will not work
 */
 void k_bugblink13(char on);
 
@@ -625,6 +627,6 @@ int freeRam(void);
 }
 #endif
 
-#endif   // #ifndef SNOT
+#endif   // #ifndef KRNL
 
 
