@@ -1,4 +1,9 @@
-      >>>  KRNL - a small preemptive kernel for small systems <<<
+        KRNL - a small preemptive kernel for small systems
+                      Arduino version
+
+                        tested with 1.0.5
+          on 328, 1280 and 2560 (uno, leonardo,..., mega)
+
        
 I have found it interesting to develop an open source realtime kernel 
 
