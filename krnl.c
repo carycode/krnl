@@ -528,7 +528,7 @@ ki_wait (struct k_t *sem, int timeout)
   pRun->cnt2 = timeout;	// if 0 then wait forever
 
   if (timeout)
-    pRun->cnt3 = (int) sem;	// nasty keep ref to semaphore,
+    pRun->cnt3 = (int) sem;	// nasty keep ref to semaphor
   //  so we can be removed if timeout occurs
   sem->cnt1--;		// Salute to Dijkstra
 
@@ -604,13 +604,31 @@ ki_semval (struct k_t *sem)
 }
 
 //----------------------------------------------------------------------------
-#ifdef MUTEX
+#ifdef PRIOINHERITANCE
+
+MUTEX_ENTER
+banke på
+UD-error?: har du allerede en mux så ud igen
+ledig ?
+UD_ok:
+i kø (fifo ?!)
+Aktiv i mutex prio lavere end din ? så giv ham din og det samme foran dig i mutexQ
+ZZZZZ
+
+UD_ok
+
+
+MUTEX_LEAVE:
+hvis min prio ikke er org prio så revert til org og prioenQ i AQ
+start forreste hvis der er en 
+reschedule
+UD
 
 NOT TESTED !!!  /Jens
 char
 k_mutex_entry (struct k_t *sem, int timeout)
 {
-#ifdef PRIOINHERITANCE
+ 
   // copy of ki_wait just with EI()'s before leaving
   DI ();
 
@@ -662,16 +680,14 @@ k_mutex_entry (struct k_t *sem, int timeout)
   EI ();
 
   return (char) (pRun->cnt2);	// 0: ok, -1: timeout
-  #endif
-}
+ }
 
 //----------------------------------------------------------------------------
 
 char
 k_mutex_leave (struct k_t *sem)
 {
-#ifdef PRIOINHERITANCE
-  volatile char res;
+   volatile char res;
 
   DI ();
 
@@ -686,11 +702,10 @@ k_mutex_leave (struct k_t *sem)
   EI ();
 
   return (res);
-  #endif
-}
+ }
 
 //----------------------------------------------------------------------------
-#endif
+#endif // PRIOINHERITANCE
 
 //----------------------------------------------------------------------------
 

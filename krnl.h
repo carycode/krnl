@@ -94,34 +94,41 @@ extern int k_msg;
 #define MAX_SEM_VAL 50          // NB is also max for nr elem in msgQ !
 #define MAX_INT 0x7FFF
 #define SEM_MAX_DEFAULT 50
-
-extern char dmy_stk[DMY_STK_SZ];
+// #define PRIOINHERITANCE
 
 /***** KeRNeL data types *****/
+/***** KeRNeL data types *****/
+/***** KeRNeL data types *****/
+
 struct k_t {
   struct k_t
-      *next,  // double chain lists ptr
-      *pred,
-      *elm;   // ptr to owner of mutex etc
+      *next,  // task,sem: double chain lists ptr
+      *pred;  // task,sem: double chain lists ptr
+#ifdef PRIOINHERITANCE
+  struct k_t
+      *elm;   // task: ptr to owner of mutex etc only prioinheritance
+#endif
   volatile char
-  sp_lo,
-  sp_hi,    // HW: for saving task stak stk ptr
-  prio;     // priority
+  sp_lo,    // sem: , task: low 8 byte of stak adr
+  sp_hi,    // sem: , task: high 8 byte of stak adr
+  prio;     // sem,task   :  priority
+/* JDN TEST
   volatile int
-  deadline, perTime;
+  deadline, perTime; // !!!not used anywhere ?
+*/
   volatile int
-  cnt1,    // counter for sem value etc , task: ptr to stak
-  cnt2,    // dyn part of time counter for semaphores, task: timeout
-  cnt3,    // preset timer value for semaphores, task: ptr to Q we are hanging in
-  maxv,    // max value for sem, org priority for task
-  clip;    // for lost signals etc
+  cnt1,    // sem: sem counter ,             task: ptr to stak
+  cnt2,    // sem: dyn part of time counter, task: timeout
+  cnt3,    // sem: preset timer value,       task: ptr to Q we are hanging in
+  maxv,    // sem: max value ,               task: org priority
+  clip;    // sem: counter for lost signals, task: 
 };
 
 struct k_msg_t { // msg type
   struct k_t
       *sem;
   char
-  *pBuf;    // ptr to user supplied ringbuffer
+    *pBuf;    // ptr to user supplied ringbuffer
   volatile int
   nr_el,
   el_size,
@@ -133,6 +140,9 @@ struct k_msg_t { // msg type
 };
 
 /***** KeRNeL variables *****/
+
+extern char dmy_stk[DMY_STK_SZ];
+
 extern struct k_t
     *task_pool,
     *sem_pool,
