@@ -23,40 +23,7 @@ void toggleLED13()
     flag = 1;
     digitalWrite(13,LOW);
   }
-}
-
-void t1(void)
-{
-  while (1) {
-    // just wait until you get region
-    
-    k_wait(mutexSem,0); 
-    // CRITICAL REGION STARTS
-    // when I am in between the wait and signal task t2 cant be in its similar region
-    // bq I have the token (semaphore initialised to 1)
-    // and ofcourse the same for t2 versus t1
-    digitalWrite(13,HIGH);
-    k_sleep(700);
-    digitalWrite(13,LOW);
-
-    // CRITICAL REGION ENDS
-    k_signal(mutexSem);
-  }
-}             
-
-void t2(void)
-{
-  // and task body for task 2
-  // runs independent of task t1
-  while (1) {
-    k_wait(mutexSem,0); // just wait until you get region
-    // CRITICAL REGION STARTS
-    Serial.println("t1 got it");
-    k_sleep(100);
-    
-    // CRITICAL REGION ENDS
-    k_signal(mutexSem);    
-  }
+} 
 }
 
 void setup()
