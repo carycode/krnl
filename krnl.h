@@ -621,6 +621,13 @@ char k_receive(struct k_msg_t *pB, void *el, int timeout, int * lost_msg);
 */
 char ki_receive(struct k_msg_t *pB, void *el, int * lost_msg);
 
+
+/**
+* returns which timer is used 
+* @return 0,1,2,3,4,5 ...
+*/
+int k_tmrInfo(void); // tm in milliseconds
+
 /**
 * start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)
 * @param[in] tm Tick length in milli seconds

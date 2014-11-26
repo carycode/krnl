@@ -1126,6 +1126,10 @@ NOT IN USE ANYMORE
 }
 
 
+int k_tmrInfo(void)
+{
+ return (KRNLTMR);
+}
 
 
 
