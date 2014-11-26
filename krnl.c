@@ -47,7 +47,7 @@
 
 #define KRNLTMR 2
  
-#ifdef (KRNLTMR == 0)
+#if (KRNLTMR == 0)
 // 8 bit timer !!!
 #define KRNLTMRVECTOR TIMER0_OVF_vect
 #define TCNTx TCNT0
