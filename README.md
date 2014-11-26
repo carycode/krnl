@@ -7,7 +7,7 @@ for the Arduino platform - but is also portable to other platforms
 
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
-- Now doxygen docu at https://github.com/jdn-aau/krnl/html/index.html
+- Now doxygen docu at html directory :-)
 
 Some highlights
 ---------------
