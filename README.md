@@ -4,7 +4,10 @@ I have found it interesting to develop an open source realtime kernel
 
 for the Arduino platform - but is also portable to other platforms
 
-SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
+
+
+- SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
+- Now doxygen docu at https://github.com/jdn-aau/krnl/html/index.html
 
 Some highlights
 ---------------
