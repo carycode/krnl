@@ -1,0 +1,7 @@
+<map id="enQ" name="enQ">
+<area shape="rect" id="node2" href="$krnl2_8c.html#a7f65c7a1cbda113524b3009faf639357" title="k_wait" alt="" coords="103,56,164,83"/>
+<area shape="rect" id="node5" href="$krnl2_8c.html#aead12f2e7f6ee98b98bb847c42d5027c" title="ki_wait" alt="" coords="101,107,165,133"/>
+<area shape="rect" id="node3" href="$krnl2_8c.html#a56febc95937d41bc48b48b6fdd6f6987" title="k_sleep" alt="" coords="223,5,294,32"/>
+<area shape="rect" id="node4" href="$krnl2_8c.html#a74756a33d34544159e50f335cb7ed9af" title="k_wait_lost" alt="" coords="213,56,304,83"/>
+<area shape="rect" id="node6" href="$krnl2_8c.html#a3e7f34b848366b08928c72711b6c008a" title="k_receive" alt="" coords="217,107,300,133"/>
+</map>
