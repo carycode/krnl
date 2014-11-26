@@ -1,9 +1,4 @@
-        KRNL - a small preemptive kernel for small systems
-                      Arduino version
-
-                        tested with 1.0.5
-          on 328, 1280 and 2560 (uno, leonardo,..., mega)
-
+      >>>  KRNL - a small preemptive kernel for small systems <<<
        
 I have found it interesting to develop an open source realtime kernel 
 
@@ -39,7 +34,15 @@ Install from github:
 1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
 2) git clone https://github.com/jdn-aau/krnl.git
 
-
+NB NB NB 
+    Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros().
+    Timer1 - A 16 bit timer used by the Servo() library
+    Timer2 - An 8 bit timer used by the Tone() library
+    Timer3,4,5 16 bits
+    
+ From vrs 1236 you can change which timer to use in krnl.c Just look in top of file for KRNLTMR
+ - tested with uno and mega 256
+ 
 
 Happy hacking
 

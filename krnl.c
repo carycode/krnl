@@ -1,4 +1,4 @@
-/*****************************************************
+ /*****************************************************
  *          krnl.c  part of kernel KRNL               *
  *         based on "snot"                            *
  *                                                    *
@@ -38,13 +38,87 @@
 
 #include "krnl.h"
 
-#if (KRNL_VRS != 1235)
+#if (KRNL_VRS != 1236)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
- 
+
 #include <avr/interrupt.h>
 #include <stdlib.h>
 
+#define KRNLTMR 2
+ 
+#ifdef (KRNLTMR == 0)
+// 8 bit timer !!!
+#define KRNLTMRVECTOR TIMER0_OVF_vect
+#define TCNTx TCNT0
+#define TCCRxA TCCR0A
+#define TCCRxB TCCR0B
+#define TCNTx TCNT0
+#define OCRxA OCR0A
+#define TIMSKx TIMSK0
+#define TOIEx TOIE0
+
+
+#elif (KRNLTMR == 1)
+#define KRNLTMRVECTOR TIMER1_OVF_vect
+#define TCNTx TCNT1
+#define TCCRxA TCCR1A
+#define TCCRxB TCCR1B
+#define TCNTx TCNT1
+#define OCRxA OCR1A
+#define TIMSKx TIMSK1
+#define TOIEx TOIE1
+
+
+
+#elif (KRNLTMR == 2)
+// 8 bit timer !!!
+#define KRNLTMRVECTOR TIMER2_OVF_vect
+#define TCNTx TCNT2
+#define TCCRxA TCCR2A
+#define TCCRxB TCCR2B
+#define TCNTx TCNT2
+#define OCRxA OCR2A
+#define TIMSKx TIMSK2
+#define TOIEx TOIE2
+
+
+#elif (KRNLTMR == 3)
+#define KRNLTMRVECTOR TIMER3_OVF_vect
+#define TCNTx TCNT3
+
+#define TCCRxA TCCR3A
+#define TCCRxB TCCR3B
+#define TCNTx TCNT3
+#define OCRxA OCR3A
+#define TIMSKx TIMSK3
+#define TOIEx TOIE3
+
+#elif (KRNLTMR == 4)
+#define KRNLTMRVECTOR TIMER4_OVF_vect
+#define TCNTx TCNT4
+#define TCCRxA TCCR4A
+#define TCCRxB TCCR4B
+#define TCNTx TCNT4
+#define OCRxA OCR4A
+#define TIMSKx TIMSK4
+#define TOIEx TOIE4
+
+#elif (KRNLTMR == 5)
+#define KRNLTMRVECTOR TIMER5_OVF_vect
+#define TCNTx TCNT5
+#define TCCRxA TCCR5A
+#define TCCRxB TCCR5B
+#define TCNTx TCNT5
+#define OCRxA OCR5A
+#define TIMSKx TIMSK5
+#define TOIEx TOIE5
+ #else
+#pragma err "no tmr selected"
+
+#endif
+
+// can be 1,2,3,4,5,6
 //----------------------------------------------------------------------------
 
 struct k_t
@@ -65,10 +139,10 @@ char nr_task = 0,nr_sem = 0,	nr_send = 0;	// counters for created KeRNeL items
 char dmy_stk[DMY_STK_SZ];
 
 volatile char k_running = 0,	k_err_cnt = 0;
-volatile unsigned int tcnt2;	// counters for timer system
+volatile unsigned int tcntValue;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
 	fakecnt_preset;
- 
+
 int tmr_indx; // for travelling Qs in tmr isr
 
 
@@ -80,7 +154,7 @@ char k_eat_time(unsigned int eatTime)
 {
 	unsigned long l;
 	// tested on uno for 5 msec and 500 msec
-   
+
 	// quants in milli seconds
 	// not 100% precise !!!
   l = eatTime;
@@ -136,7 +210,7 @@ prio_enQ (struct k_t *Q, struct k_t *el)
 void
 chg_Q_pos (struct k_t *el)
 {
-// not mature 
+// not mature
 #ifdef PRIOINHERITANCE
   struct k_t *q;
 
@@ -161,12 +235,13 @@ chg_Q_pos (struct k_t *el)
  */
 struct k_t *pE;
 
-ISR (TIMER2_OVF_vect, ISR_NAKED)
+ 
+ISR (KRNLTMRVECTOR, ISR_NAKED)
 {
 	// no local vars ! I think
   PUSHREGS ();
 
-  TCNT2 = tcnt2;		// Reload the timer
+  TCNTx = tcntValue;		// Reload the timer
 
   if (!k_running)  // obvious
     goto exitt;
@@ -178,19 +253,19 @@ ISR (TIMER2_OVF_vect, ISR_NAKED)
   fakecnt = fakecnt_preset;	// now it's time for doing RT stuff
 
   // It looks maybe crazy to go through all semaphores and tasks
-  // but 
+  // but
   // you may have 3-4 tasks and 3-6 semaphores in your code
   // so...
   // and - it's a good idea not to init krnl with more items (tasks/Sem/msg descriptors than needed)
-  
+
 
   pE = sem_pool;		// Semaphore timer - check timers on semaphores - they may be cyclic
-  
+
   for (tmr_indx = 0; tmr_indx < nr_sem; tmr_indx++) {
     if (0 < pE->cnt2) {                         // timer on semaphore ?
       pE->cnt2--;                               // yep  decrement it
       if (pE->cnt2 <= 0) {                      // timeout  ?
-        pE->cnt2 = pE->cnt3;	                  // preset again - if cnt3 == 0 and >= 0 the rep timer  
+        pE->cnt2 = pE->cnt3;	                  // preset again - if cnt3 == 0 and >= 0 the rep timer
         ki_signal (pE);	                        //issue a signal to the semaphore
       }
     }
@@ -200,9 +275,9 @@ ISR (TIMER2_OVF_vect, ISR_NAKED)
   pE = task_pool;                               // Chk timers on tasks - they may be one shoot waiting
 
   for (tmr_indx = 0; tmr_indx < nr_task; tmr_indx++) {
-    if (0 < pE->cnt2) {                        // timer active on task ? 
+    if (0 < pE->cnt2) {                        // timer active on task ?
       pE->cnt2--;                              // yep so let us do one down count
-      if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 ) 
+      if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 )
         pE->cnt2 = -1;	                       // indicate timeout inis semQ
         prio_enQ (pAQ, deQ (pE));	             // to AQ
       }
@@ -218,9 +293,9 @@ ISR (TIMER2_OVF_vect, ISR_NAKED)
   POPREGS ();
   RETI ();
 }
- 
+
 //----------------------------------------------------------------------------
-// inspired from ...  
+// inspired from ...
 // http://arduinomega.blogspot.dk/2011/05/timer2-and-overflow-interrupt-lets-get.html
 // Inspiration from  http://popdevelop.com/2010/04/mastering-timer-interrupts-on-the-arduino/
 //TIMSK2 &= ~(1 << TOIE2);  // Disable the timer overflow interrupt while we're configuring
@@ -278,7 +353,7 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
   // inspiration from http://dev.bertos.org/doxygen/frame_8h_source.html
   // and http://www.control.aau.dk/~jdn/kernels/krnl/
   // now we are going to precook stak
-  
+
   pT->cnt1 = (int) (pStk);
 
   for (i = 0; i < stkSize; i++)	// put hash code on stak to be used by k_unused_stak()
@@ -350,12 +425,12 @@ k_unused_stak (struct k_t *t)
 {
   int i = 0;
   char *pstk;
-  
+
   if (t) // another task or yourself - NO CHK of validity !
     pstk = (char *) (t->cnt1);
-  else 
+  else
     pstk = (char *) (pRun->cnt1);
-  
+
   DI ();
   while (*pstk == STAK_HASH) {
     pstk++;
@@ -420,9 +495,9 @@ k_crt_sem (char init_val, int maxvalue)
   sem->cnt1 = init_val;
   if (0 < maxvalue && 32000 > maxvalue)
     sem->maxv = maxvalue;
-  else 
-    sem->maxv = SEM_MAX_DEFAULT; 
-  sem->clip = 0; 
+  else
+    sem->maxv = SEM_MAX_DEFAULT;
+  sem->clip = 0;
   return (sem);
 
  badexit:
@@ -553,7 +628,7 @@ k_wait (struct k_t *sem, int timeout)
     return (0);
   }
 
-  if (timeout == -1) {     // no luck, dont want to wait so bye 
+  if (timeout == -1) {     // no luck, dont want to wait so bye
 
     EI ();
     return (-2);
@@ -620,7 +695,7 @@ UD_ok
 
 MUTEX_LEAVE:
 hvis min prio ikke er org prio så revert til org og prioenQ i AQ
-start forreste hvis der er en 
+start forreste hvis der er en
 reschedule
 UD
 
@@ -628,7 +703,7 @@ NOT TESTED !!!  /Jens
 char
 k_mutex_entry (struct k_t *sem, int timeout)
 {
- 
+
   // copy of ki_wait just with EI()'s before leaving
   DI ();
 
@@ -945,27 +1020,36 @@ k_init (int nrTask, int nrSem, int nrMsg)
 int
 k_start (int tm)
 {
-
+  if (tm <= 0) 
+	  return -999;
+  if (200 < tm)
+  	return -888;
+  	
   if (k_err_cnt)
     return -k_err_cnt;		// will not start if errors during initialization
-
+    
+ 
   DI (); // silencio
+
+
+#ifdef NEVER
 
 #if defined(__AVR_ATmega32U4__)
   // 32u4 have no intern/extern clock source register
 #else
   ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
-#endif
-
-  if (0 < tm) {
+#endif // KRNLTMR3
+ 
+NOT IN USE ANYMORE
+ #if KRNLTMR == 2
     TIFR2 = 0x00;
     TCCR2B = 0x00;	                                    // silencio from this timer
     TCCR2A &= ~((1 << WGM21) | (1 << WGM20));	          // Configure timer2 in normal mode (pure counting, no PWM etc.)
     TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20);	// Set prescaler to CPU clock divided by 1024 See p162 i atmega328
-    TIMSK2 &= ~(1 << OCIE2A);	                          // Disable Compare Match A interrupt enable (only want overflow)
-    TIMSK2 = 0x01;	//HACK ? ...
-    TCCR2A = 0x00;	// normal
-
+    TIMSKx &= ~(1 << OCIE2A);	                          // Disable Compare Match A interrupt enable (only want overflow)
+    TIMSKx = 0x01;	//HACK ? ...
+    TCCRxA = 0x00;	// normal
+ 
     /* for your and my own memory
      *  We need to calculate a proper value to load the timer counter.
      * The following loads the value 131 into the Timer 2 counter register
@@ -983,17 +1067,53 @@ k_start (int tm)
      * some timer reg values:
      * 1msec: 240 5msec: 178  10msec: 100   15msec: 22
      */
-    tcnt2 = 240;		// 1 msec as basic heart beat
+    tcntValue = 240;		// 1 msec as basic heart beat
 
     // lets set divider for timer ISR
     if (tm <= 0)
       fakecnt = fakecnt_preset = 10;	// 10 msec
     else
       fakecnt = fakecnt_preset = tm;
+      
+      
+        /* FOR 16 bits !
+ prescaler in cs2 cs1 cs0
+   0   0   0   none
+   0   0   1   /1 == none
+   0   1   0   /8
+   0   1   1   /64
+   1   0   0   /256
+   1   0   1   /1024
+   16MHz Arduino -> 16000000/256 = 62500 ticks/second
+   -------------------------/64  = 250000 ticks/second !
+   
+   NB 16 bit counter so values >= 65535 is not working
+   
+   01msec timer /64 + 250 
+   10msec timer /64 + 2500
+   100msec timer /64 + 25000
+   */
+ 	TCNTx = tcntValue; // count value
+	TIMSKx |= (1 << TOIEx); // enable interrupt
+	#endif /
+	#endif // NEVER
+	
+	
+#if (KRNLTMR ==0) || (KRNLTMR ==2)
+    fakecnt = fakecnt_preset= tm * 15.625; // on duty for every interrupt
+	TCCRxA = 0;
+	TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
+	tcntValue = 255 - tm*15.625;
+#elif (KRNLTMR == 1) || (KRNLTMR == 3 )
+    fakecnt = fakecnt_preset=0; // on duty for every interrupt
+	TCCRxA = 0;
+	TCCRxB = 0x03; // /64 prescaler 1 sec == 250000 counts
+    tcntValue = 65536 - tm*250;	// Finally load end enable the timer
+#endif
 
-    TCNT2 = tcnt2;	// Finally load end enable the timer
-    TIMSK2 |= (1 << TOIE2);
-  }
+    TCNTx = tcntValue; // count value
+	TIMSKx |= (1 << TOIEx); // enable interrupt
+	
 
   pRun = &main_el;		// just for ki_task_shift
   k_running = 1;

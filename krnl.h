@@ -45,7 +45,7 @@ extern "C" {
 #endif
 
 // remember to update in krnl.c !!!
-#define KRNL_VRS 1235
+#define KRNL_VRS 1236
 
 
 // if you are using k_mutex with prio inheritance
@@ -95,32 +95,30 @@ extern int k_msg;
 #define MAX_INT 0x7FFF
 #define SEM_MAX_DEFAULT 50
 // #define PRIOINHERITANCE
+extern char dmy_stk[DMY_STK_SZ];
 
 /***** KeRNeL data types *****/
-/***** KeRNeL data types *****/
-/***** KeRNeL data types *****/
-
 struct k_t {
   struct k_t
       *next,  // task,sem: double chain lists ptr
       *pred;  // task,sem: double chain lists ptr
 #ifdef PRIOINHERITANCE
-  struct k_t
+struct k_t
       *elm;   // task: ptr to owner of mutex etc only prioinheritance
 #endif
   volatile char
   sp_lo,    // sem: , task: low 8 byte of stak adr
   sp_hi,    // sem: , task: high 8 byte of stak adr
-  prio;     // sem,task   :  priority
+  prio;     // task,sem:  priority
 /* JDN TEST
   volatile int
   deadline, perTime; // !!!not used anywhere ?
 */
   volatile int
-  cnt1,    // sem: sem counter ,             task: ptr to stak
+  cnt1,    // sem: sem counter , task: ptr to stak
   cnt2,    // sem: dyn part of time counter, task: timeout
-  cnt3,    // sem: preset timer value,       task: ptr to Q we are hanging in
-  maxv,    // sem: max value ,               task: org priority
+  cnt3,    // sem: preset timer value, task: ptr to Q we are hanging in
+  maxv,    // sem: max value ,         task: org priority
   clip;    // sem: counter for lost signals, task: 
 };
 
@@ -128,7 +126,7 @@ struct k_msg_t { // msg type
   struct k_t
       *sem;
   char
-    *pBuf;    // ptr to user supplied ringbuffer
+  *pBuf;    // ptr to user supplied ringbuffer
   volatile int
   nr_el,
   el_size,
@@ -140,9 +138,6 @@ struct k_msg_t { // msg type
 };
 
 /***** KeRNeL variables *****/
-
-extern char dmy_stk[DMY_STK_SZ];
-
 extern struct k_t
     *task_pool,
     *sem_pool,
