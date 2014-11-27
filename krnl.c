@@ -38,26 +38,21 @@
 
 #include "krnl.h"
 
-#if (KRNL_VRS != 1236)
+#if (KRNL_VRS != 1237)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
 #include <avr/interrupt.h>
 #include <stdlib.h>
 
-#define KRNLTMR 2
 
-//#define MHZ F08
-#define MHZ F16
 
 #if (MHZ == F16)
 #define DIV8 15.625
 #define DIV16 250
 #elif (MHZ == F08)
 #define DIV8   7.812
-#define DIV16 125
-#else
-#pragma warn "bad freq"
+#define DIV16  125
 #endif
 
 #if (KRNLTMR == 0)
@@ -173,11 +168,19 @@ char k_eat_time(unsigned int eatTime)
 {
     unsigned long l;
     // tested on uno for 5 msec and 500 msec
+    // if you are preempted then ... :-(
 
     // quants in milli seconds
     // not 100% precise !!!
     l = eatTime;
+    #if (MHZ == F16)
     l *=1323;
+    #elif (MHZ == F08)
+    l *=661;
+    #else
+    #error bad cpu frequency
+    #endif
+
     while (l--) {
         asm("nop \n\t nop \n\t nop \n\t nop \n\t nop \n\t nop");
     }
@@ -243,7 +246,7 @@ chg_Q_pos (struct k_t *el)
 //---HW timer IRS-------------------------------------------------------------
 //------------timer section---------------------------------------------------
 /*
- * The KRNL Timer is driven by timer2
+ * The KRNL Timer is driven by timer
  *
  *
  * Install the Interrupt Service Routine (ISR) for Timer2 overflow.
@@ -1059,7 +1062,7 @@ k_start (int tm)
     // 32u4 have no intern/extern clock source register
 #else
     ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
-#endif 
+#endif
 
 
     /* FOR 16 bits !

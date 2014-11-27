@@ -1,6 +1,7 @@
 var krnl_8c =
 [
-    [ "KRNLTMR", "krnl_8c.html#ad0559cb6857c3d0c63f0353b5828a2af", null ],
+    [ "DIV16", "krnl_8c.html#a7b472b601b667cd41031f57c8290527d", null ],
+    [ "DIV8", "krnl_8c.html#a89ca63a5f13df426cd5c4f025eefef48", null ],
     [ "KRNLTMRVECTOR", "krnl_8c.html#a8390550b01018588df23043e908ded51", null ],
     [ "OCRxA", "krnl_8c.html#a8d7bc6726e0fd85c5873faeb6e4246f9", null ],
     [ "TCCRxA", "krnl_8c.html#aedef1a8b3de29d96e6f2e152ccfe2a26", null ],

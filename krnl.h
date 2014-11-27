@@ -37,10 +37,34 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 
- /***********************
-NB NB ABOUT TIMERS
+/***********************
+NB NB ABOUT TIMERS PORTS ETC
 
-vrs 1236 and ++
+You can configure krnl to use timer 0,1,2,3,4,5
+
+See below
+
+When using a timer you must be aware of that it will prohibit you from things like
+- tone (pwm sound) uses timer2
+
+... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
+Timer0:
+- Timer0 is a 8bit timer.
+- In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
+-  If you change Timer0 registers, this may influence the Arduino timer function.
+- So you should know what you are doing.
+
+Timer1:
+- Timer1 is a 16bit timer.
+- In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
+
+Timer2:
+- Timer2 is a 8bit timer like Timer0.
+ -In the Arduino work the tone() function uses Timer2.
+
+Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
+- These timers are all 16bit timers.
+
 
 On uno
 - Pins 5 and 6: controlled by timer0
@@ -74,17 +98,30 @@ On the Arduino Mega we have 6 timers and 15 PWM outputs:
 - tone() function uses at least timer2.
 -- You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
 
- ***********************/
+SO BEWARE !!!
+
+***********************/
 
 #ifndef KRNL
 #define KRNL
 
+// remember to update in krnl.c !!!
+#define KRNL_VRS 1237
+
+
+// which timer to use for heartbeat 0,1,2, and 3,4 and if its a Mega
+#define KRNLTMR 2
+
+
+// CPU frequency - for adjusting delays
+//#define MHZ F08
+#define MHZ F16
+
+//----------------------------------------------------------
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-// remember to update in krnl.c !!!
-#define KRNL_VRS 1236
 
 
 // if you are using k_mutex with prio inheritance
@@ -93,27 +130,34 @@ extern "C" {
 
 #if defined(__AVR_ATmega168__)
 #define ARCH_SLCT 1
-#endif
-
-#if defined(__AVR_ATmega328P__)
+#elif defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__)
 #define ARCH_SLCT 2
-#endif
-
-#if defined(__AVR_ATmega32U4__)
+#elif defined(__AVR_ATmega32U4__)
 #define ARCH_SLCT 3
-#endif
-
-#if defined (__AVR_ATmega1280__)
+#elif defined (__AVR_ATmega1280__)
 #define ARCH_SLCT 4
-#endif
-
-#if  defined(__AVR_ATmega2560__)
+#elif defined(__AVR_ATmega2560__)
 #define ARCH_SLCT 6
+#else
+#error Failing due to unknown architecture - JDN
 #endif
 
-#ifndef ARCH_SLCT
-#error Failing unknown architecture - JDN
+#if (MHZ != F16) && (MHZ !=F08)
+#error Bad frequency (MHZ) selected  - JDN
 #endif
+
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
+#if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2)
+#error bad timer for krnl heartbeat(168/328/328p/32u4) - JDN
+#endif
+#endif // defined
+
+#if defined (__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+
+#if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2) &&(KRNLTMR != 3) &&(KRNLTMR != 4) &&(KRNLTMR != 5)
+#error bad timer for krnl heartbeat(1280/2560) - JDN
+#endif
+#endif 
 
 // DEBUGGING
 //#define DMYBLINK     // ifdef then led (pin13) will light when dummy is running
@@ -138,57 +182,53 @@ extern char dmy_stk[DMY_STK_SZ];
 
 /***** KeRNeL data types *****/
 struct k_t {
-  struct k_t
-      *next,  // task,sem: double chain lists ptr
-      *pred;  // task,sem: double chain lists ptr
+    struct k_t
+            *next,  // task,sem: double chain lists ptr
+            *pred;  // task,sem: double chain lists ptr
 #ifdef PRIOINHERITANCE
-struct k_t
-      *elm;   // task: ptr to owner of mutex etc only prioinheritance
+    struct k_t
+            *elm;   // task: ptr to owner of mutex etc only prioinheritance
 #endif
-  volatile char
-  sp_lo,    // sem: , task: low 8 byte of stak adr
-  sp_hi,    // sem: , task: high 8 byte of stak adr
-  prio;     // task,sem:  priority
-/* JDN TEST
-  volatile int
-  deadline, perTime; // !!!not used anywhere ?
-*/
-  volatile int
-  cnt1,    // sem: sem counter , task: ptr to stak
-  cnt2,    // sem: dyn part of time counter, task: timeout
-  cnt3,    // sem: preset timer value, task: ptr to Q we are hanging in
-  maxv,    // sem: max value ,         task: org priority
-  clip;    // sem: counter for lost signals, task:
+    volatile char
+    sp_lo,    // sem:vacant    | task: low 8 byte of stak adr
+    sp_hi,    // sem: vacant   |task: high 8 byte of stak adr
+    prio;     // task & sem:  priority
+    volatile int
+    cnt1,    // sem: sem counter | task: ptr to stak
+    cnt2,    // sem: dyn part of time counter | task: timeout
+    cnt3,    // sem: preset timer value |  task: ptr to Q we are hanging in
+    maxv,    // sem: max value |         task: org priority
+    clip;    // sem: counter for lost signals | task: vacant
 };
 
 struct k_msg_t { // msg type
-  struct k_t
-      *sem;
-  char
-  *pBuf;    // ptr to user supplied ringbuffer
-  volatile int
-  nr_el,
-  el_size,
-  lost_msg;
-  volatile int
-  r,
-  w,
-  cnt;
+    struct k_t
+            *sem;
+    char
+    *pBuf;    // ptr to user supplied ringbuffer
+    volatile int
+    nr_el,
+    el_size,
+    lost_msg;
+    volatile int
+    r,
+    w,
+    cnt;
 };
 
 /***** KeRNeL variables *****/
 extern struct k_t
-    *task_pool,
-    *sem_pool,
-    AQ,			// activeQ
-    main_el,
-    *pAQ,
-    *pDmy, 		// ptr to dummy task descriptor
-    *pRun,		// ptr to running task
-    *pSleepSem;
+        *task_pool,
+        *sem_pool,
+        AQ,			// activeQ
+        main_el,
+        *pAQ,
+        *pDmy, 		// ptr to dummy task descriptor
+        *pRun,		// ptr to running task
+        *pSleepSem;
 
 extern struct k_msg_t
-    *send_pool;
+        *send_pool;
 
 extern char nr_task, nr_sem, nr_send;
 
@@ -198,17 +238,6 @@ extern volatile char bugblink;
 extern volatile char
 k_err_cnt;	// every time an error occurs cnt is incr by one
 
-#define lo8(X) ((unsigned char)((unsigned int)(X)))
-#define hi8(X) ((unsigned char)((unsigned int)(X) >> 8))
-
-#define K_CHG_STAK()    \
-if (pRun != AQ.next) {  \
-  pRun->sp_lo = SPL;    \
-  pRun->sp_hi = SPH;    \
-  pRun = AQ.next;       \
-  SPL = pRun->sp_lo;    \
-  SPH = pRun->sp_hi;    \
-}
 
 /******************************************************
  * MACROS MACROS
@@ -243,6 +272,19 @@ if (pRun != AQ.next) {  \
  *
  * PC is NOT available
  */
+
+
+#define lo8(X) ((unsigned char)((unsigned int)(X)))
+#define hi8(X) ((unsigned char)((unsigned int)(X) >> 8))
+
+#define K_CHG_STAK()    \
+if (pRun != AQ.next) {  \
+  pRun->sp_lo = SPL;    \
+  pRun->sp_hi = SPH;    \
+  pRun = AQ.next;       \
+  SPL = pRun->sp_lo;    \
+  SPH = pRun->sp_hi;    \
+}
 
 // MISSING no code 1284p
 
@@ -655,7 +697,7 @@ int k_init(int nrTask, int nrSem, int nrMsg);
 */
 void k_bugblink13(char on);
 
- /**
+/**
 * returns nr of unbytes bytes on stak.
 * For chekking if stak is too big or to small...
 * @param[in] t Reference to task (by task handle) If null then yourself
@@ -665,7 +707,12 @@ void k_bugblink13(char on);
 */
 int k_stk_chk(struct k_t *t);
 
-
+/**
+* Returns amount of unused stak
+* @parm t . Ptr to taskdescriptor. If NULL it is yourself
+* @return: amount of unused stak(in bytes)
+* @remark: a watermark philosophy is used
+**/
 int k_unused_stak(struct k_t *t);
 
 /**
