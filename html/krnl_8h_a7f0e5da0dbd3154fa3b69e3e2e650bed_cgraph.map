@@ -1,3 +1,5 @@
 <map id="ki_send" name="ki_send">
-<area shape="rect" id="node2" href="$krnl_8c.html#a45c4a121f17683f0cd3593c0ee0bff1b" title="ki_signal" alt="" coords="126,5,202,32"/>
+<area shape="rect" id="node2" href="$krnl_8c.html#a45c4a121f17683f0cd3593c0ee0bff1b" title="ki_signal" alt="" coords="126,31,202,57"/>
+<area shape="rect" id="node3" href="$krnl_8c.html#a7ac8496c83319bfc569e4fdab8149940" title="deQ" alt="" coords="267,5,315,32"/>
+<area shape="rect" id="node4" href="$krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe" title="prio_enQ" alt="" coords="251,56,330,83"/>
 </map>
