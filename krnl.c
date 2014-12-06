@@ -15,8 +15,7 @@
 * (C) 2012,2013,2014                                 *
 *                                                    *
 * Jens Dalsgaard Nielsen <jdn@es.aau.dk>             *
-* http://www.control.aau.dk/~jdn                     *
-* Studentspace/Satlab                                *
+* http://es.aau.dk/staff/jdn                         *
 * Section of Automation & Control                    *
 * Aalborg University,                                *
 * Denmark                                            *

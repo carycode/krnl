@@ -16,8 +16,7 @@
  * (C) 2012,2013,2014                                 *
  *                                                    *
  * Jens Dalsgaard Nielsen <jdn@es.aau.dk>             *
- * http://www.control.aau.dk/~jdn                     *
- * Studentspace/Satlab                                *
+ * http://es.aau.dk/staff/jdn                         * 
  * Section of Automation & Control                    *
  * Aalborg University,                                *
  * Denmark                                            *
@@ -36,6 +35,8 @@
  * tested with duemilanove w/328, uno R3,             *
  * seeduino 1280 and mega2560                         *
  *****************************************************/
+// remember to update in krnl.c !!!
+#define KRNL_VRS 1237
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -105,8 +106,7 @@ SO BEWARE !!!
 #ifndef KRNL
 #define KRNL
 
-// remember to update in krnl.c !!!
-#define KRNL_VRS 1237
+
 
 
 // which timer to use for heartbeat 0,1,2, and 3,4 and if its a Mega
