@@ -1048,7 +1048,7 @@ k_start (int tm)
     if (200 < tm)
         return -888;
         
-    if (tm > 10)
+    if (tm > 80)
     	return -777;
 
     if (k_err_cnt)
@@ -1066,26 +1066,25 @@ k_start (int tm)
     ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
 #endif
 
-/* for 8 bits !!
+/*  FOR 8 bits !!
     0 0 0 No clock source (Timer/Counter stopped).
     0 0 1 clk T2S /(No prescaling)
-    0 1 0 clk T2S /8 (From prescaler)
-    0 1 1 clk T2S /32 (From prescaler)
-    1 0 0 clk T2S /64 (From prescaler)
-    1 0 1 clk T2S /128 (From prescaler)
-    1 1 0 clk T 2 S /256 (From prescaler)
-    1 1 1 clk T 2 S /1024 (From prescaler)
-*/
+    0 1 0 clk T2S /8 (From prescaler)      2000000 intr/sec at 1 downcount
+    0 1 1 clk T2S /32 (From prescaler)      500000 intr/sec ...
+    1 0 0 clk T2S /64 (From prescaler)      250000
+    1 0 1 clk T2S /128 (From prescaler)     125000
+    1 1 0 clk T 2 S /256 (From prescaler)    62500
+    1 1 1 clk T 2 S /1024 (From prescaler)   15625  eq 15.625 count down for 1 millisec so 255 counts ~= 80.32 milli sec timer
 
-    /* FOR 16 bits !
+    FOR 16 bits !
     prescaler in cs2 cs1 cs0
     0   0   0   none
     0   0   1   /1 == none
-    0   1   0   /8
-    0   1   1   /64
-    1   0   0   /256
-    1   0   1   /1024
-    16MHz Arduino -> 16000000/1024 =  15625 ticks/second
+    0   1   0   /8     2000000 intr/sec 
+    0   1   1   /64     250000 intr/sec 
+    1   0   0   /256     62500 intr/sec 
+    1   0   1   /1024    15625 intr/sec 
+    16MHz Arduino -> 16000000/1024 =  15625 intr/second
     16MHz Arduino -> 16000000/256  =  62500 ticks/second
     -------------------------/64   = 250000 ticks/second !
 
@@ -1099,31 +1098,22 @@ k_start (int tm)
     TIMSKx |= (1 << TOIEx); // enable interrupt
 #endif // NEVER
 
-#if (KRNLTMR == 0) || (KRNLTMR == 2)
-//    fakecnt = fakecnt_preset = tm * 15.625; // on duty for every interrupt
-    TCCRxA = 0;
-    //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
+#if  (KRNLTMR == 2)
+     //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
+    //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
+    //  TIMSK2 = 0x01; //HACK ? ...    fakecnt = fakecnt_preset = 0; 
 
-    // JDN HMM dec 2014    TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
-    
-    
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
     TCCRxB |= 0x07; // atm328s 
 #else
     TCCRxB = 0x05; // megas
 #endif
-    
 
-    //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
-    //  TIMSK2 = 0x01; //HACK ? ...
-     
-
-    tcntValue = 255 - tm*DIV8;
+    tcntValue = 256 - tm*DIV8;
     TCNTx = tcntValue; 
-    fakecnt = fakecnt_preset = 0; 
       
-    
-#elif (KRNLTMR == 1) || (KRNLTMR == 3 ) || (KRNLTMR == 4 )|| (KRNLTMR == 5 )
+    // if not 8 bit timer its a 16 bit timer
+    #elif (KRNLTMR == 1) || (KRNLTMR == 3 ) || (KRNLTMR == 4 )|| (KRNLTMR == 5 )
     fakecnt = fakecnt_preset=0; // on duty for every interrupt
     TCCRxA = 0;
     TCCRxB = 0x03; // /64 prescaler 1 sec == 250000 counts
@@ -1132,7 +1122,6 @@ k_start (int tm)
 #endif
 
     //  let us start the show
-
     TIMSKx |= (1 << TOIEx); // enable interrupt
 
 
