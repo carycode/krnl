@@ -1105,8 +1105,14 @@ k_start (int tm)
     //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
 
     // JDN HMM dec 2014    TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
-    TCCRxB |= 0x07; // (1 << CS22) | (1 << CS21) | (1 << CS20); // Set prescaler to CPU clock divided by 1024 See p162 i atmega328
-
+    
+    
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
+    TCCRxB |= 0x07; // atm328s 
+#else
+    TCCRxB = 0x05; // megas
+#endif
+    
 
     //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
     //  TIMSK2 = 0x01; //HACK ? ...
