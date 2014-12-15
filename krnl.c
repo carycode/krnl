@@ -1047,6 +1047,9 @@ k_start (int tm)
         return -999;
     if (200 < tm)
         return -888;
+        
+    if (tm > 10)
+    	return -777;
 
     if (k_err_cnt)
         return -k_err_cnt;		// will not start if errors during initialization
@@ -1082,25 +1085,38 @@ k_start (int tm)
     10msec timer /64 + 2500
     100msec timer /64 + 25000
     */
-    TCNTx = tcntValue; // count value
+ //   TCNTx = tcntValue; // count value
     TIMSKx |= (1 << TOIEx); // enable interrupt
 #endif // NEVER
 
-#if (KRNLTMR ==0) || (KRNLTMR ==2)
-    fakecnt = fakecnt_preset = tm * 15.625; // on duty for every interrupt
+#if (KRNLTMR == 0) || (KRNLTMR == 2)
+//    fakecnt = fakecnt_preset = tm * 15.625; // on duty for every interrupt
     TCCRxA = 0;
-    TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
+    //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
+
+    // JDN HMM dec 2014    TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
+    TCCRxB |= (1 << CS22) | (1 << CS21) | (1 << CS20); // Set prescaler to CPU clock divided by 1024 See p162 i atmega328
+
+
+    //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
+    //  TIMSK2 = 0x01; //HACK ? ...
+     
+
     tcntValue = 255 - tm*DIV8;
+    TCNTx = tcntValue; 
+    fakecnt = fakecnt_preset = 0; 
+      
+    
 #elif (KRNLTMR == 1) || (KRNLTMR == 3 ) || (KRNLTMR == 4 )|| (KRNLTMR == 5 )
     fakecnt = fakecnt_preset=0; // on duty for every interrupt
     TCCRxA = 0;
     TCCRxB = 0x03; // /64 prescaler 1 sec == 250000 counts
     tcntValue = 65536 - tm*DIV16;	// Finally load end enable the timer
+    TCNTx = tcntValue; // count value
 #endif
 
     //  let us start the show
 
-    TCNTx = tcntValue; // count value
     TIMSKx |= (1 << TOIEx); // enable interrupt
 
 
