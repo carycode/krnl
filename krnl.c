@@ -1066,6 +1066,16 @@ k_start (int tm)
     ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
 #endif
 
+/* for 8 bits !!
+    0 0 0 No clock source (Timer/Counter stopped).
+    0 0 1 clk T2S /(No prescaling)
+    0 1 0 clk T2S /8 (From prescaler)
+    0 1 1 clk T2S /32 (From prescaler)
+    1 0 0 clk T2S /64 (From prescaler)
+    1 0 1 clk T2S /128 (From prescaler)
+    1 1 0 clk T 2 S /256 (From prescaler)
+    1 1 1 clk T 2 S /1024 (From prescaler)
+*/
 
     /* FOR 16 bits !
     prescaler in cs2 cs1 cs0
@@ -1095,7 +1105,7 @@ k_start (int tm)
     //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
 
     // JDN HMM dec 2014    TCCRxB = 0x05; // /1024 prescaler 1 sec == 15625 counts 8 bit :-(
-    TCCRxB |= (1 << CS22) | (1 << CS21) | (1 << CS20); // Set prescaler to CPU clock divided by 1024 See p162 i atmega328
+    TCCRxB |= 0x07; // (1 << CS22) | (1 << CS21) | (1 << CS20); // Set prescaler to CPU clock divided by 1024 See p162 i atmega328
 
 
     //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
