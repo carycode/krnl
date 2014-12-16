@@ -42,6 +42,7 @@
 NB NB ABOUT TIMERS PORTS ETC
 
 You can configure krnl to use timer 0,1,2,3,4,5
+Buth normally you cant use timer 0 bq it is used for millis and preallocated.
 
 See below
 
@@ -107,9 +108,7 @@ SO BEWARE !!!
 #define KRNL
 
 
-
-
-// which timer to use for heartbeat 0,1,2, and 3,4 and if its a Mega
+// which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 and if its a Mega
 #define KRNLTMR 2
 
 
@@ -195,7 +194,7 @@ struct k_t {
     prio;     // task & sem:  priority
     volatile int
     cnt1,    // sem: sem counter | task: ptr to stak
-    cnt2,    // sem: dyn part of time counter | task: timeout
+    cnt2,    // asem: dyn part of time counter | task: timeout
     cnt3,    // sem: preset timer value |  task: ptr to Q we are hanging in
     maxv,    // sem: max value |         task: org priority
     clip;    // sem: counter for lost signals | task: vacant
@@ -675,7 +674,7 @@ int k_tmrInfo(void); // tm in milliseconds
 
 /**
 * start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)
-* @param[in] tm Tick length in milli seconds
+* @param[in] tm Tick length in milli seconds(1..10,20,30..10000
 * @remark only to be called after init of KRNL
 * @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!
 */

@@ -47,15 +47,13 @@
 
 
 #if (MHZ == F16)
-#define DIV8 15.625
-#define DIV16 250
+#define DIVV 15.625
 #elif (MHZ == F08)
-#define DIV8   7.812
-#define DIV16  125
-#endif
+#define DIVV   7.812
+ #endif
 
 #if (KRNLTMR == 0)
-
+// normally not goood bq of arduino sys timer so you wil get a compile error
 // 8 bit timer !!!
 #define KRNLTMRVECTOR TIMER0_OVF_vect
 #define TCNTx TCNT0
@@ -65,6 +63,8 @@
 #define OCRxA OCR0A
 #define TIMSKx TIMSK0
 #define TOIEx TOIE0
+#define PRESCALE 0x07
+#define COUNTMAX 255
 
 #elif (KRNLTMR == 1)
 
@@ -76,9 +76,9 @@
 #define OCRxA OCR1A
 #define TIMSKx TIMSK1
 #define TOIEx TOIE1
-
-
-
+#define PRESCALE 0x05
+#define COUNTMAX 65535
+ 
 #elif (KRNLTMR == 2)
 
 // 8 bit timer !!!
@@ -90,19 +90,21 @@
 #define OCRxA OCR2A
 #define TIMSKx TIMSK2
 #define TOIEx TOIE2
-
+#define PRESCALE 0x07
+#define COUNTMAX 255
 
 #elif (KRNLTMR == 3)
 
 #define KRNLTMRVECTOR TIMER3_OVF_vect
 #define TCNTx TCNT3
-
 #define TCCRxA TCCR3A
 #define TCCRxB TCCR3B
 #define TCNTx TCNT3
 #define OCRxA OCR3A
 #define TIMSKx TIMSK3
 #define TOIEx TOIE3
+#define PRESCALE 0x05
+#define COUNTMAX 65535
 
 #elif (KRNLTMR == 4)
 
@@ -114,6 +116,8 @@
 #define OCRxA OCR4A
 #define TIMSKx TIMSK4
 #define TOIEx TOIE4
+#define PRESCALE 0x05
+#define COUNTMAX 65535
 
 #elif (KRNLTMR == 5)
 
@@ -125,6 +129,8 @@
 #define OCRxA OCR5A
 #define TIMSKx TIMSK5
 #define TOIEx TOIE5
+#define PRESCALE 0x05
+#define COUNTMAX 65535
 
 #else
 #pragma err "no valid tmr selected"
@@ -1043,30 +1049,11 @@ leave:
 int
 k_start (int tm)
 {
-    if (tm <= 0)
-        return -999;
-    if (200 < tm)
-        return -888;
-        
-    if (tm > 80)
-    	return -777;
 
-    if (k_err_cnt)
-        return -k_err_cnt;		// will not start if errors during initialization
-
-
-    DI (); // silencio
-
-
-#ifdef NEVER
-
-#if defined(__AVR_ATmega32U4__)
-    // 32u4 have no intern/extern clock source register
-#else
-    ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
-#endif
-
-/*  FOR 8 bits !!
+/*  
+ 48,88,168,328
+ timer 0, 1 and 2 has same prescaler config:
+ 
     0 0 0 No clock source (Timer/Counter stopped).
     0 0 1 clk T2S /(No prescaling)
     0 1 0 clk T2S /8 (From prescaler)      2000000 intr/sec at 1 downcount
@@ -1076,6 +1063,7 @@ k_start (int tm)
     1 1 0 clk T 2 S /256 (From prescaler)    62500
     1 1 1 clk T 2 S /1024 (From prescaler)   15625  eq 15.625 count down for 1 millisec so 255 counts ~= 80.32 milli sec timer
 
+    1280, 2560,2561 has same prescaler config :
     FOR 16 bits !
     prescaler in cs2 cs1 cs0
     0   0   0   none
@@ -1084,47 +1072,49 @@ k_start (int tm)
     0   1   1   /64     250000 intr/sec 
     1   0   0   /256     62500 intr/sec 
     1   0   1   /1024    15625 intr/sec 
-    16MHz Arduino -> 16000000/1024 =  15625 intr/second
+    16MHz Arduino -> 16000000/1024 =  15625 intr/second at one count
     16MHz Arduino -> 16000000/256  =  62500 ticks/second
     -------------------------/64   = 250000 ticks/second !
 
     NB 16 bit counter so values >= 65535 is not working
+    ***************************************************************************************/
 
-    01msec timer /64 + 250
-    10msec timer /64 + 2500
-    100msec timer /64 + 25000
-    */
- //   TCNTx = tcntValue; // count value
-    TIMSKx |= (1 << TOIEx); // enable interrupt
-#endif // NEVER
+    // will not start if errors during initialization
+    if (k_err_cnt)
+        return -k_err_cnt;		
 
-#if  (KRNLTMR == 2)
-     //TCCR2A &= ~((1 << WGM21) | (1 << WGM20)); // Configure timer2 in normal mode (pure counting, no PWM etc.)
-    //TIMSK2 &= ~(1 << OCIE2A); // Disable Compare Match A interrupt enable (only want overflow)
-    //  TIMSK2 = 0x01; //HACK ? ...    fakecnt = fakecnt_preset = 0; 
-
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
-    TCCRxB |= 0x07; // atm328s 
-#else
-    TCCRxB = 0x05; // megas
-#endif
-
-    tcntValue = 256 - tm*DIV8;
-    TCNTx = tcntValue; 
-      
-    // if not 8 bit timer its a 16 bit timer
-    #elif (KRNLTMR == 1) || (KRNLTMR == 3 ) || (KRNLTMR == 4 )|| (KRNLTMR == 5 )
+    // boundary check
+    if (tm <= 0)
+        return -999;
+    else if (10 >= tm) {
     fakecnt = fakecnt_preset=0; // on duty for every interrupt
-    TCCRxA = 0;
-    TCCRxB = 0x03; // /64 prescaler 1 sec == 250000 counts
-    tcntValue = 65536 - tm*DIV16;	// Finally load end enable the timer
-    TCNTx = tcntValue; // count value
+    }
+    else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
+        fakecnt_preset = fakecnt = tm/10;
+        tm = 10; 
+    }
+    else {
+      return -888;
+    }
+           
+    DI (); // silencio
+
+#if defined(__AVR_ATmega32U4__)
+    // 32u4 have no intern/extern clock source register
+#else
+   // should be default ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
 #endif
+ 
+    TCCRxA = 0;
+    TCCRxB = PRESCALE; // atm328s  2560,...    
+
+    tcntValue = COUNTMAX  - tm*DIVV; // dont use DIV16 bq we want same error on small as big mega's
+    TCNTx = tcntValue; 
+
 
     //  let us start the show
     TIMSKx |= (1 << TOIEx); // enable interrupt
-
-
+ 
     pRun = &main_el;		// just for ki_task_shift
     k_running = 1;
 
