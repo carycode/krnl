@@ -19,8 +19,8 @@ Some highlights
 
 - open source (beer license)
 - well suited for teaching
--- easy to read and understand source
--- priority to straight code instead insane optimization(which will make it nearly unreadable)
+- - easy to read and understand source
+- - priority to straight code instead insane optimization(which will make it nearly unreadable)
 
 - well suited for serious duties - but with no warranty what so ever - only use it at own risk !!!
 
