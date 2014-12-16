@@ -19,35 +19,35 @@ Some highlights
 
 - open source (beer license)
 - well suited for teaching
-- - easy to read and understand source
-- - priority to straight code instead insane optimization(which will make it nearly unreadable)
+ - easy to read and understand source
+ - priority to straight code instead insane optimization(which will make it nearly unreadable)
 
 - well suited for serious duties - but with no warranty what so ever - only use it at own risk !!!
 
 - easy to use
-- - just import library krnl and you are ready
+ - just import library krnl and you are ready
 
 - automatic recognition of Arduino architeture
-- - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
+ - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
 Some characteristics:
 
 - preemptive scheduling 
-- - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
-- - static priority scheme
-- support task, semaphores, message queues
-- - All elements shall be allocated prior to start of KRNL
+ - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
+ - static priority scheme
+-  support task, semaphores, message queues
+ - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
 - timers
-- - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
-- - For timer 0 you should take care of millis and it will require some modifications in arduino lib
-- - see krnl.h for implications (like 
+ - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
+ - For timer 0 you should take care of millis and it will require some modifications in arduino lib
+ - see krnl.h for implications (like 
 
 - Accuracy
-- - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
-- - - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
-- - 16 bit timers count down is 1 millisecond for 62.5 count
-- - - example 10 msec ~ 625 countdown == precise :-)
+ - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
+   - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
+ - 16 bit timers count down is 1 millisecond for 62.5 count
+ - - example 10 msec ~ 625 countdown == precise :-)
 
 See in krnl.h for information like ...
 
