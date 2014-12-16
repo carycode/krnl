@@ -56,7 +56,22 @@ Timer0:
 -  If you change Timer0 registers, this may influence the Arduino timer function.
 - So you should know what you are doing.
 
-Timer1:
+Timer1:#include <krnl.h>
+// one task loops and blink
+// k_sleep is used for delay - and ensure no busy waiting
+// if delay(...) is used then you use cpu time 
+
+struct k_t *p;
+char stak[100];
+
+void t1()
+{
+  while (1) {
+
+    k_sleep(500);
+    digitalWrite(13,HIGH);
+
+    k_sleep(500);
 - Timer1 is a 16bit timer.
 - In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
 
@@ -109,7 +124,7 @@ SO BEWARE !!!
 
 
 // which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 and if its a Mega
-#define KRNLTMR 2
+#define KRNLTMR 1
 
 
 // CPU frequency - for adjusting delays
@@ -121,8 +136,7 @@ SO BEWARE !!!
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
+ 
 // if you are using k_mutex with prio inheritance
 // #define MUTEX
 // for guessing on architecture ...

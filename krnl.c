@@ -47,10 +47,10 @@
 
 
 #if (MHZ == F16)
-#define DIVV 15.625
+#define SCL 1 
 #elif (MHZ == F08)
-#define DIVV   7.812
- #endif
+#define SCL  0.5
+#endif
 
 #if (KRNLTMR == 0)
 // normally not goood bq of arduino sys timer so you wil get a compile error
@@ -65,6 +65,7 @@
 #define TOIEx TOIE0
 #define PRESCALE 0x07
 #define COUNTMAX 255
+#define DIVV 15.625
 
 #elif (KRNLTMR == 1)
 
@@ -76,8 +77,9 @@
 #define OCRxA OCR1A
 #define TIMSKx TIMSK1
 #define TOIEx TOIE1
-#define PRESCALE 0x05
+#define PRESCALE 0x04
 #define COUNTMAX 65535
+#define DIVV 62.5
  
 #elif (KRNLTMR == 2)
 
@@ -92,6 +94,7 @@
 #define TOIEx TOIE2
 #define PRESCALE 0x07
 #define COUNTMAX 255
+#define DIVV 15.625
 
 #elif (KRNLTMR == 3)
 
@@ -103,8 +106,9 @@
 #define OCRxA OCR3A
 #define TIMSKx TIMSK3
 #define TOIEx TOIE3
-#define PRESCALE 0x05
+#define PRESCALE 0x04
 #define COUNTMAX 65535
+#define DIVV 62.5
 
 #elif (KRNLTMR == 4)
 
@@ -116,8 +120,9 @@
 #define OCRxA OCR4A
 #define TIMSKx TIMSK4
 #define TOIEx TOIE4
-#define PRESCALE 0x05
+#define PRESCALE 0x04
 #define COUNTMAX 65535
+#define DIVV 62.5
 
 #elif (KRNLTMR == 5)
 
@@ -129,8 +134,9 @@
 #define OCRxA OCR5A
 #define TIMSKx TIMSK5
 #define TOIEx TOIE5
-#define PRESCALE 0x05
+#define PRESCALE 0x04
 #define COUNTMAX 65535
+#define DIVV 62.5
 
 #else
 #pragma err "no valid tmr selected"
@@ -1051,8 +1057,8 @@ k_start (int tm)
 {
 
 /*  
- 48,88,168,328
- timer 0, 1 and 2 has same prescaler config:
+ 48,88,168,328, 1280,2560
+ timer 0 and 2 has same prescaler config:
  
     0 0 0 No clock source (Timer/Counter stopped).
     0 0 1 clk T2S /(No prescaling)
@@ -1063,6 +1069,7 @@ k_start (int tm)
     1 1 0 clk T 2 S /256 (From prescaler)    62500
     1 1 1 clk T 2 S /1024 (From prescaler)   15625  eq 15.625 count down for 1 millisec so 255 counts ~= 80.32 milli sec timer
 
+timer 1(328+megas), 3,4,5(megas only)
     1280, 2560,2561 has same prescaler config :
     FOR 16 bits !
     prescaler in cs2 cs1 cs0
@@ -1108,9 +1115,8 @@ k_start (int tm)
     TCCRxA = 0;
     TCCRxB = PRESCALE; // atm328s  2560,...    
 
-    tcntValue = COUNTMAX  - tm*DIVV; // dont use DIV16 bq we want same error on small as big mega's
+    tcntValue = COUNTMAX  - SCL*tm*DIVV; // SCL fo 8 MHz versions
     TCNTx = tcntValue; 
-
 
     //  let us start the show
     TIMSKx |= (1 << TOIEx); // enable interrupt
