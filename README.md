@@ -9,9 +9,9 @@ for the Arduino platform - but is also portable to other platforms
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
 - Now doxygen docu at html directory :-)
 - See krnl.h for further comments
--- timers
--- 8/16 MHz setting
--- etc
+- - timers
+- - 8/16 MHz setting
+- - etc
 
 
 Some highlights
@@ -25,29 +25,29 @@ Some highlights
 - well suited for serious duties - but with no warranty what so ever - only use it at own risk !!!
 
 - easy to use
--- just import library krnl and you are ready
+- - just import library krnl and you are ready
 
 - automatic recognition of Arduino architeture
--- supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
+- - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
 Some characteristics:
 
 - preemptive scheduling 
--- Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
--- static priority scheme
+- - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
+- - static priority scheme
 - support task, semaphores, message queues
--- All elements shall be allocated prior to start of KRNL
+- - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
 - timers
--- krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
--- For timer 0 you should take care of millis and it will require some modifications in arduino lib
--- see krnl.h for implications (like 
+- - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
+- - For timer 0 you should take care of millis and it will require some modifications in arduino lib
+- - see krnl.h for implications (like 
 
 - Accuracy
--- 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
---- example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
--- 16 bit timers count down is 1 millisecond for 62.5 count
---- example 10 msec ~ 625 countdown == precise :-)
+- - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
+- - - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
+- - 16 bit timers count down is 1 millisecond for 62.5 count
+- - - example 10 msec ~ 625 countdown == precise :-)
 
 See in krnl.h for information like ...
 
@@ -64,7 +64,7 @@ Timer1:
 
 Timer2:
 - Timer2 is a 8bit timer like Timer0.
- -In the Arduino work the tone() function uses Timer2.
+- In the Arduino work the tone() function uses Timer2.
 
 Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
@@ -93,20 +93,20 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 ... from http://arduino-info.wikispaces.com/Timers-Arduino
 
 - Servo Library uses Timer1. 
---  You can’t use PWM on Pin 9, 10 when you use the Servo Library on an Arduino. 
---  For Arduino Mega it is a bit more difficult. The timer needed depends on the number of servos. 
---  Each timer can handle 12 servos. 
---  For the first 12 servos timer 5 will be used (losing PWM on Pin 44,45,46). 
---  For 24 Servos timer 5 and 1 will be used (losing PWM on Pin 11,12,44,45,46).. 
---  For 36 servos timer 5, 1 and 3 will be used (losing PWM on Pin 2,3,5,11,12,44,45,46).. 
---  For 48 servos all 16bit timers 5,1,3 and 4 will be used (losing all PWM pins).
+- -  You can’t use PWM on Pin 9, 10 when you use the Servo Library on an Arduino. 
+- -  For Arduino Mega it is a bit more difficult. The timer needed depends on the number of servos. 
+- -  Each timer can handle 12 servos. 
+- -  For the first 12 servos timer 5 will be used (losing PWM on Pin 44,45,46). 
+- -  For 24 Servos timer 5 and 1 will be used (losing PWM on Pin 11,12,44,45,46).. 
+- -  For 36 servos timer 5, 1 and 3 will be used (losing PWM on Pin 2,3,5,11,12,44,45,46).. 
+- -  For 48 servos all 16bit timers 5,1,3 and 4 will be used (losing all PWM pins).
 
 - Pin 11 has shared functionality PWM and MOSI. 
---  MOSI is needed for the SPI interface, You can’t use PWM on Pin 11 and the SPI interface at the same time on Arduino. 
---  On the Arduino Mega the SPI pins are on different pins.
+- -  MOSI is needed for the SPI interface, You can’t use PWM on Pin 11 and the SPI interface at the same time on Arduino. 
+- -  On the Arduino Mega the SPI pins are on different pins.
 
 - tone() function uses at least timer2. 
---  You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
+- -  You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
 
 (c)
 * "THE BEER-WARE LICENSE" (frit efter PHK)           *
