@@ -47,7 +47,7 @@
 
 
 #if (MHZ == F16)
-#define SCL 1 
+#define SCL 1
 #elif (MHZ == F08)
 #define SCL  0.5
 #endif
@@ -80,7 +80,7 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
- 
+
 #elif (KRNLTMR == 2)
 
 // 8 bit timer !!!
@@ -184,13 +184,13 @@ char k_eat_time(unsigned int eatTime)
     // quants in milli seconds
     // not 100% precise !!!
     l = eatTime;
-    #if (MHZ == F16)
+#if (MHZ == F16)
     l *=1323;
-    #elif (MHZ == F08)
+#elif (MHZ == F08)
     l *=661;
-    #else
-    #error bad cpu frequency
-    #endif
+#else
+#error bad cpu frequency
+#endif
 
     while (l--) {
         asm("nop \n\t nop \n\t nop \n\t nop \n\t nop \n\t nop");
@@ -237,7 +237,7 @@ prio_enQ (struct k_t *Q, struct k_t *el)
     Q->pred->next = el;
     Q->pred = el;
 }
- 
+
 //---HW timer IRS-------------------------------------------------------------
 //------------timer section---------------------------------------------------
 /*
@@ -327,13 +327,9 @@ exitt:
 
 void __attribute__ ((naked, noinline)) ki_task_shift (void)
 {
-
     PUSHREGS ();		        // push task regs on stak so we are rdy to task shift
-
     K_CHG_STAK();
-
     POPREGS ();			        // restore regs
-
     RETI ();			          // and do a reti NB this also enables interrupt !!!
 }
 
@@ -424,7 +420,6 @@ freeRam (void)
 
     return ((int) &v -
             (__brkval == 0 ? (int) &__heap_start : (int) __brkval));
-
 }
 
 //----------------------------------------------------------------------------
@@ -694,7 +689,7 @@ ki_semval (struct k_t *sem)
 
     return (i);
 }
- 
+
 //----------------------------------------------------------------------------
 
 char
@@ -936,71 +931,69 @@ int
 k_start (int tm)
 {
 
-/*  
- 48,88,168,328, 1280,2560
- timer 0 and 2 has same prescaler config:
- 
-    0 0 0 No clock source (Timer/Counter stopped).
-    0 0 1 clk T2S /(No prescaling)
-    0 1 0 clk T2S /8 (From prescaler)      2000000 intr/sec at 1 downcount
-    0 1 1 clk T2S /32 (From prescaler)      500000 intr/sec ...
-    1 0 0 clk T2S /64 (From prescaler)      250000
-    1 0 1 clk T2S /128 (From prescaler)     125000
-    1 1 0 clk T 2 S /256 (From prescaler)    62500
-    1 1 1 clk T 2 S /1024 (From prescaler)   15625  eq 15.625 count down for 1 millisec so 255 counts ~= 80.32 milli sec timer
+    /*
+     48,88,168,328, 1280,2560
+     timer 0 and 2 has same prescaler config:
 
-timer 1(328+megas), 3,4,5(megas only)
-    1280, 2560,2561 has same prescaler config :
-    FOR 16 bits !
-    prescaler in cs2 cs1 cs0
-    0   0   0   none
-    0   0   1   /1 == none
-    0   1   0   /8     2000000 intr/sec 
-    0   1   1   /64     250000 intr/sec 
-    1   0   0   /256     62500 intr/sec 
-    1   0   1   /1024    15625 intr/sec 
-    16MHz Arduino -> 16000000/1024 =  15625 intr/second at one count
-    16MHz Arduino -> 16000000/256  =  62500 ticks/second
-    -------------------------/64   = 250000 ticks/second !
+        0 0 0 No clock source (Timer/Counter stopped).
+        0 0 1 clk T2S /(No prescaling)
+        0 1 0 clk T2S /8 (From prescaler)      2000000 intr/sec at 1 downcount
+        0 1 1 clk T2S /32 (From prescaler)      500000 intr/sec ...
+        1 0 0 clk T2S /64 (From prescaler)      250000
+        1 0 1 clk T2S /128 (From prescaler)     125000
+        1 1 0 clk T 2 S /256 (From prescaler)    62500
+        1 1 1 clk T 2 S /1024 (From prescaler)   15625  eq 15.625 count down for 1 millisec so 255 counts ~= 80.32 milli sec timer
 
-    NB 16 bit counter so values >= 65535 is not working
-    ***************************************************************************************/
+    timer 1(328+megas), 3,4,5(megas only)
+        1280, 2560,2561 has same prescaler config :
+        FOR 16 bits !
+        prescaler in cs2 cs1 cs0
+        0   0   0   none
+        0   0   1   /1 == none
+        0   1   0   /8     2000000 intr/sec
+        0   1   1   /64     250000 intr/sec
+        1   0   0   /256     62500 intr/sec
+        1   0   1   /1024    15625 intr/sec
+        16MHz Arduino -> 16000000/1024 =  15625 intr/second at one count
+        16MHz Arduino -> 16000000/256  =  62500 ticks/second
+        -------------------------/64   = 250000 ticks/second !
+
+        NB 16 bit counter so values >= 65535 is not working
+        ***************************************************************************************/
 
     // will not start if errors during initialization
     if (k_err_cnt)
-        return -k_err_cnt;		
+        return -k_err_cnt;
 
     // boundary check
     if (tm <= 0)
         return -999;
     else if (10 >= tm) {
-    fakecnt = fakecnt_preset=0; // on duty for every interrupt
-    }
-    else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
+        fakecnt = fakecnt_preset=0; // on duty for every interrupt
+    } else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
         fakecnt_preset = fakecnt = tm/10;
-        tm = 10; 
+        tm = 10;
+    } else {
+        return -888;
     }
-    else {
-      return -888;
-    }
-           
+
     DI (); // silencio
 
 #if defined(__AVR_ATmega32U4__)
     // 32u4 have no intern/extern clock source register
 #else
-   // should be default ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
+    // should be default ASSR &= ~(1 << AS2);	// Select clock source: internal I/O clock 32u4 does not have this facility
 #endif
- 
+
     TCCRxA = 0;
-    TCCRxB = PRESCALE; // atm328s  2560,...    
+    TCCRxB = PRESCALE; // atm328s  2560,...
 
     tcntValue = COUNTMAX  - SCL*tm*DIVV; // SCL fo 8 MHz versions
-    TCNTx = tcntValue; 
+    TCNTx = tcntValue;
 
     //  let us start the show
     TIMSKx |= (1 << TOIEx); // enable interrupt
- 
+
     pRun = &main_el;		// just for ki_task_shift
     k_running = 1;
 
