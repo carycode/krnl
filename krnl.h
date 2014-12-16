@@ -596,35 +596,6 @@ int ki_wait(struct k_t * sem, int timeout);
 */
 int ki_semval(struct k_t * sem);
 
-#ifdef MUTEX
-/**
-* Priority inheritance based wait on semaphore for mutex use
-* It is  advised only to access one mutex at time. Inheritance protocol is not designed for more than one mutex.
-* @param[in] sem semaphore handle
-* @return 0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ...
-* @remark only to be called after start of KRNL
-*/
-char k_mutex_entry(struct k_t * sem, int timeout);
-
-/**
-* Priority inheritance based signal on semaphore for mutex use
-* It is  advised only to access one mutex at time. Inheritance protocol is not designed for more than one mutex.
-* @param[in] sem semaphore handle
-* @remark only to be called after start of KRNL
-*/
-
-char k_mutex_leave(struct k_t * sem);
-
-/**
-* Creates a circular message buffer with elements of equal size.
-* @param[in] nr_el Number of elements in the ringbuffer
-* @param[in] el_size Size of each element in bytes
-* @param[in] pBuf Pointer to memory for holding the buffer (size nr_el*el_size). Caller has to come with the memory for the buffer.
-* @return Reference to message buffer or NULL if if was not possible to create the buffer.
-* @remark only to be called after start of KRNL
-*/
-
-#endif
 struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf);
 
 /**

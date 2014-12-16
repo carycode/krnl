@@ -237,23 +237,7 @@ prio_enQ (struct k_t *Q, struct k_t *el)
     Q->pred->next = el;
     Q->pred = el;
 }
-
-//----------------------------------------------------------------------------
-
-void
-chg_Q_pos (struct k_t *el)
-{
-// not mature
-#ifdef PRIOINHERITANCE
-    struct k_t *q;
-
-    q = el->next;
-    while (q->prio < QHD_PRIO)	// lets find Q head
-        q = q->next;
-    prio_enQ (q, el);  // resinsert
-#endif
-}
-
+ 
 //---HW timer IRS-------------------------------------------------------------
 //------------timer section---------------------------------------------------
 /*
@@ -710,111 +694,7 @@ ki_semval (struct k_t *sem)
 
     return (i);
 }
-
-//----------------------------------------------------------------------------
-#ifdef PRIOINHERITANCE
-
-MUTEX_ENTER
-banke på
-UD-error?: har du allerede en mux så ud igen
-ledig ?
-UD_ok:
-i kø (fifo ?!)
-Aktiv i mutex prio lavere end din ? så giv ham din og det samme foran dig i mutexQ
-ZZZZZ
-
-UD_ok
-
-
-MUTEX_LEAVE:
-hvis min prio ikke er org prio så revert til org og prioenQ i AQ
-start forreste hvis der er en
-reschedule
-UD
-
-NOT TESTED !!!  /Jens
-char
-k_mutex_entry (struct k_t *sem, int timeout)
-{
-
-    // copy of ki_wait just with EI()'s before leaving
-    DI ();
-
-    if (0 < sem->cnt1) {
-        //    lucky that we do not need to wait ?
-        sem->cnt1--;		// Salute to Dijkstra
-        sem->elm = pRun;	// I do own mutex now
-        EI ();
-        return (0);
-    }
-
-    if (timeout == -1) {
-        // no luck, dont want to wait so bye bye
-        EI ();
-        return (-2);
-    }
-
-    // from here we want to wait
-    pRun->cnt2 = timeout;	// if 0 then wait forever
-
-    if (timeout)
-        pRun->cnt3 = (int) sem;	// nasty keep ref to semaphore,
-    //  so we can be removed if timeout occurs
-    sem->cnt1--;		// Salute to Dijkstra
-
-    prio_enQ (sem, deQ (pRun));	// NBNB priority based Q
-    if (sem->next == pRun) {
-        // I am in front so push priority for mutex owner
-        sem->elm->prio = pRun->prio;
-        chg_Q_pos (sem->elm);
-    }
-    ki_task_shift ();		// call enables interrupt on return
-
-    // timeout ?
-    if (pRun->cnt2) {
-        // yes - if I was in front of Q then
-        if (sem->next != sem) {
-            // readjust mutex owners prioriy down
-            if (sem->elm->prio < sem->next->prio) {
-                sem->elm->prio = sem->next->prio;
-                chg_Q_pos (sem->elm);	// move around in AQ
-            }
-        }
-    } else {
-        // now I am owner
-        sem->elm = pRun;
-    }
-
-    EI ();
-
-    return (char) (pRun->cnt2);	// 0: ok, -1: timeout
-}
-
-//----------------------------------------------------------------------------
-
-char
-k_mutex_leave (struct k_t *sem)
-{
-    volatile char res;
-
-    DI ();
-
-    pRun->prio = (char) (pRun->maxv);	// back to org prio
-    prio_enQ (pAQ, deQ (pRun));	// chg pos in AQ acc to prio
-
-    res = ki_signal (sem);
-
-    if (res == 0)
-        ki_task_shift ();
-
-    EI ();
-
-    return (res);
-}
-
-//----------------------------------------------------------------------------
-#endif // PRIOINHERITANCE
-
+ 
 //----------------------------------------------------------------------------
 
 char
