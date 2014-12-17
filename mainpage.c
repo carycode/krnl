@@ -68,6 +68,7 @@ KRNL itself uses approx 190B before allocating task/sem/msgQ descriptors
 If any call fails (like no more RAM or bad parameters) KRNL will not start but will return an error code in k_start
 - int k_init(int nrTask, int nrSem, int nrMsg);
 - int k_start(int tm); // tm in milliseconds
+- int k_stop(int exitVal); // exitVal that will be returned by k_start to main starter
 
 \section a4 Creation calls - before k_start
 \subsection a41 Semaphore
