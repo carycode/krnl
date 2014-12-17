@@ -15,6 +15,7 @@ var searchData=
   ['k_5fround_5frobbin',['k_round_robbin',['../krnl_8c.html#a9b36880ab6632f7533f77dbbe3119dd5',1,'krnl.c']]],
   ['k_5frunning',['k_running',['../krnl_8c.html#a5cd13e276eb8b12ec888845f354e159c',1,'k_running():&#160;krnl.c'],['../krnl_8h.html#a5cd13e276eb8b12ec888845f354e159c',1,'k_running():&#160;krnl.c']]],
   ['k_5fsem',['k_sem',['../krnl_8c.html#a3612c72062520ffab60364b0d956e431',1,'k_sem():&#160;krnl.c'],['../krnl_8h.html#a3612c72062520ffab60364b0d956e431',1,'k_sem():&#160;krnl.c']]],
+  ['k_5fsem_5fsignals_5flost',['k_sem_signals_lost',['../krnl_8c.html#aba6630458cb65380757b92a0dcc85f85',1,'k_sem_signals_lost(struct k_t *sem):&#160;krnl.c'],['../krnl_8h.html#aba6630458cb65380757b92a0dcc85f85',1,'k_sem_signals_lost(struct k_t *sem):&#160;krnl.c']]],
   ['k_5fsend',['k_send',['../krnl_8c.html#aad1cd26ac0560fb40b088b229c07f7a3',1,'k_send(struct k_msg_t *pB, void *el):&#160;krnl.c'],['../krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3',1,'k_send(struct k_msg_t *pB, void *el):&#160;krnl.c']]],
   ['k_5fset_5fprio',['k_set_prio',['../krnl_8c.html#a77ca854c9aa048f21a82d7a9b3e7c070',1,'k_set_prio(char prio):&#160;krnl.c'],['../krnl_8h.html#a77ca854c9aa048f21a82d7a9b3e7c070',1,'k_set_prio(char prio):&#160;krnl.c']]],
   ['k_5fset_5fsem_5ftimer',['k_set_sem_timer',['../krnl_8c.html#aa6aa0c34f3e3b21e906a765498ee02b2',1,'k_set_sem_timer(struct k_t *sem, int val):&#160;krnl.c'],['../krnl_8h.html#aa6aa0c34f3e3b21e906a765498ee02b2',1,'k_set_sem_timer(struct k_t *sem, int val):&#160;krnl.c']]],

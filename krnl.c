@@ -675,6 +675,17 @@ k_wait_lost (struct k_t *sem, int timeout, int *lost)
 }
 
 //----------------------------------------------------------------------------
+int
+k_sem_signals_lost (struct k_t *sem)
+{
+int x;
+    DI();
+    x = sem->clip;
+    EI();
+    return x;
+}
+
+//----------------------------------------------------------------------------
 
 int
 ki_semval (struct k_t *sem)

@@ -569,6 +569,17 @@ int k_wait(struct k_t * sem, int timeout);
 */
 int k_wait_lost(struct k_t * sem, int timeout, int *lost);
 
+
+/**
+* Returns how many signals has been lost on semaphore due to saturation
+* @param[in] sem semaphore handle
+* @return nr of signals lost
+* @remark only to be called after start of KRNL
+*/
+int
+k_sem_signals_lost (struct k_t *sem);
+
+
 /**
 * Do a wait if no blocking will occur.
 * @param[in] sem semaphore handle

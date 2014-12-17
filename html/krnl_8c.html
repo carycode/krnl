@@ -189,6 +189,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7f65c7a1cbda113524b3009faf639357"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74756a33d34544159e50f335cb7ed9af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="krnl_8c.html#a74756a33d34544159e50f335cb7ed9af">k_wait_lost</a> (struct <a class="el" href="structk__t.html">k_t</a> *sem, int timeout, int *lost)</td></tr>
 <tr class="separator:a74756a33d34544159e50f335cb7ed9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba6630458cb65380757b92a0dcc85f85"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="krnl_8c.html#aba6630458cb65380757b92a0dcc85f85">k_sem_signals_lost</a> (struct <a class="el" href="structk__t.html">k_t</a> *sem)</td></tr>
+<tr class="separator:aba6630458cb65380757b92a0dcc85f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a306bc3e4b53fc2f608e5945f20cf9ea5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="krnl_8c.html#a306bc3e4b53fc2f608e5945f20cf9ea5">ki_semval</a> (struct <a class="el" href="structk__t.html">k_t</a> *sem)</td></tr>
 <tr class="separator:a306bc3e4b53fc2f608e5945f20cf9ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f0e5da0dbd3154fa3b69e3e2e650bed"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="krnl_8c.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send</a> (struct <a class="el" href="structk__msg__t.html">k_msg_t</a> *pB, void *el)</td></tr>
@@ -278,7 +280,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00081">81</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -294,7 +296,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00082">82</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -338,7 +340,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00080">80</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -354,7 +356,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00050">50</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -370,7 +372,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00074">74</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -386,7 +388,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00075">75</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -402,7 +404,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00076">76</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, and <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, and <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -432,7 +434,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00078">78</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01008">k_stop()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01019">k_stop()</a>.</p>
 
 </div>
 </div>
@@ -448,7 +450,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00079">79</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01008">k_stop()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01019">k_stop()</a>.</p>
 
 </div>
 </div>
@@ -491,7 +493,7 @@ Variables</h2></td></tr>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, and <a class="el" href="krnl_8h_source.html#l00198">k_t::pred</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00866">k_round_robbin()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, <a class="el" href="krnl_8c_source.html#l00631">k_wait()</a>, <a class="el" href="krnl_8c_source.html#l00542">ki_signal()</a>, and <a class="el" href="krnl_8c_source.html#l00598">ki_wait()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00877">k_round_robbin()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, <a class="el" href="krnl_8c_source.html#l00631">k_wait()</a>, <a class="el" href="krnl_8c_source.html#l00542">ki_signal()</a>, and <a class="el" href="krnl_8c_source.html#l00598">ki_wait()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -518,9 +520,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00888">888</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00899">899</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -647,7 +649,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Initialise blink on pin 13 ON when dummy is running Nov 2014 - fake do not use it bq it will not work </p>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00880">880</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00891">891</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 </div>
 </div>
@@ -689,7 +691,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::clip</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt2</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8c_source.html#l00161">k_sem</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::maxv</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, <a class="el" href="krnl_8c_source.html#l00162">nr_sem</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::pred</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::prio</a>, <a class="el" href="krnl_8h_source.html#l00185">QHD_PRIO</a>, and <a class="el" href="krnl_8h_source.html#l00192">SEM_MAX_DEFAULT</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -732,7 +734,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00826">826</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00837">837</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::cnt</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::el_size</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00161">k_msg</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8c_source.html#l00161">k_sem</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::lost_msg</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::nr_el</a>, <a class="el" href="krnl_8c_source.html#l00162">nr_sem</a>, <a class="el" href="krnl_8c_source.html#l00162">nr_send</a>, <a class="el" href="krnl_8h_source.html#l00221">k_msg_t::pBuf</a>, <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::r</a>, <a class="el" href="krnl_8h_source.html#l00218">k_msg_t::sem</a>, and <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::w</a>.</p>
 
@@ -799,7 +801,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt2</a>, <a class="el" href="krnl_8h_source.html#l00186">DMY_PRIO</a>, <a class="el" href="krnl_8h_source.html#l00291">hi8</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8c_source.html#l00161">k_task</a>, <a class="el" href="krnl_8h_source.html#l00290">lo8</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::maxv</a>, <a class="el" href="krnl_8c_source.html#l00162">nr_task</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::prio</a>, <a class="el" href="krnl_8c_source.html#l00225">prio_enQ()</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::sp_hi</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::sp_lo</a>, and <a class="el" href="krnl_8h_source.html#l00189">STAK_HASH</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -879,9 +881,9 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00896">896</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00907">907</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>References <a class="el" href="krnl_8c_source.html#l00149">AQ</a>, <a class="el" href="krnl_8h_source.html#l00186">DMY_PRIO</a>, <a class="el" href="krnl_8c_source.html#l00164">dmy_stk</a>, <a class="el" href="krnl_8h_source.html#l00187">DMY_STK_SZ</a>, <a class="el" href="krnl_8c_source.html#l00888">dummy_task()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00161">k_msg</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8c_source.html#l00161">k_sem</a>, <a class="el" href="krnl_8c_source.html#l00161">k_task</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, <a class="el" href="krnl_8c_source.html#l00149">pAQ</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::pred</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::prio</a>, and <a class="el" href="krnl_8h_source.html#l00185">QHD_PRIO</a>.</p>
+<p>References <a class="el" href="krnl_8c_source.html#l00149">AQ</a>, <a class="el" href="krnl_8h_source.html#l00186">DMY_PRIO</a>, <a class="el" href="krnl_8c_source.html#l00164">dmy_stk</a>, <a class="el" href="krnl_8h_source.html#l00187">DMY_STK_SZ</a>, <a class="el" href="krnl_8c_source.html#l00899">dummy_task()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00161">k_msg</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8c_source.html#l00161">k_sem</a>, <a class="el" href="krnl_8c_source.html#l00161">k_task</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, <a class="el" href="krnl_8c_source.html#l00149">pAQ</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::pred</a>, <a class="el" href="krnl_8h_source.html#l00206">k_t::prio</a>, and <a class="el" href="krnl_8h_source.html#l00185">QHD_PRIO</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -942,7 +944,7 @@ Here is the call graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>0: operation did succed, -1: no data in ringbuffer </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>only to be called after start of KRNL </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00788">788</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00799">799</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::cnt</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::el_size</a>, <a class="el" href="krnl_8c_source.html#l00598">ki_wait()</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::lost_msg</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::nr_el</a>, <a class="el" href="krnl_8h_source.html#l00221">k_msg_t::pBuf</a>, <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::r</a>, and <a class="el" href="krnl_8h_source.html#l00218">k_msg_t::sem</a>.</p>
 
@@ -971,7 +973,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00866">866</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00877">877</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8c_source.html#l00214">deQ()</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>, and <a class="el" href="krnl_8c_source.html#l00225">prio_enQ()</a>.</p>
 
@@ -983,6 +985,35 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="krnl_8c.html#a7ac8496c83319bfc569e4fdab8149940" title="deQ" alt="" coords="200,5,248,32"/><area shape="rect" id="node3" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72" title="ki_task_shift" alt="" coords="174,56,274,83"/><area shape="rect" id="node4" href="krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe" title="prio_enQ" alt="" coords="185,107,263,133"/></map>
 </div>
 </p>
+
+</div>
+</div>
+<a class="anchor" id="aba6630458cb65380757b92a0dcc85f85"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int k_sem_signals_lost </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structk__t.html">k_t</a> *&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns how many signals has been lost on semaphore due to saturation </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>semaphore handle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>nr of signals lost </dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>only to be called after start of KRNL </dd></dl>
+
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00679">679</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+
+<p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::clip</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, and <a class="el" href="krnl_8h_source.html#l00305">EI</a>.</p>
 
 </div>
 </div>
@@ -1022,9 +1053,9 @@ Here is the call graph for this function:</div>
 <dd>
 k_send does not block if no space in buffer. Instead -1 is returned </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00732">732</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00743">743</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>References <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8c_source.html#l00696">ki_send()</a>, and <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>.</p>
+<p>References <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8c_source.html#l00707">ki_send()</a>, and <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1217,7 +1248,7 @@ Here is the call graph for this function:</div>
 <dd>
 KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!! </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00931">931</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00942">942</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8c_source.html#l00081">COUNTMAX</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8c_source.html#l00082">DIVV</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8c_source.html#l00168">fakecnt</a>, <a class="el" href="krnl_8c_source.html#l00168">fakecnt_preset</a>, <a class="el" href="krnl_8c_source.html#l00166">k_err_cnt</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>, <a class="el" href="krnl_8c_source.html#l00149">main_el</a>, <a class="el" href="krnl_8c_source.html#l00080">PRESCALE</a>, <a class="el" href="krnl_8c_source.html#l00050">SCL</a>, <a class="el" href="krnl_8c_source.html#l00074">TCCRxA</a>, <a class="el" href="krnl_8c_source.html#l00075">TCCRxB</a>, <a class="el" href="krnl_8c_source.html#l00167">tcntValue</a>, <a class="el" href="krnl_8c_source.html#l00076">TCNTx</a>, <a class="el" href="krnl_8c_source.html#l00078">TIMSKx</a>, and <a class="el" href="krnl_8c_source.html#l00079">TOIEx</a>.</p>
 
@@ -1256,7 +1287,7 @@ Here is the call graph for this function:</div>
 <dd>
 you will only return from k_stop if krnl is not running </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l01008">1008</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l01019">1019</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00305">EI</a>, <a class="el" href="krnl_8c_source.html#l00166">k_running</a>, <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>, <a class="el" href="krnl_8c_source.html#l00149">main_el</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, <a class="el" href="krnl_8c_source.html#l00078">TIMSKx</a>, and <a class="el" href="krnl_8c_source.html#l00079">TOIEx</a>.</p>
 
@@ -1287,7 +1318,7 @@ Here is the call graph for this function:</div>
 <p>returns which timer is used </p>
 <dl class="section return"><dt>Returns</dt><dd>0,1,2,3,4,5 ... </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l01029">1029</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l01040">1040</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00127">KRNLTMR</a>.</p>
 
@@ -1461,7 +1492,7 @@ only to be called after start of KRNL </dd></dl>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, and <a class="el" href="krnl_8h_source.html#l00304">DI</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00752">ki_receive()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00763">ki_receive()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1517,7 +1548,7 @@ Here is the caller graph for this function:</div>
 <dd>
 only to be called after start of KRNL </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00752">752</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00763">763</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::cnt</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::el_size</a>, <a class="el" href="krnl_8c_source.html#l00583">ki_nowait()</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::lost_msg</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::nr_el</a>, <a class="el" href="krnl_8h_source.html#l00221">k_msg_t::pBuf</a>, <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::r</a>, and <a class="el" href="krnl_8h_source.html#l00218">k_msg_t::sem</a>.</p>
 
@@ -1555,7 +1586,7 @@ Here is the call graph for this function:</div>
 <dl class="section return"><dt>Returns</dt><dd>0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ... </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>only to be called after start of KRNL </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00680">680</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00691">691</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, and <a class="el" href="krnl_8h_source.html#l00304">DI</a>.</p>
 
@@ -1597,11 +1628,11 @@ Here is the call graph for this function:</div>
 <dd>
 only to be called before start of KRNL </dd></dl>
 
-<p>Definition at line <a class="el" href="krnl_8c_source.html#l00696">696</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
+<p>Definition at line <a class="el" href="krnl_8c_source.html#l00707">707</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::cnt</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::el_size</a>, <a class="el" href="krnl_8c_source.html#l00542">ki_signal()</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::lost_msg</a>, <a class="el" href="krnl_8h_source.html#l00223">k_msg_t::nr_el</a>, <a class="el" href="krnl_8h_source.html#l00221">k_msg_t::pBuf</a>, <a class="el" href="krnl_8h_source.html#l00218">k_msg_t::sem</a>, and <a class="el" href="krnl_8h_source.html#l00227">k_msg_t::w</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00732">k_send()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00743">k_send()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1650,7 +1681,7 @@ Here is the caller graph for this function:</div>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::clip</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt2</a>, <a class="el" href="krnl_8c_source.html#l00214">deQ()</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::maxv</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, and <a class="el" href="krnl_8c_source.html#l00225">prio_enQ()</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00564">k_signal()</a>, and <a class="el" href="krnl_8c_source.html#l00696">ki_send()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00564">k_signal()</a>, and <a class="el" href="krnl_8c_source.html#l00707">ki_send()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1712,7 +1743,7 @@ only to be called after start of KRNL </dd></dl>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt1</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt2</a>, <a class="el" href="krnl_8h_source.html#l00210">k_t::cnt3</a>, <a class="el" href="krnl_8c_source.html#l00214">deQ()</a>, <a class="el" href="krnl_8h_source.html#l00304">DI</a>, <a class="el" href="krnl_8c_source.html#l00203">enQ()</a>, and <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift()</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00788">k_receive()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00799">k_receive()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1762,7 +1793,7 @@ Here is the caller graph for this function:</div>
 
 <p>References <a class="el" href="krnl_8h_source.html#l00198">k_t::next</a>, <a class="el" href="krnl_8h_source.html#l00198">k_t::pred</a>, and <a class="el" href="krnl_8h_source.html#l00206">k_t::prio</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00866">k_round_robbin()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, and <a class="el" href="krnl_8c_source.html#l00542">ki_signal()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00877">k_round_robbin()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, and <a class="el" href="krnl_8c_source.html#l00542">ki_signal()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1788,7 +1819,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00149">149</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -1804,7 +1835,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00164">164</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -1820,7 +1851,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00168">168</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="tmr_8c_source.html#l00151">tmrr_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="tmr_8c_source.html#l00151">tmrr_start()</a>.</p>
 
 </div>
 </div>
@@ -1836,7 +1867,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00168">168</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="tmr_8c_source.html#l00151">tmrr_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="tmr_8c_source.html#l00151">tmrr_start()</a>.</p>
 
 </div>
 </div>
@@ -1852,7 +1883,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00166">166</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>, and <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>, and <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -1868,7 +1899,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00161">161</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -1884,7 +1915,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00166">166</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01008">k_stop()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>, <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>, <a class="el" href="krnl_8c_source.html#l00459">k_set_prio()</a>, <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01019">k_stop()</a>.</p>
 
 </div>
 </div>
@@ -1900,7 +1931,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00161">161</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>, and <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -1916,7 +1947,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00161">161</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, and <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00341">k_crt_task()</a>, and <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -1932,7 +1963,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00149">149</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01008">k_stop()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>, and <a class="el" href="krnl_8c_source.html#l01019">k_stop()</a>.</p>
 
 </div>
 </div>
@@ -1948,7 +1979,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00162">162</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, and <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, <a class="el" href="krnl_8c_source.html#l00485">k_crt_sem()</a>, and <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>.</p>
 
 </div>
 </div>
@@ -1964,7 +1995,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00162">162</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00826">k_crt_send_Q()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00837">k_crt_send_Q()</a>.</p>
 
 </div>
 </div>
@@ -1996,7 +2027,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00149">149</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00896">k_init()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00907">k_init()</a>.</p>
 
 </div>
 </div>
@@ -2114,7 +2145,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l00167">167</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
-<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, and <a class="el" href="krnl_8c_source.html#l00931">k_start()</a>.</p>
+<p>Referenced by <a class="el" href="krnl_8c_source.html#l00256">ISR()</a>, and <a class="el" href="krnl_8c_source.html#l00942">k_start()</a>.</p>
 
 </div>
 </div>
@@ -2140,7 +2171,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="krnl_8c.html">krnl.c</a></li>
-    <li class="footer">Generated on Wed Dec 17 2014 09:05:51 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Wed Dec 17 2014 09:18:08 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
