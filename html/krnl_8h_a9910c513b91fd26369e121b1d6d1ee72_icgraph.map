@@ -4,9 +4,10 @@
 <area shape="rect" id="node4" href="$krnl_8h.html#a77ca854c9aa048f21a82d7a9b3e7c070" title="k_set_prio" alt="" coords="171,107,258,133"/>
 <area shape="rect" id="node5" href="$krnl_8h.html#a0c2f743e45400c5d9ac04457b78d3d97" title="k_signal" alt="" coords="178,157,251,184"/>
 <area shape="rect" id="node6" href="$krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb" title="k_start" alt="" coords="181,208,248,235"/>
-<area shape="rect" id="node7" href="$krnl_8h.html#a7f65c7a1cbda113524b3009faf639357" title="k_wait" alt="" coords="184,259,245,285"/>
-<area shape="rect" id="node10" href="$krnl_8h.html#aead12f2e7f6ee98b98bb847c42d5027c" title="ki_wait" alt="" coords="183,309,247,336"/>
-<area shape="rect" id="node8" href="$krnl_8h.html#a56febc95937d41bc48b48b6fdd6f6987" title="k_sleep" alt="" coords="333,208,403,235"/>
-<area shape="rect" id="node9" href="$krnl_8h.html#a74756a33d34544159e50f335cb7ed9af" title="k_wait_lost" alt="" coords="323,259,413,285"/>
-<area shape="rect" id="node11" href="$krnl_8h.html#a3e7f34b848366b08928c72711b6c008a" title="k_receive" alt="" coords="327,309,409,336"/>
+<area shape="rect" id="node7" href="$krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf" title="k_stop" alt="" coords="183,259,247,285"/>
+<area shape="rect" id="node8" href="$krnl_8h.html#a7f65c7a1cbda113524b3009faf639357" title="k_wait" alt="" coords="184,309,245,336"/>
+<area shape="rect" id="node11" href="$krnl_8h.html#aead12f2e7f6ee98b98bb847c42d5027c" title="ki_wait" alt="" coords="183,360,247,387"/>
+<area shape="rect" id="node9" href="$krnl_8h.html#a56febc95937d41bc48b48b6fdd6f6987" title="k_sleep" alt="" coords="333,259,403,285"/>
+<area shape="rect" id="node10" href="$krnl_8h.html#a74756a33d34544159e50f335cb7ed9af" title="k_wait_lost" alt="" coords="323,309,413,336"/>
+<area shape="rect" id="node12" href="$krnl_8h.html#a3e7f34b848366b08928c72711b6c008a" title="k_receive" alt="" coords="327,360,409,387"/>
 </map>

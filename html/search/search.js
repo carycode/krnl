@@ -9,10 +9,10 @@ var indexSectionsWithContent =
 {
   0: "_abcdefhiklmnopqrstw",
   1: "k",
-  2: "km",
-  3: "_cdefikp",
+  2: "kmt",
+  3: "_defikpt",
   4: "abcdefklmnprstw",
-  5: "dehklmopqrst",
+  5: "cdehklmopqrst",
   6: "k"
 };
 

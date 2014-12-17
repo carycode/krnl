@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hi8',['hi8',['../krnl_8h.html#af8e5f886988b0b8a892d49d7d539cdef',1,'krnl.h']]]
+  ['ei',['EI',['../krnl_8h.html#a54322f0fb4209b096e8e3b5864b46875',1,'krnl.h']]]
 ];

@@ -967,14 +967,14 @@ k_start (int tm)
 
     // boundary check
     if (tm <= 0)
-        return -999;
+        return -555;
     else if (10 >= tm) {
         fakecnt = fakecnt_preset=0; // on duty for every interrupt
     } else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
         fakecnt_preset = fakecnt = tm/10;
         tm = 10;
     } else {
-        return -888;
+        return -666;
     }
 
     DI (); // silencio
@@ -1000,10 +1000,31 @@ k_start (int tm)
     DI ();
     ki_task_shift ();		// bye bye from here
     EI ();
-    while (1);			// you will never come here
-    return (0);			// ok you will never come here hmmmm
+
+    return (main_el.cnt1);	// hasp from pocket from kstop
 }
 
+//-------------------------------------------------------------------------------------------
+int k_stop(int exitVal)
+{
+    DI(); // silencio
+    if (!k_running) {
+        EI();
+        return -1;
+    }
+
+    main_el.cnt1 = exitVal; // transfer in pocket
+
+    // stop tick timer isr
+    TIMSKx &= ~(1 << TOIEx);
+
+    // back to main
+    AQ.next = &main_el; // we will be the next
+    ki_task_shift();
+    while (1); // you will never come here
+}
+
+//-------------------------------------------------------------------------------------------
 
 int k_tmrInfo(void)
 {

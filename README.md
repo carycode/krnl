@@ -69,7 +69,6 @@ Timer2:
 Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
 
->>>>>>>>>>>>>>>>>>>>>><
 
 Install from github:
 
@@ -80,11 +79,11 @@ NB NB NB - TIMER HEARTBEAT
  From vrs 1236 you can change which timer to use in krnl.c Just look in top of file for KRNLTMR
  - tested with uno and mega 256
 
-In krnl.c you can configure KRNL to use timer 0,1,2,3,4 or 5. (3,4,5 only for 1280/2560 mega variants)
+In krnl.c you can configure KRNL to use timer (0),1,2,3,4 or 5. (3,4,5 only for 1280/2560 mega variants)
 
 You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 
-- Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros().
+- Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros(). BEWARE
 - Timer1 - A 16 bit timer used by the Servo() library
 - Timer2 - An 8 bit timer used by the Tone() library
 - Timer3,4,5 16 bits

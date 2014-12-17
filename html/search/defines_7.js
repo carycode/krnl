@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['popregs',['POPREGS',['../krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0',1,'krnl.h']]],
-  ['pushregs',['PUSHREGS',['../krnl_8h.html#a3ba7acce9c4a4348a166afaa07981bdc',1,'krnl.h']]]
+  ['ocrxa',['OCRxA',['../krnl_8c.html#a8d7bc6726e0fd85c5873faeb6e4246f9',1,'OCRxA():&#160;krnl.c'],['../tmr_8c.html#a8d7bc6726e0fd85c5873faeb6e4246f9',1,'OCRxA():&#160;tmr.c']]]
 ];

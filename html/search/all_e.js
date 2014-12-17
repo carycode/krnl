@@ -6,6 +6,7 @@ var searchData=
   ['pe',['pE',['../krnl_8c.html#a40fbdb3ae83ed2142131282188c01d88',1,'krnl.c']]],
   ['popregs',['POPREGS',['../krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0',1,'krnl.h']]],
   ['pred',['pred',['../structk__t.html#a600d8611c0af5f63b647ab12d219e0fb',1,'k_t']]],
+  ['prescale',['PRESCALE',['../krnl_8c.html#ab27d12aac1a3a46aed25604d4c00cc18',1,'krnl.c']]],
   ['prio',['prio',['../structk__t.html#a7036cd33ce9a69edcc3cc404adf70e3f',1,'k_t']]],
   ['prio_5fenq',['prio_enQ',['../krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe',1,'krnl.c']]],
   ['prun',['pRun',['../krnl_8c.html#a35d8daf7bc4e2ffe82f95963bcfdf857',1,'pRun():&#160;krnl.c'],['../krnl_8h.html#a35d8daf7bc4e2ffe82f95963bcfdf857',1,'pRun():&#160;krnl.c']]],

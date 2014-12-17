@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['enq',['enQ',['../krnl_8c.html#ab750c904258e717b40c17f55400ca3b2',1,'krnl.c']]]
+  ['freeram',['freeRam',['../krnl_8c.html#abde03a57484eac43bffbad24df5fc794',1,'freeRam(void):&#160;krnl.c'],['../krnl_8h.html#abde03a57484eac43bffbad24df5fc794',1,'freeRam(void):&#160;krnl.c']]]
 ];

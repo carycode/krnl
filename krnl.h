@@ -16,7 +16,7 @@
  * (C) 2012,2013,2014                                 *
  *                                                    *
  * Jens Dalsgaard Nielsen <jdn@es.aau.dk>             *
- * http://es.aau.dk/staff/jdn                         * 
+ * http://es.aau.dk/staff/jdn                         *
  * Section of Automation & Control                    *
  * Aalborg University,                                *
  * Denmark                                            *
@@ -59,7 +59,7 @@ Timer0:
 Timer1:#include <krnl.h>
 // one task loops and blink
 // k_sleep is used for delay - and ensure no busy waiting
-// if delay(...) is used then you use cpu time 
+// if delay(...) is used then you use cpu time
 
 struct k_t *p;
 char stak[100];
@@ -136,7 +136,7 @@ SO BEWARE !!!
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 // if you are using k_mutex with prio inheritance
 // #define MUTEX
 // for guessing on architecture ...
@@ -170,7 +170,7 @@ extern "C" {
 #if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2) &&(KRNLTMR != 3) &&(KRNLTMR != 4) &&(KRNLTMR != 5)
 #error bad timer for krnl heartbeat(1280/2560) - JDN
 #endif
-#endif 
+#endif
 
 // DEBUGGING
 //#define DMYBLINK     // ifdef then led (pin13) will light when dummy is running
@@ -485,7 +485,7 @@ char k_eat_time(unsigned int eatTime);
 * issues a task shift - handle with care
 * Not to be used by normal user
 */
-void ki_task_shift(void) __attribute__ ((naked));
+    void ki_task_shift(void) __attribute__ ((naked));
 
 /**
 * Set task asleep for a number of ticks.
@@ -657,13 +657,6 @@ char ki_receive(struct k_msg_t *pB, void *el, int * lost_msg);
 */
 int k_tmrInfo(void); // tm in milliseconds
 
-/**
-* start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)
-* @param[in] tm Tick length in milli seconds(1..10,20,30..10000
-* @remark only to be called after init of KRNL
-* @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!
-*/
-int k_start(int tm); // tm in milliseconds
 
 /**
 * Initialise KRNL. First function to be called.
@@ -675,9 +668,28 @@ int k_start(int tm); // tm in milliseconds
 int k_init(int nrTask, int nrSem, int nrMsg);
 
 /**
+* start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)
+* @param[in] tm Tick length in milli seconds(1..10,20,30..10000
+* @return  -1-333 nr of k_Crt calls taht went wrong. krnl did not start
+*          -555 negative tick parm value
+*          -666 bad tick quant (legal is 1-10,20,30-10000
+* @remark only to be called after init of KRNL
+* @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!
+*/
+int k_start(int tm); // tm in milliseconds
+
+/**
+* stop KRNL
+* @param[exitVal]  Will be returned in k_start to creator (old main)
+* @remark only to be called after k_start
+* @remark you will only return from k_stop if krnl is not running
+*/
+int k_stop(int exitVal); // tm in milliseconds
+
+/**
 * Initialise blink on pin 13
 * ON when dummy is running
-* NOv 2014 - fake do not use it bq it will not work
+* Nov 2014 - fake do not use it bq it will not work
 */
 void k_bugblink13(char on);
 

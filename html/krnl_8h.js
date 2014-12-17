@@ -36,6 +36,7 @@ var krnl_8h =
     [ "k_sleep", "krnl_8h.html#a56febc95937d41bc48b48b6fdd6f6987", null ],
     [ "k_start", "krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb", null ],
     [ "k_stk_chk", "krnl_8h.html#a290d756b6f6023ccc202155eb0140843", null ],
+    [ "k_stop", "krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf", null ],
     [ "k_tmrInfo", "krnl_8h.html#a3ccf696f0ef7f772a9d339348b6b52e2", null ],
     [ "k_unused_stak", "krnl_8h.html#aab50fd7741fd86d4215ecc6aceb892a3", null ],
     [ "k_wait", "krnl_8h.html#a7f65c7a1cbda113524b3009faf639357", null ],

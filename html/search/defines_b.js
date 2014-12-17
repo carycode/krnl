@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['tccrxa',['TCCRxA',['../krnl_8c.html#aedef1a8b3de29d96e6f2e152ccfe2a26',1,'krnl.c']]],
-  ['tccrxb',['TCCRxB',['../krnl_8c.html#a1898265baad35102ca5d950b41e7dc1a',1,'krnl.c']]],
-  ['tcntx',['TCNTx',['../krnl_8c.html#a6e681752552f535dfb234bf75808e2a1',1,'TCNTx():&#160;krnl.c'],['../krnl_8c.html#a6e681752552f535dfb234bf75808e2a1',1,'TCNTx():&#160;krnl.c']]],
-  ['timskx',['TIMSKx',['../krnl_8c.html#a1e363f21cd8c0e899bbe4d9908466375',1,'krnl.c']]],
-  ['toiex',['TOIEx',['../krnl_8c.html#a6e9792cc10d49106aa9bfac11ab374bc',1,'krnl.c']]]
+  ['scl',['SCL',['../krnl_8c.html#ab5ffc4751921608954bb7a5687566b2d',1,'krnl.c']]],
+  ['sem_5fmax_5fdefault',['SEM_MAX_DEFAULT',['../krnl_8h.html#a1b16bb6a333404e2357226454a592f6e',1,'krnl.h']]],
+  ['stak_5fhash',['STAK_HASH',['../krnl_8h.html#ae0f7f3fba8495af1a0d053fc1806bc09',1,'krnl.h']]]
 ];
