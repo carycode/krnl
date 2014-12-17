@@ -1,0 +1,6 @@
+<map id="k_init" name="k_init">
+<area shape="rect" id="node2" href="$krnl_8c.html#abba3a9f91c100fe8119037d7ff04bd42" title="dummy_task" alt="" coords="110,5,215,32"/>
+<area shape="rect" id="node3" href="$krnl_8c.html#a27f33ac31a1b04e73084d19333e10486" title="k_crt_sem" alt="" coords="119,56,207,83"/>
+<area shape="rect" id="node4" href="$krnl_8c.html#ab0cfe9f72acf96b6f901b1fccf3e723f" title="k_crt_task" alt="" coords="119,107,206,133"/>
+<area shape="rect" id="node5" href="$krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe" title="prio_enQ" alt="" coords="265,107,343,133"/>
+</map>
