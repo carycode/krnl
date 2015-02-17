@@ -3,6 +3,7 @@
 *         based on "snot"                            *
 *                                                    *
 *  June,               2014                          *
+*  Feb                 2015                          *
 *      Author: jdn                                   *
 *                                                    *
 ******************************************************
@@ -37,7 +38,7 @@
 
 #include "krnl.h"
 
-#if (KRNL_VRS != 1237)
+#if (KRNL_VRS != 1238)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
@@ -163,6 +164,7 @@ char nr_task = 0,nr_sem = 0,	nr_send = 0;	// counters for created KeRNeL items
 
 char dmy_stk[DMY_STK_SZ];
 
+volatile char krnl_preempt_flag=1; //1: preempt, 0 : non preempt
 volatile char k_running = 0,	k_err_cnt = 0;
 volatile unsigned int tcntValue;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
@@ -263,7 +265,7 @@ ISR (KRNLTMRVECTOR, ISR_NAKED)
     if (!k_running)  // obvious
         goto exitt;
 
-    fakecnt--;
+    fakecnt--;   // for very slow k_start values bq timer cant run so slow (8 bit timers at least)
     if (0 < fakecnt)		// how often shall we run KeRNeL timer code ?
         goto exitt;
 
@@ -302,9 +304,11 @@ ISR (KRNLTMRVECTOR, ISR_NAKED)
         pE++;
     }
 
-    prio_enQ (pAQ, deQ (pRun));	// round robbin
+    if (krnl_preempt_flag) {
+      prio_enQ (pAQ, deQ (pRun));	// round robbin
 
-    K_CHG_STAK ();
+      K_CHG_STAK ();
+    }
 
 exitt:
     POPREGS ();
@@ -330,7 +334,7 @@ void __attribute__ ((naked, noinline)) ki_task_shift (void)
     PUSHREGS ();		        // push task regs on stak so we are rdy to task shift
     K_CHG_STAK();
     POPREGS ();			        // restore regs
-    RETI ();			          // and do a reti NB this also enables interrupt !!!
+    RETI ();			        // and do a reti NB this also enables interrupt !!!
 }
 
 // HW_DEP_ENDE
@@ -886,7 +890,7 @@ k_round_robbin (void)
     EI ();
 }
 
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------fakecnt-------
 
 void k_bugblink13(char blink)
 {
@@ -1012,12 +1016,14 @@ k_start (int tm)
     ki_task_shift ();		// bye bye from here
     EI ();
 
-    return (main_el.cnt1);	// hasp from pocket from kstop
+    return (main_el.cnt1);	// haps from pocket from kstop
 }
 
 //-------------------------------------------------------------------------------------------
 int k_stop(int exitVal)
 {
+// DANGEROUS - handle with care - no isr timer control etc etc 
+// I WILL NEVER USE IT
     DI(); // silencio
     if (!k_running) {
         EI();
@@ -1040,6 +1046,15 @@ int k_stop(int exitVal)
 int k_tmrInfo(void)
 {
     return (KRNLTMR);
+}
+
+//-------------------------------------------------------------------------------------------
+
+char k_set_preempt(char on)
+{
+   if (on == 0 || on == 1)
+	krnl_preempt_flag = on;
+   return krnl_preempt_flag;
 }
 
 

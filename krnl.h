@@ -36,7 +36,7 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 // remember to update in krnl.c !!!
-#define KRNL_VRS 1237
+#define KRNL_VRS 1238
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -123,7 +123,7 @@ SO BEWARE !!!
 #define KRNL
 
 
-// which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 and if its a Mega
+// which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 if its a Mega
 #define KRNLTMR 1
 
 
@@ -181,6 +181,8 @@ extern "C" {
 extern int k_task;
 extern int k_sem;
 extern int k_msg;
+extern volatile char krnl_preempt_flag;
+
 
 #define QHD_PRIO 100			      // Queue head prio - for sentinel use
 #define DMY_PRIO (QHD_PRIO-2)	  // dummy task prio (0 == highest prio)
@@ -719,9 +721,17 @@ int k_stk_chk(struct k_t *t);
 * @parm t . Ptr to taskdescriptor. If NULL it is yourself
 * @return: amount of unused stak(in bytes)
 * @remark: a watermark philosophy is used
-**/
+**/ 
 int k_unused_stak(struct k_t *t);
 
+
+/**
+* Returns amount of unused stak
+* @parm on : 1: preempt on, 0: off 2: no change 
+* @return: current state: 1 preempt sch. 0 non preempt
+ **/
+char k_set_preempt(char on);
+ 
 /**
 * returns amount of free memory in your system
 */
