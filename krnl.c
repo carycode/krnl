@@ -1057,6 +1057,13 @@ char k_set_preempt(char on)
    return krnl_preempt_flag;
 }
 
+//-------------------------------------------------------------------------------------------
+
+char k_get_preempt(void)
+{
+  return krnl_preempt_flag;
+}
+
 
 
 

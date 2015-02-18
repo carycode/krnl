@@ -726,11 +726,18 @@ int k_unused_stak(struct k_t *t);
 
 
 /**
-* Returns amount of unused stak
+* Set preempt or non preempt
 * @parm on : 1: preempt on, 0: off 2: no change 
 * @return: current state: 1 preempt sch. 0 non preempt
- **/
+**/
 char k_set_preempt(char on);
+
+/**
+* Get preempt or non preempt
+* @return: current state: 1 preempt sch. 0 non preempt
+**/
+char k_get_preempt(void);
+
  
 /**
 * returns amount of free memory in your system
