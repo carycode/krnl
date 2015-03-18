@@ -1,7 +1,7 @@
 /******************************************************
  * krnl.h                                             *
  *                                                    *
- *      June 2014                                     *
+ *      March 2015                                    *
  *      Author: jdn                                   *
  **                                                   *
  ******************************************************
@@ -121,8 +121,7 @@ SO BEWARE !!!
 
 #ifndef KRNL
 #define KRNL
-
-
+ 
 // which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 if its a Mega
 #define KRNLTMR 1
 
@@ -737,7 +736,6 @@ char k_set_preempt(char on);
 * @return: current state: 1 preempt sch. 0 non preempt
 **/
 char k_get_preempt(void);
-
  
 /**
 * returns amount of free memory in your system

@@ -168,7 +168,7 @@ volatile char krnl_preempt_flag=1; //1: preempt, 0 : non preempt
 volatile char k_running = 0,	k_err_cnt = 0;
 volatile unsigned int tcntValue;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
-         fakecnt_preset;
+fakecnt_preset;
 
 int tmr_indx; // for travelling Qs in tmr isr
 
@@ -177,8 +177,8 @@ int tmr_indx; // for travelling Qs in tmr isr
  * just for eating time
  * eatTime in msec's
  */
-char k_eat_time(unsigned int eatTime)
-{
+ char k_eat_time(unsigned int eatTime)
+ {
     unsigned long l;
     // tested on uno for 5 msec and 500 msec
     // if you are preempted then ... :-(
@@ -252,11 +252,11 @@ prio_enQ (struct k_t *Q, struct k_t *el)
  *
  * Timer2 reload value, globally available
  */
-struct k_t *pE;
+ struct k_t *pE;
 
 
-ISR (KRNLTMRVECTOR, ISR_NAKED)
-{
+ ISR (KRNLTMRVECTOR, ISR_NAKED)
+ {
     // no local vars ! I think
     PUSHREGS ();
 
@@ -308,11 +308,11 @@ ISR (KRNLTMRVECTOR, ISR_NAKED)
       prio_enQ (pAQ, deQ (pRun));	// round robbin
 
       K_CHG_STAK ();
-    }
+  }
 
-exitt:
-    POPREGS ();
-    RETI ();
+  exitt:
+  POPREGS ();
+  RETI ();
 }
 
 //----------------------------------------------------------------------------
@@ -350,21 +350,21 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     char *s;
 
     if (k_running)
-        return (NULL);
+        goto badexit;
 
     if ((prio <= 0 ) || (DMY_PRIO < prio)) {
-        pT = NULL;
         goto badexit;
     }
 
-    if (k_task <= nr_task) {
-        goto badexit;
+    if (k_task <= nr_task) { // no vacant elm in buffer
+        goto badexit; 
     }
 
     pT = task_pool + nr_task;	// lets take a task descriptor
     nr_task++;
 
     pT->cnt2 = 0;		// no time out running on you for the time being
+    pT->cnt3 = 0;		// no time out semaphore 
 
     // HW_DEP_START
     // inspiration from http://dev.bertos.org/doxygen/frame_8h_source.html
@@ -377,7 +377,7 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
         pStk[i] = STAK_HASH;
 
     s = pStk + stkSize - 1;	// now we point on top of stak
-    *(s--) = 0x00;		// 1 byte safety distance
+    *(s--) = 0x00;		    // 1 byte safety distance
     *(s--) = lo8 (pTask);	//  so top now holds address of function
     *(s--) = hi8 (pTask);	// which is code body for task
 
@@ -407,14 +407,13 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     pT->maxv = (int) prio;
     prio_enQ (pAQ, pT);		// and put task in active Q
 
-    return (pT);		// shall be index to task descriptor
+    return (pT);
 
-badexit:
+    badexit:
     k_err_cnt++;
-    return (NULL);
+    return(NULL);
 }
 
-//----------------------------------------------------------------------------
 
 int
 freeRam (void)
@@ -423,7 +422,7 @@ freeRam (void)
     int v;
 
     return ((int) &v -
-            (__brkval == 0 ? (int) &__heap_start : (int) __brkval));
+        (__brkval == 0 ? (int) &__heap_start : (int) __brkval));
 }
 
 //----------------------------------------------------------------------------
@@ -516,7 +515,7 @@ k_crt_sem (char init_val, int maxvalue)
     sem->clip = 0;
     return (sem);
 
-badexit:
+    badexit:
     k_err_cnt++;
 
     return (NULL);
@@ -545,7 +544,7 @@ k_set_sem_timer (struct k_t *sem, int val)
 int
 ki_signal (struct k_t *sem)
 {
-
+	DI(); // just in case
     if (sem->maxv <= sem->cnt1) {
         if (32000 > sem->clip)
             sem->clip++;
@@ -593,7 +592,7 @@ ki_nowait (struct k_t *sem)
         sem->cnt1--;		// Salute to Dijkstra
         return (0);
     } else
-        return (-1);
+    return (-1);
 }
 
 //----------------------------------------------------------------------------
@@ -625,7 +624,7 @@ ki_wait (struct k_t *sem, int timeout)
 
     enQ (sem, deQ (pRun));
     ki_task_shift ();		// call enables NOT interrupt on return
-
+ 	pRun->cnt3 = 0; // reset ref to timer semaphores
     return ((char) (pRun->cnt2));	// 0: ok, -1: timeout
 }
 
@@ -635,6 +634,7 @@ int
 k_wait (struct k_t *sem, int timeout)
 {
 
+int retval;
     // copy of ki_wait just with EI()'s before leaving
     DI ();
 
@@ -660,10 +660,11 @@ k_wait (struct k_t *sem, int timeout)
 
     enQ (sem, deQ (pRun));
     ki_task_shift ();		// call enables interrupt on return
-
+    pRun->cnt3 = 0; // reset ref to timer semaphore
+    retval =  pRun->cnt2;
     EI ();
 
-    return (char) (pRun->cnt2);	// 0: ok, -1: timeout
+    return  retval;	// 0: ok, -1: timeout
 }
 
 //----------------------------------------------------------------------------
@@ -682,7 +683,7 @@ k_wait_lost (struct k_t *sem, int timeout, int *lost)
 int
 k_sem_signals_lost (struct k_t *sem)
 {
-int x;
+    int x;
     DI();
     x = sem->clip;
     EI();
@@ -869,7 +870,7 @@ k_crt_send_Q (int nr_el, int el_size, void *pBuf)
 
     return (pMsg);
 
-errexit:
+    errexit:
     k_err_cnt++;
     return (NULL);
 }
@@ -937,7 +938,7 @@ k_init (int nrTask, int nrSem, int nrMsg)
 
     pSleepSem = k_crt_sem (0, 2000);
 
-leave:
+    leave:
     return k_err_cnt;
 }
 
@@ -977,13 +978,13 @@ k_start (int tm)
         ***************************************************************************************/
 
     // will not start if errors during initialization
-    if (k_err_cnt)
-        return -k_err_cnt;
+        if (k_err_cnt)
+            return -k_err_cnt;
 
     // boundary check
-    if (tm <= 0)
-        return -555;
-    else if (10 >= tm) {
+        if (tm <= 0)
+            return -555;
+        else if (10 >= tm) {
         fakecnt = fakecnt_preset=0; // on duty for every interrupt
     } else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
         fakecnt_preset = fakecnt = tm/10;
@@ -1019,7 +1020,6 @@ k_start (int tm)
     return (main_el.cnt1);	// haps from pocket from kstop
 }
 
-//-------------------------------------------------------------------------------------------
 int k_stop(int exitVal)
 {
 // DANGEROUS - handle with care - no isr timer control etc etc 
@@ -1052,9 +1052,9 @@ int k_tmrInfo(void)
 
 char k_set_preempt(char on)
 {
-   if (on == 0 || on == 1)
-	krnl_preempt_flag = on;
-   return krnl_preempt_flag;
+ if (on == 0 || on == 1)
+   krnl_preempt_flag = on;
+return krnl_preempt_flag;
 }
 
 //-------------------------------------------------------------------------------------------
@@ -1065,6 +1065,4 @@ char k_get_preempt(void)
 }
 
 
-
-
-
+/* EOF - JDN */
