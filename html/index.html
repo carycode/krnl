@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div>
 <div class="textblock"><p>this file only for doxygen use</p>
 <p>my own small KeRNeL adapted for Arduino - now known as KRNL (old name was SNOT)</p>
-<p>(C) 2012,2013,2014</p>
+<p>(C) 2012,2013,2014,2015</p>
 <p>Jens Dalsgaard Nielsen <a href="#" onclick="location.href='mai'+'lto:'+'jdn'+'@e'+'s.a'+'au'+'.dk'; return false;">jdn@e<span style="display: none;">.nosp@m.</span>s.aa<span style="display: none;">.nosp@m.</span>u.dk</a> <a href="http://www.control.aau.dk/~jdn">http://www.control.aau.dk/~jdn</a> Section of Automation &amp; Control Aalborg University, Denmark</p>
 <p>"THE BEER-WARE LICENSE" (frit efter PHK) <a href="#" onclick="location.href='mai'+'lto:'+'jdn'+'@e'+'s.a'+'au'+'.dk'; return false;">jdn@e<span style="display: none;">.nosp@m.</span>s.aa<span style="display: none;">.nosp@m.</span>u.dk</a> wrote this file. As long as you retain this notice you can do whatever you want with this stuff. If we meet some day, and you think this stuff is worth it, you can buy me a beer in return :-) or if you are real happy then ... single malt will be well received :-)</p>
 <p>(C) Jens Dalsgaard Nielsen</p>
@@ -160,16 +160,16 @@ Memory usage</h1>
 Initialization</h1>
 <p>If any call fails (like no more RAM or bad parameters) KRNL will not start but will return an error code in k_start</p>
 <ul>
-<li>int <a class="el" href="krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b">k_init(int nrTask, int nrSem, int nrMsg)</a>;</li>
-<li>int <a class="el" href="krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb">k_start(int tm)</a>; // tm in milliseconds</li>
-<li>int <a class="el" href="krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop(int exitVal)</a>; // exitVal that will be returned by k_start to main starter</li>
+<li>int <a class="el" href="krnltst_8c.html#ad939ea35387a46c6c94a096d41c0d18b">k_init(int nrTask, int nrSem, int nrMsg)</a>;</li>
+<li>int <a class="el" href="krnltst_8c.html#abed191616e4e3d1fa684f9ca719715fb">k_start(int tm)</a>; // tm in milliseconds</li>
+<li>int <a class="el" href="krnltst_8c.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop(int exitVal)</a>; // exitVal that will be returned by k_start to main starter</li>
 </ul>
 <h1><a class="anchor" id="a4"></a>
 Creation calls - before k_start</h1>
 <h2><a class="anchor" id="a41"></a>
 Semaphore</h2>
 <ul>
-<li>struct <a class="el" href="structk__t.html">k_t</a> * <a class="el" href="krnl_8h.html#a27f33ac31a1b04e73084d19333e10486">k_crt_sem(char init_val, int maxvalue)</a>; </li>
+<li>struct <a class="el" href="structk__t.html">k_t</a> * <a class="el" href="krnltst_8c.html#a27f33ac31a1b04e73084d19333e10486">k_crt_sem(char init_val, int maxvalue)</a>; </li>
 </ul>
 <h2><a class="anchor" id="a42"></a>
 Task</h2>
@@ -179,60 +179,189 @@ Task</h2>
 <h2><a class="anchor" id="a43"></a>
 Message Queue</h2>
 <ul>
-<li>struct <a class="el" href="structk__msg__t.html">k_msg_t</a> * <a class="el" href="krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q(int nr_el, int el_size, void *pBuf)</a>;</li>
+<li>struct <a class="el" href="structk__msg__t.html">k_msg_t</a> * <a class="el" href="krnltst_8c.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q(int nr_el, int el_size, void *pBuf)</a>;</li>
 </ul>
 <h1><a class="anchor" id="a55"></a>
 Semaphore runtime calls</h1>
 <h2><a class="anchor" id="a5"></a>
 User space</h2>
 <ul>
-<li>char <a class="el" href="krnl_8h.html#aa6aa0c34f3e3b21e906a765498ee02b2">k_set_sem_timer(struct k_t * sem, int val)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a0c2f743e45400c5d9ac04457b78d3d97">k_signal(struct k_t * sem)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a7f65c7a1cbda113524b3009faf639357">k_wait(struct k_t * sem, int timeout)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#aa6aa0c34f3e3b21e906a765498ee02b2">k_set_sem_timer(struct k_t * sem, int val)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a0c2f743e45400c5d9ac04457b78d3d97">k_signal(struct k_t * sem)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a7f65c7a1cbda113524b3009faf639357">k_wait(struct k_t * sem, int timeout)</a>;</li>
 </ul>
 <h2><a class="anchor" id="a51"></a>
 ISR space</h2>
 <p>_i indicates that no lock/unlock(disable/enable) is carried out</p>
 <ul>
-<li>char <a class="el" href="krnl_8h.html#a45c4a121f17683f0cd3593c0ee0bff1b">ki_signal(struct k_t * sem)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a7a1b6eda59951448ab3663c29759e898">ki_nowait(struct k_t * sem)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#aead12f2e7f6ee98b98bb847c42d5027c">ki_wait(struct k_t * sem, int timeout)</a>;</li>
-<li>int <a class="el" href="krnl_8h.html#a306bc3e4b53fc2f608e5945f20cf9ea5">ki_semval(struct k_t * sem)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a45c4a121f17683f0cd3593c0ee0bff1b">ki_signal(struct k_t * sem)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a7a1b6eda59951448ab3663c29759e898">ki_nowait(struct k_t * sem)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#aead12f2e7f6ee98b98bb847c42d5027c">ki_wait(struct k_t * sem, int timeout)</a>;</li>
+<li>int <a class="el" href="krnltst_8c.html#a306bc3e4b53fc2f608e5945f20cf9ea5">ki_semval(struct k_t * sem)</a>;</li>
 </ul>
 <h1><a class="anchor" id="a61"></a>
 Message Queue calls</h1>
 <h2><a class="anchor" id="a611"></a>
 User space</h2>
 <ul>
-<li>char <a class="el" href="krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send(struct k_msg_t *pB, void *el)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a3e7f34b848366b08928c72711b6c008a">k_receive(struct k_msg_t *pB, void *el, int timeout, int *lost_msg)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send(struct k_msg_t *pB, void *el)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a3e7f34b848366b08928c72711b6c008a">k_receive(struct k_msg_t *pB, void *el, int timeout, int *lost_msg)</a>;</li>
 </ul>
 <h2><a class="anchor" id="a612"></a>
 ISR space</h2>
 <ul>
-<li>char <a class="el" href="krnl_8h.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send(struct k_msg_t *pB, void *el)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive(struct k_msg_t *pB, void *el, int * lost_msg)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send(struct k_msg_t *pB, void *el)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive(struct k_msg_t *pB, void *el, int * lost_msg)</a>;</li>
 </ul>
 <h1><a class="anchor" id="a8"></a>
 Task calls</h1>
 <ul>
 <li>void <a class="el" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift(void)</a> <b>attribute</b> ((naked));</li>
-<li>char <a class="el" href="krnl_8h.html#a56febc95937d41bc48b48b6fdd6f6987">k_sleep(int time)</a>;</li>
-<li>char <a class="el" href="krnl_8h.html#a77ca854c9aa048f21a82d7a9b3e7c070">k_set_prio(char prio)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a56febc95937d41bc48b48b6fdd6f6987">k_sleep(int time)</a>;</li>
+<li>char <a class="el" href="krnltst_8c.html#a77ca854c9aa048f21a82d7a9b3e7c070">k_set_prio(char prio)</a>;</li>
 <li>int <a class="el" href="krnl_8h.html#a290d756b6f6023ccc202155eb0140843">k_stk_chk(struct k_t *t)</a>;</li>
 </ul>
 <h1><a class="anchor" id="a9"></a>
 Div calls</h1>
 <ul>
-<li>int <a class="el" href="krnl_8h.html#aab50fd7741fd86d4215ecc6aceb892a3">k_unused_stak(struct k_t *t)</a>;</li>
-<li>int <a class="el" href="krnl_8h.html#abde03a57484eac43bffbad24df5fc794">freeRam(void)</a>; </li>
+<li>int <a class="el" href="krnltst_8c.html#aab50fd7741fd86d4215ecc6aceb892a3">k_unused_stak(struct k_t *t)</a>;</li>
+<li>int <a class="el" href="krnltst_8c.html#abde03a57484eac43bffbad24df5fc794">freeRam(void)</a>;</li>
 </ul>
+<pre class="fragment">  &gt;&gt;&gt;  KRNL - a small preemptive kernel for small systems &lt;&lt;&lt;
+</pre><p>I have found it interesting to develop an open source realtime kernel</p>
+<p>for the Arduino platform - but is also portable to other platforms</p>
+<ul>
+<li>SEE SOME NOTES BELOW ABOUT TIMERS AND PINS</li>
+<li>Now doxygen docu at html directory :-)</li>
+<li>See <a class="el" href="krnl_8h.html">krnl.h</a> for further comments</li>
+<li>- timers</li>
+<li>- 8/16 MHz setting</li>
+<li>- etc</li>
+</ul>
+<p>See some warnings in the bottom !!!</p>
+<h2>Some highlights </h2>
+<ul>
+<li>open source (beer license)</li>
+<li>well suited for teaching<ul>
+<li>easy to read and understand source</li>
+<li>priority to straight code instead insane optimization(which will make it nearly unreadable)</li>
+</ul>
+</li>
+<li>well suited for serious duties - but with no warranty what so ever - only use it at own risk !!!</li>
+<li>easy to use<ul>
+<li>just import library krnl and you are ready</li>
+</ul>
+</li>
+<li>automatic recognition of Arduino architeture<ul>
+<li>supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560) Some characteristics:</li>
+</ul>
+</li>
+<li>preemptive scheduling<ul>
+<li>Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds</li>
+<li>static priority scheme</li>
+</ul>
+</li>
+<li>support task, semaphores, message queues<ul>
+<li>All elements shall be allocated prior to start of KRNL</li>
+</ul>
+</li>
+<li>support user ISRs and external interrupts</li>
+<li>timers<ul>
+<li>krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick</li>
+<li>For timer 0 you should take care of millis and it will require some modifications in arduino lib</li>
+<li>see <a class="el" href="krnl_8h.html">krnl.h</a> for implications (like</li>
+</ul>
+</li>
+<li>Accuracy<ul>
+<li>8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer<ul>
+<li>example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%</li>
+</ul>
+</li>
+<li>16 bit timers count down is 1 millisecond for 62.5 count</li>
+<li>- example 10 msec ~ 625 countdown == precise :-)</li>
+</ul>
+</li>
+</ul>
+<p>See in <a class="el" href="krnl_8h.html">krnl.h</a> for information like ...</p>
+<p>... from <a href="http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/">http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/</a> Timer0:</p>
+<ul>
+<li>Timer0 and 2 is a 8bit timer.</li>
+<li>In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().</li>
+<li>If you change Timer0 registers, this may influence the Arduino timer function.</li>
+<li>So you should know what you are doing.</li>
+</ul>
+<p>Timer1:</p>
+<ul>
+<li>Timer1 is a 16bit timer.</li>
+<li>In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).</li>
+</ul>
+<p>Timer2:</p>
+<ul>
+<li>Timer2 is a 8bit timer like Timer0.</li>
+<li>In the Arduino work the tone() function uses Timer2.</li>
+</ul>
+<p>Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.</p>
+<ul>
+<li>These timers are all 16bit timers.</li>
+</ul>
+<p>Install from github:</p>
+<p>1) cd whatever/sketchbook/libraries - see Preferences for path to sketchbook 2) git clone <a href="https://github.com/jdn-aau/krnl.git">https://github.com/jdn-aau/krnl.git</a></p>
+<p>NB NB NB - TIMER HEARTBEAT From vrs 1236 you can change which timer to use in <a class="el" href="krnl_8c.html">krnl.c</a> Just look in top of file for KRNLTMR</p>
+<ul>
+<li>tested with uno and mega 256</li>
+</ul>
+<p>In <a class="el" href="krnl_8c.html">krnl.c</a> you can configure KRNL to use timer (0),1,2,3,4 or 5. (3,4,5 only for 1280/2560 mega variants)</p>
+<p>You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.</p>
+<ul>
+<li>Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros(). BEWARE</li>
+<li>Timer1 - A 16 bit timer used by the Servo() library</li>
+<li>Timer2 - An 8 bit timer used by the Tone() library</li>
+<li>Timer3,4,5 16 bits</li>
+</ul>
+<p>... from <a href="http://arduino-info.wikispaces.com/Timers-Arduino">http://arduino-info.wikispaces.com/Timers-Arduino</a></p>
+<ul>
+<li>Servo Library uses Timer1.</li>
+<li>- You can’t use PWM on Pin 9, 10 when you use the Servo Library on an Arduino.</li>
+<li>- For Arduino Mega it is a bit more difficult. The timer needed depends on the number of servos.</li>
+<li>- Each timer can handle 12 servos.</li>
+<li>- For the first 12 servos timer 5 will be used (losing PWM on Pin 44,45,46). -<ul>
+<li>For 24 Servos timer 5 and 1 will be used (losing PWM on Pin 11,12,44,45,46)..</li>
+</ul>
+</li>
+<li>- For 36 servos timer 5, 1 and 3 will be used (losing PWM on Pin 2,3,5,11,12,44,45,46)..</li>
+<li>- For 48 servos all 16bit timers 5,1,3 and 4 will be used (losing all PWM pins).</li>
+<li>Pin 11 has shared functionality PWM and MOSI.</li>
+<li>- MOSI is needed for the SPI interface, You can’t use PWM on Pin 11 and the SPI interface at the same time on Arduino.</li>
+<li>- On the Arduino Mega the SPI pins are on different pins.</li>
+<li>tone() function uses at least timer2.</li>
+<li>- You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.</li>
+</ul>
+<p>Warning 1)</p>
+<p>There has been found some problems with int/flot conversion to ascii strings in conjugation with printing and user written interrupt service routines.</p>
+<p>It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library.</p>
+<p>The solution is to do own numer to string conversion and the use Serial.print to print the string</p>
+<p>int i; Serial.print(i);</p>
+<p>See some example code at <a href="https://github.com/jdn-aau/i2a">https://github.com/jdn-aau/i2a</a> for int and long for conversion</p>
+<p>Warning 2) You have from Arduino inherited many critical regions which you have to protect - like</p>
+<ul>
+<li>Serial channels - only on thread at time must have access</li>
+<li>digital and analog IO (digitalRead, AnalogRead,...)</li>
+<li>and in general all libraries - so take care</li>
+</ul>
+<p>This is NOT an Ardunio problem but standard i multithreaded systems</p>
+<p>(c) "THE BEER-WARE LICENSE" (frit efter PHK) * <a href="#" onclick="location.href='mai'+'lto:'+'jdn'+'@e'+'s.a'+'au'+'.dk'; return false;">jdn@e<span style="display: none;">.nosp@m.</span>s.aa<span style="display: none;">.nosp@m.</span>u.dk</a> wrote this file. As long as you * retain this notice you can do whatever you want * with this stuff. If we meet some day, and you think* this stuff is worth it ... * you can buy me a beer in return :-) * or if you are real happy then ... * single malt will be well received :-) *</p>
+<ul>
+<li>Use it at your own risk - no warranty</li>
+</ul>
+<p>Happy hacking</p>
+<p>See also <a href="http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl">http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl</a> - but git is most updated</p>
+<p>/Jens </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 17 2014 09:18:08 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Fri Mar 20 2015 17:48:05 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

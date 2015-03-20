@@ -5,5 +5,5 @@ var searchData=
   ['cnt1',['cnt1',['../structk__t.html#a7ef04bafaf2e57965dfa0c8a1d14d124',1,'k_t']]],
   ['cnt2',['cnt2',['../structk__t.html#a7ae00f43d917f25200fffd1a8defe5ef',1,'k_t']]],
   ['cnt3',['cnt3',['../structk__t.html#aec4d7232788478d29abb708ca07f6796',1,'k_t']]],
-  ['countmax',['COUNTMAX',['../krnl_8c.html#a5880ec0d5758fc1e5be1306456ed28b3',1,'krnl.c']]]
+  ['countmax',['COUNTMAX',['../krnl_8c.html#a5880ec0d5758fc1e5be1306456ed28b3',1,'COUNTMAX():&#160;krnl.c'],['../krnltst_8c.html#a5880ec0d5758fc1e5be1306456ed28b3',1,'COUNTMAX():&#160;krnltst.c']]]
 ];

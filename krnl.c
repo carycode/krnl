@@ -38,6 +38,7 @@
 
 #include "krnl.h"
 
+
 #if (KRNL_VRS != 1238)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif

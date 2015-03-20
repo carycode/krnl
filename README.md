@@ -13,6 +13,7 @@ for the Arduino platform - but is also portable to other platforms
 - - 8/16 MHz setting
 - - etc
 
+See some warnings in the bottom !!!
 
 Some highlights
 ---------------
@@ -107,6 +108,29 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 - tone() function uses at least timer2. 
 - -  You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
 
+
+Warning 1)
+
+There has been found some problems with int/flot conversion to ascii strings in conjugation with printing and user written interrupt service routines.
+
+It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library.
+
+The solution is to do own numer to string conversion and the use Serial.print to print the string
+
+   int i;
+   Serial.print(i);
+
+See some example code at  https://github.com/jdn-aau/i2a for int and long for conversion
+
+Warning 2)
+You have from Arduino inherited many critical regions which you have to protect - like
+
+- Serial channels - only on thread at time must have access
+- digital and analog IO (digitalRead, AnalogRead,...)
+- and in general all libraries - so take care
+
+This is NOT an Ardunio problem but standard i multithreaded systems
+
 (c)
 * "THE BEER-WARE LICENSE" (frit efter PHK)           *
  * <jdn@es.aau.dk> wrote this file. As long as you    *
@@ -118,6 +142,8 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
  * single malt will be well received :-)              *
  *                                                    *
  * Use it at your own risk - no warranty       
+
+
 
 Happy hacking
 
