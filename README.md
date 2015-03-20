@@ -150,3 +150,7 @@ Happy hacking
 See also http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl
 
 /Jens
+
+
+and https://github.com/greiman/FreeRTOS-Arduino
+has freertos for Arduino and Arduino Due
