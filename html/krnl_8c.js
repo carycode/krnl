@@ -5,7 +5,6 @@ var krnl_8c =
     [ "KRNLTMRVECTOR", "krnl_8c.html#a8390550b01018588df23043e908ded51", null ],
     [ "OCRxA", "krnl_8c.html#a8d7bc6726e0fd85c5873faeb6e4246f9", null ],
     [ "PRESCALE", "krnl_8c.html#ab27d12aac1a3a46aed25604d4c00cc18", null ],
-    [ "SCL", "krnl_8c.html#ab5ffc4751921608954bb7a5687566b2d", null ],
     [ "TCCRxA", "krnl_8c.html#aedef1a8b3de29d96e6f2e152ccfe2a26", null ],
     [ "TCCRxB", "krnl_8c.html#a1898265baad35102ca5d950b41e7dc1a", null ],
     [ "TCNTx", "krnl_8c.html#a6e681752552f535dfb234bf75808e2a1", null ],

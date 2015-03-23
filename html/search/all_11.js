@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['scl',['SCL',['../krnl_8c.html#ab5ffc4751921608954bb7a5687566b2d',1,'krnl.c']]],
   ['sem',['sem',['../structk__msg__t.html#abc38d50a3f77336df86ddc6a55665c0e',1,'k_msg_t']]],
   ['sem_5fmax_5fdefault',['SEM_MAX_DEFAULT',['../krnl_8h.html#a1b16bb6a333404e2357226454a592f6e',1,'krnl.h']]],
   ['sem_5fpool',['sem_pool',['../krnl_8c.html#a7734e7465577a12ef1bee5923cc7b121',1,'sem_pool():&#160;krnl.c'],['../krnl_8h.html#a7734e7465577a12ef1bee5923cc7b121',1,'sem_pool():&#160;krnl.c']]],
