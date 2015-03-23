@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main_5fel',['main_el',['../krnl_8c.html#a4cce77252f3baf360a687f800bcffcbd',1,'main_el():&#160;krnl.c'],['../krnl_8h.html#a4cce77252f3baf360a687f800bcffcbd',1,'main_el():&#160;krnl.c'],['../krnltst_8c.html#a4cce77252f3baf360a687f800bcffcbd',1,'main_el():&#160;krnltst.c']]],
+  ['main_5fel',['main_el',['../krnl_8c.html#a4cce77252f3baf360a687f800bcffcbd',1,'main_el():&#160;krnl.c'],['../krnl_8h.html#a4cce77252f3baf360a687f800bcffcbd',1,'main_el():&#160;krnl.c']]],
   ['main_5fprio',['MAIN_PRIO',['../krnl_8h.html#add243159986ad4ecae03a1e77c9dea6c',1,'krnl.h']]],
   ['mainpage_2ec',['mainpage.c',['../mainpage_8c.html',1,'']]],
   ['max_5fint',['MAX_INT',['../krnl_8h.html#aaa1ac5caef84256eaeb39594e58e096f',1,'krnl.h']]],

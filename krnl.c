@@ -47,12 +47,15 @@
 #include <stdlib.h>
 
 
-
-#if (MHZ == F16)
+#if F_CPU == 16000000L
 #define SCL 1
-#elif (MHZ == F08)
+ #elif F_CPU == 8000000L
 #define SCL  0.5
-#endif
+ #endif
+
+//#if (MHZ == F16)
+//#elif (MHZ == F08)
+//#endif
 
 #if (KRNLTMR == 0)
 // normally not goood bq of arduino sys timer so you wil get a compile error
@@ -947,6 +950,8 @@ k_init (int nrTask, int nrSem, int nrMsg)
 int
 k_start (int tm)
 {
+
+
 
     /*
      48,88,168,328, 1280,2560
