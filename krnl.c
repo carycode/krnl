@@ -60,6 +60,7 @@
 #define PRESCALE 0x07
 #define COUNTMAX 255
 #define DIVV 15.625
+#define DIVV8 7.812 
 
 #elif (KRNLTMR == 1)
 
@@ -74,7 +75,7 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
-
+#define DIVV8 31.25 
 #elif (KRNLTMR == 2)
 
 // 8 bit timer !!!
@@ -89,6 +90,7 @@
 #define PRESCALE 0x07
 #define COUNTMAX 255
 #define DIVV 15.625
+#define DIVV8 7.812 
 
 #elif (KRNLTMR == 3)
 
@@ -103,7 +105,7 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
-
+#define DIVV8 31.25
 #elif (KRNLTMR == 4)
 
 #define KRNLTMRVECTOR TIMER4_OVF_vect
@@ -117,7 +119,7 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
-
+#define DIVV8 31.25
 #elif (KRNLTMR == 5)
 
 #define KRNLTMRVECTOR TIMER5_OVF_vect
@@ -131,7 +133,7 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
-
+#define DIVV8 31.25
 #else
 #pragma err "no valid tmr selected"
 
@@ -939,9 +941,6 @@ k_init (int nrTask, int nrSem, int nrMsg)
 int
 k_start (int tm)
 {
-
-
-
     /*
      48,88,168,328, 1280,2560
      timer 0 and 2 has same prescaler config:
@@ -976,9 +975,9 @@ k_start (int tm)
         if (k_err_cnt)
             return -k_err_cnt;
     // boundary check
-        if (tm <= 0)
-            return -555;
-        else if (10 >= tm) {
+    if (tm <= 0)
+        return -555;
+    else if (10 >= tm) {
         fakecnt = fakecnt_preset=0; // on duty for every interrupt
     } else if ( (tm <= 10000) &&  (10*(tm/10) == tm) ) { // 20,30,40,50,...,10000
         fakecnt_preset = fakecnt = tm/10;
@@ -998,7 +997,11 @@ k_start (int tm)
     TCCRxA = 0;
     TCCRxB = PRESCALE; // atm328s  2560,...
 
-    tcntValue = COUNTMAX  - tm*DIVV; 
+if (F_CPU == 16000000L)
+    tcntValue = COUNTMAX  - tm*DIVV;
+else
+    tcntValue = COUNTMAX  - tm*DIVV8;  // 8 Mhz wwe assume
+
     TCNTx = tcntValue;
 
     //  let us start the show
