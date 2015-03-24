@@ -46,19 +46,6 @@
 #include <avr/interrupt.h>
 #include <stdlib.h>
 
-/*
-#if F_CPU == 16000000L
-#define SCL 1
- #elif F_CPU == 8000000L
-#define SCL  2
- #endif
- until further notice
-*/
-#define SCL 1
-//#if (MHZ == F16)
-//#elif (MHZ == F08)
-//#endif
-
 #if (KRNLTMR == 0)
 // normally not goood bq of arduino sys timer so you wil get a compile error
 // 8 bit timer !!!
@@ -988,7 +975,6 @@ k_start (int tm)
     // will not start if errors during initialization
         if (k_err_cnt)
             return -k_err_cnt;
-    tm /= SCL;
     // boundary check
         if (tm <= 0)
             return -555;
@@ -1012,7 +998,7 @@ k_start (int tm)
     TCCRxA = 0;
     TCCRxB = PRESCALE; // atm328s  2560,...
 
-    tcntValue = COUNTMAX  - tm*DIVV; // SCL fo 8 MHz versions
+    tcntValue = COUNTMAX  - tm*DIVV; 
     TCNTx = tcntValue;
 
     //  let us start the show
