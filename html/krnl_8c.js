@@ -2,6 +2,7 @@ var krnl_8c =
 [
     [ "COUNTMAX", "krnl_8c.html#a5880ec0d5758fc1e5be1306456ed28b3", null ],
     [ "DIVV", "krnl_8c.html#a734615b1179c3466e4cee6d7777ff3a1", null ],
+    [ "DIVV8", "krnl_8c.html#a1e55b17b4f68107071bec1eb064edb66", null ],
     [ "KRNLTMRVECTOR", "krnl_8c.html#a8390550b01018588df23043e908ded51", null ],
     [ "OCRxA", "krnl_8c.html#a8d7bc6726e0fd85c5873faeb6e4246f9", null ],
     [ "PRESCALE", "krnl_8c.html#ab27d12aac1a3a46aed25604d4c00cc18", null ],
