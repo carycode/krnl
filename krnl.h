@@ -304,7 +304,11 @@ if (pRun != AQ.next) {  \
 
 #define DI()   asm volatile ("cli")
 #define EI()   asm volatile ("sei")
-#define RETI() asm volatile ("reti")
+#define RETI() asm volatile ("reti") 
+
+/*
+r1 is always assumd to be zero in c code 
+*/
 
 #if defined (__AVR_ATmega2560__) || defined (__AVR_ATmega1280__)
 
@@ -318,6 +322,7 @@ if (pRun != AQ.next) {  \
 "push r0 \n\t" \
 "in r0 , 0x3c \n\t" \
 "push r0 \n\t" \
+"clr r1 \n\t" \
 "push r2  \n\t" \
 "push r3  \n\t" \
 "push r4  \n\t" \
@@ -399,6 +404,7 @@ if (pRun != AQ.next) {  \
 "in r0, __SREG__ \n\t" \
 "cli \n\t" \
 "push r0  \n\t" \
+"clr r1 \n\t" \
 "push r2  \n\t" \
 "push r3  \n\t" \
 "push r4  \n\t" \
