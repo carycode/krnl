@@ -89,6 +89,14 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 - Timer2 - An 8 bit timer used by the Tone() library
 - Timer3,4,5 16 bits
     
+DEFAULT TIMER1 SO BEWARE OF pwm/Servo
+
+You can change it to timer0 and then maintain millis internal counter - see krnl.c ISR for more info
+
+you may use timer 0 but shall be aware of a number of Arduino libraries using millis().
+you can "hack" it by maintaining  millis counter - look in wiring.c for naming. I know it but you
+should know what you are doing so no help from here :-) 
+
     
 ... from http://arduino-info.wikispaces.com/Timers-Arduino
 
