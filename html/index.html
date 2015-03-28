@@ -336,18 +336,14 @@ Div calls</h1>
 <li>tone() function uses at least timer2.</li>
 <li>- You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.</li>
 </ul>
-<p>Warning 1)</p>
-<p>There has been found some problems with int/flot conversion to ascii strings in conjugation with printin&mdash;g and user written interrupt service routines. It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library. Ultimo March problem SOLVED (r1 register and ISR fault)</p>
-<p>The solution is to do own numer to string conversion and the use Serial.print to print the string</p>
-<p>int i; Serial.print(i);</p>
-<p>See some example code at <a href="https://github.com/jdn-aau/i2a">https://github.com/jdn-aau/i2a</a> for int and long for conversion</p>
-<p>Warning 2) You have from Arduino inherited many critical regions which you have to protect - like</p>
+<p>Warning</p>
+<p>You have from Arduino inherited many critical regions which you have to protect - like</p>
 <ul>
 <li>Serial channels - only on thread at time must have access</li>
 <li>digital and analog IO (digitalRead, AnalogRead,...)</li>
 <li>and in general all libraries - so take care</li>
 </ul>
-<p>This is NOT an Ardunio problem but standard i multithreaded systems</p>
+<p>This is NOT an Ardunio problem but a standard feature in multithreaded systems</p>
 <p>(c) "THE BEER-WARE LICENSE" (frit efter PHK) * <a href="#" onclick="location.href='mai'+'lto:'+'jdn'+'@e'+'s.a'+'au'+'.dk'; return false;">jdn@e<span style="display: none;">.nosp@m.</span>s.aa<span style="display: none;">.nosp@m.</span>u.dk</a> wrote this file. As long as you * retain this notice you can do whatever you want * with this stuff. If we meet some day, and you think* this stuff is worth it ... * you can buy me a beer in return :-) * or if you are real happy then ... * single malt will be well received :-) *</p>
 <ul>
 <li>Use it at your own risk - no warranty</li>
@@ -360,7 +356,7 @@ Div calls</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Mar 28 2015 09:10:56 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Sat Mar 28 2015 09:16:17 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
