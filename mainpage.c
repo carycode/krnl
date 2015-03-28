@@ -71,7 +71,7 @@ If any call fails (like no more RAM or bad parameters) KRNL will not start but w
 - int k_init(int nrTask, int nrSem, int nrMsg);
 - int k_start(int tm); // tm in milliseconds
 - int k_stop(int exitVal); // exitVal that will be returned by k_start to main starter
-
+- unsigned long k_millis - returns time in millis in quant of krnls tick size (set by k_start)
 \section a4 Creation calls - before k_start
 \subsection a41 Semaphore
 - struct k_t * k_crt_sem(char init_val, int maxvalue);
@@ -147,8 +147,7 @@ Some highlights
 - easy to use
  - just import library krnl and you are ready
 
-- automatic recognition of Arduino architeture
- - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
+- automatic recognition of Arduino architeture - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
 Some characteristics:
 
 - preemptive scheduling 
@@ -162,6 +161,10 @@ Some characteristics:
  - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
  - For timer 0 you should take care of millis and it will require some modifications in arduino lib
  - see krnl.h for implications (like 
+
+you may use timer 0 but shall be aware of a number of Arduino libraries using millis().
+you can "hack" it by maintaining  millis counter - look in wiring.c for naming. I know it but you
+should know what you are doing so no help from here :-) 
 
 - Accuracy
  - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer

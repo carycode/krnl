@@ -482,6 +482,13 @@ r1 is always assumd to be zero in c code
 // ki_... expects interrupt to be disablet and do no task shift
 // rest is internal functions
 
+
+/**
+* millis in krnle - NB steps equals milli seconds given in k_start 
+*/
+unsigned long k_millis(void);
+
+
 /**
  * Eats CPU time in 1 msec quants
  * @param[in] eatTime  number of milliseconds to eay (<= 10000

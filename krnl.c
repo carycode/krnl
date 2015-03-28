@@ -165,6 +165,9 @@ volatile unsigned int tcntValue;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
 fakecnt_preset;
 
+unsigned long k_millis_counter=0;
+unsigned int k_tick_size;
+
 int tmr_indx; // for travelling Qs in tmr isr
 
 
@@ -265,6 +268,8 @@ prio_enQ (struct k_t *Q, struct k_t *el)
         goto exitt;
 
     fakecnt = fakecnt_preset;	// now it's time for doing RT stuff
+
+    k_millis_counter+=k_tick_size; // my own millis counter
 
     // It looks maybe crazy to go through all semaphores and tasks
     // but
@@ -985,9 +990,9 @@ k_start (int tm)
     } else {
         return -666;
     }
-
+    
     DI (); // silencio
-
+    k_tick_size = tm;
 #if defined(__AVR_ATmega32U4__)
     // 32u4 have no intern/extern clock source register
 #else
@@ -1036,6 +1041,20 @@ int k_stop(int exitVal)
     AQ.next = &main_el; // we will be the next
     ki_task_shift();
     while (1); // you will never come here
+}
+
+//-------------------------------------------------------------------------------------------
+
+unsigned long k_millis(void)
+{
+unsigned long l;
+uint8_t oldSREG = SREG;
+
+    DI();
+    l = k_millis_counter;
+    EI();
+    SREG= oldSREG;
+    return l;
 }
 
 //-------------------------------------------------------------------------------------------
