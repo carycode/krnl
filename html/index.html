@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 Introduction</h1>
 <p>KRNL is a preemptive realtime kernel here ported for Arduino</p>
 <p>See <a class="el" href="krnl_8h.html">krnl.h</a> for documentation or follow the links below</p>
-<p>NEWS : get it from github Q see <a href="https://github.com/jdn-aau/krnl">https://github.com/jdn-aau/krnl</a></p>
+<p>see also <a href="http://www.nongnu.org/avr-libc/user-manual/FAQ.html">http://www.nongnu.org/avr-libc/user-manual/FAQ.html</a> NEWS : get it from github Q see <a href="https://github.com/jdn-aau/krnl">https://github.com/jdn-aau/krnl</a></p>
 <p>One note before starting:</p>
 <h1><a class="anchor" id="a1"></a>
 Before you start</h1>
@@ -337,8 +337,7 @@ Div calls</h1>
 <li>- You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.</li>
 </ul>
 <p>Warning 1)</p>
-<p>There has been found some problems with int/flot conversion to ascii strings in conjugation with printing and user written interrupt service routines.</p>
-<p>It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library.</p>
+<p>There has been found some problems with int/flot conversion to ascii strings in conjugation with printin&mdash;g and user written interrupt service routines. It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library. Ultimo March problem SOLVED (r1 register and ISR fault)</p>
 <p>The solution is to do own numer to string conversion and the use Serial.print to print the string</p>
 <p>int i; Serial.print(i);</p>
 <p>See some example code at <a href="https://github.com/jdn-aau/i2a">https://github.com/jdn-aau/i2a</a> for int and long for conversion</p>
@@ -361,7 +360,7 @@ Div calls</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 27 2015 23:28:28 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Sat Mar 28 2015 09:10:56 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -26,8 +26,10 @@
  *
  * See krnl.h for documentation or follow the links below
 *
+* see also http://www.nongnu.org/avr-libc/user-manual/FAQ.html
 * NEWS : get it from github Q see https://github.com/jdn-aau/krnl
 * \tableofcontents
+
 
  One note before starting:
 
@@ -228,9 +230,9 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 
 Warning 1)
 
-There has been found some problems with int/flot conversion to ascii strings in conjugation with printing and user written interrupt service routines.
-
+There has been found some problems with int/flot conversion to ascii strings in conjugation with printin---g and user written interrupt service routines.
 It is time of writing (March 2015) unclear what the problem is but you may experience a frozen system - but it is burried some where in the C++ supplied library.
+Ultimo March problem SOLVED (r1 register and ISR fault)
 
 The solution is to do own numer to string conversion and the use Serial.print to print the string
 
