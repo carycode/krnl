@@ -264,13 +264,15 @@ Div calls</h1>
 </ul>
 </li>
 <li>support user ISRs and external interrupts</li>
-<li>timers<ul>
+<li>Timers<ul>
 <li>krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick</li>
 <li>For timer 0 you should take care of millis and it will require some modifications in arduino lib</li>
 <li>see <a class="el" href="krnl_8h.html">krnl.h</a> for implications (like</li>
 </ul>
 </li>
 </ul>
+<p>DEFAULT TIMER1 SO BEWARE OF pwm/Servo</p>
+<p>You can change it to timer0 and then maintain millis internal counter - see <a class="el" href="krnl_8c.html">krnl.c</a> ISR for more info</p>
 <p>you may use timer 0 but shall be aware of a number of Arduino libraries using millis(). you can "hack" it by maintaining millis counter - look in wiring.c for naming. I know it but you should know what you are doing so no help from here :-)</p>
 <ul>
 <li>Accuracy<ul>
@@ -305,6 +307,14 @@ Div calls</h1>
 <ul>
 <li>These timers are all 16bit timers.</li>
 </ul>
+<p>About external interrupts You can do it hardcore as:</p>
+<p>ISR (TIMER0_OVF_vect, ISR_NAKED) { PUSHREGS (); ... K_CHG_STAK (); <a class="el" href="krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0">POPREGS()</a>; }</p>
+<p>You are solely responsible for setting ISR settings like FALLING, RISING, CHANGE attribute for interrupt etc</p>
+<p>You can also do the Arduino way:</p>
+<p>void myIntr() { <a class="el" href="krnl_8h.html#a3ba7acce9c4a4348a166afaa07981bdc">PUSHREGS()</a>; ... K_CHG_STAK (); <a class="el" href="krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0">POPREGS()</a>; <a class="el" href="krnl_8h.html#a8513872c337c84cc24af517c5ef3605a">RETI()</a>; }</p>
+<p>attachInterrupt(0,myIntr,FALLING);</p>
+<p>You shall be aware of registers stacked twice (by Arduino and you)</p>
+<p>And remember to activate pullup if interrupt on FALLING and in idle mode the input pin is floating. digitalWrite(2,HIGH); should do it</p>
 <p>Install from github:</p>
 <p>1) cd whatever/sketchbook/libraries - see Preferences for path to sketchbook 2) git clone <a href="https://github.com/jdn-aau/krnl.git">https://github.com/jdn-aau/krnl.git</a></p>
 <p>NB NB NB - TIMER HEARTBEAT From vrs 1236 you can change which timer to use in <a class="el" href="krnl_8c.html">krnl.c</a> Just look in top of file for KRNLTMR</p>
@@ -357,7 +367,7 @@ Div calls</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Mar 28 2015 10:52:52 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Sat Mar 28 2015 17:24:18 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

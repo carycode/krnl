@@ -157,10 +157,14 @@ Some characteristics:
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
-- timers
+- Timers
  - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
  - For timer 0 you should take care of millis and it will require some modifications in arduino lib
  - see krnl.h for implications (like 
+
+DEFAULT TIMER1 SO BEWARE OF pwm/Servo
+
+You can change it to timer0 and then maintain millis internal counter - see krnl.c ISR for more info
 
 you may use timer 0 but shall be aware of a number of Arduino libraries using millis().
 you can "hack" it by maintaining  millis counter - look in wiring.c for naming. I know it but you
@@ -192,6 +196,37 @@ Timer2:
 Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
 
+About external interrupts
+You can do it hardcore as:
+
+
+ISR (TIMER0_OVF_vect, ISR_NAKED)
+{
+    PUSHREGS ();
+    ...
+    K_CHG_STAK ();
+    POPREGS();
+}
+
+You are solely responsible for setting ISR settings like FALLING, RISING, CHANGE attribute for interrupt etc
+
+You can also do the Arduino way:
+
+void myIntr()
+{
+    PUSHREGS();
+     ...
+    K_CHG_STAK ();
+    POPREGS();
+    RETI();
+ }
+
+attachInterrupt(0,myIntr,FALLING);
+
+You shall be aware of registers stacked twice (by Arduino and you) 
+
+And remember to activate pullup if interrupt on FALLING and in idle mode the input pin is floating.
+digitalWrite(2,HIGH); should do it
 
 Install from github:
 

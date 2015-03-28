@@ -1,5 +1,5 @@
 <map id="ISR" name="ISR">
-<area shape="rect" id="node2" href="$krnl_8c.html#a7ac8496c83319bfc569e4fdab8149940" title="deQ" alt="" coords="237,5,285,32"/>
-<area shape="rect" id="node3" href="$krnl_8c.html#a45c4a121f17683f0cd3593c0ee0bff1b" title="ki_signal" alt="" coords="97,31,173,57"/>
-<area shape="rect" id="node4" href="$krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe" title="prio_enQ" alt="" coords="222,68,301,95"/>
+<area shape="rect" id="node2" href="$krnl_8c.html#a45c4a121f17683f0cd3593c0ee0bff1b" title="ki_signal" alt="" coords="97,31,173,57"/>
+<area shape="rect" id="node3" href="$krnl_8c.html#ae7d9dd598f0d68cea2903843117e8ebe" title="prio_enQ" alt="" coords="222,5,301,32"/>
+<area shape="rect" id="node4" href="$krnl_8c.html#a7ac8496c83319bfc569e4fdab8149940" title="deQ" alt="" coords="237,56,285,83"/>
 </map>

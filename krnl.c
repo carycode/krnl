@@ -75,7 +75,8 @@
 #define PRESCALE 0x04
 #define COUNTMAX 65535
 #define DIVV 62.5
-#define DIVV8 31.25 
+#define DIVV8 31.25
+ 
 #elif (KRNLTMR == 2)
 
 // 8 bit timer !!!
@@ -106,6 +107,7 @@
 #define COUNTMAX 65535
 #define DIVV 62.5
 #define DIVV8 31.25
+
 #elif (KRNLTMR == 4)
 
 #define KRNLTMRVECTOR TIMER4_OVF_vect
@@ -120,7 +122,8 @@
 #define COUNTMAX 65535
 #define DIVV 62.5
 #define DIVV8 31.25
-#elif (KRNLTMR == 5)
+
+'#elif (KRNLTMR == 5)
 
 #define KRNLTMRVECTOR TIMER5_OVF_vect
 #define TCNTx TCNT5
@@ -134,7 +137,9 @@
 #define COUNTMAX 65535
 #define DIVV 62.5
 #define DIVV8 31.25
+
 #else
+
 #pragma err "no valid tmr selected"
 
 #endif
@@ -271,6 +276,8 @@ prio_enQ (struct k_t *Q, struct k_t *el)
 
     k_millis_counter+=k_tick_size; // my own millis counter
 
+    // here you may maintain Arduinos msec defined in wiring.c as
+    //unsigned long m  timer0_millis;
     // It looks maybe crazy to go through all semaphores and tasks
     // but
     // you may have 3-4 tasks and 3-6 semaphores in your code
@@ -1048,12 +1055,10 @@ int k_stop(int exitVal)
 unsigned long k_millis(void)
 {
 unsigned long l;
-uint8_t oldSREG = SREG;
-
+ 
     DI();
     l = k_millis_counter;
     EI();
-    SREG= oldSREG;
     return l;
 }
 
