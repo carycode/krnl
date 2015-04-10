@@ -100,6 +100,9 @@ So you can not run krnl with an internal timer at 16 msec
 You can change it in k_start but be aware of implications of 8/16 bit timer usage
 
 
+### Overflow detection
+The user can provide two functions which will be called when a semaphore/msgQ are overflooding
+
 ### warning / info
 ... from http://arduino-info.wikispaces.com/Timers-Arduino
 

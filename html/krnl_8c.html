@@ -501,7 +501,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>a function for overloading on usersite which is called when a msgQ is overflooding no reset occur - it's only readind out smsgQ idendity 1: means first msgQ allocated by user etc </p>
+<p>a function for overloading on usersite which is called when a msgQ is overflooding no reset occur - it's only readind out smsgQ idendity 1: means first msgQ allocated by user etc Interrupt is disabled when called and must not be enabled during.. so no print etc </p>
 
 <p>Definition at line <a class="el" href="krnl_8c_source.html#l01118">1118</a> of file <a class="el" href="krnl_8c_source.html">krnl.c</a>.</p>
 
@@ -2280,7 +2280,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="krnl_8c.html">krnl.c</a></li>
-    <li class="footer">Generated on Fri Apr 10 2015 16:20:55 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Fri Apr 10 2015 16:26:01 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
