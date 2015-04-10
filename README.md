@@ -2,7 +2,7 @@
        
 I have found it interesting to develop an open source realtime kernel for the Arduino platform - but is also portable to other platforms
 
-* latest version 1340 *
+* latest version 2001 *
 
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
