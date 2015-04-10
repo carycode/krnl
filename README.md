@@ -40,7 +40,9 @@ Some characteristics:
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
-- Timers
+Timers
+------
+
 The Arduino has 3 or 6 timers (Mega has 6 the rest 3)
 
 timer0:
@@ -64,7 +66,7 @@ timer3, timer4, timer5: timer 3,4,5 are only available on Arduino Mega boards.
  - For timer 0 you should take care of millis and it will require some modifications in arduino lib
  - see krnl.h for implications
 
-- Accuracy
+Accuracy
  - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
    - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
  - 16 bit timers count down is 1 millisecond for 62.5 count
