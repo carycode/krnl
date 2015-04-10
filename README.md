@@ -1,10 +1,8 @@
-      >>>  KRNL - a small preemptive kernel for small systems <<<
+# KRNL - a small preemptive kernel for small systems 
        
-I have found it interesting to develop an open source realtime kernel 
+I have found it interesting to develop an open source realtime kernel for the Arduino platform - but is also portable to other platforms
 
-for the Arduino platform - but is also portable to other platforms
-
-latest version 1340
+* latest version 1340 *
 
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
@@ -16,8 +14,8 @@ latest version 1340
 
 See some warnings in the bottom !!!
 
-Some highlights
----------------
+## Some highlights
+
 
 - open source (beer license)
 - well suited for teaching
@@ -31,43 +29,45 @@ Some highlights
 
 - automatic recognition of Arduino architeture
  - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
-Some characteristics:
+
+## Some characteristics:
 
 - preemptive scheduling 
  - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
- - static priority scheme
+ - static preemptivepriority scheme
 -  support task, semaphores, message queues
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
-Timers
-------
+## Timers
 
-The Arduino has 3 or 6 timers (Mega has 6 the rest 3)
+The Arduino has 3 or 6 timers (Mega has 6 the rest has 3)
 
-timer0:
+### timer0
 - Timer0 and 2  is a 8bit timer.
 - In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
 -  If you change Timer0 registers, this may influence the Arduino timer function.
 - So you should know what you are doing.
 
-timer1:
+### timer1
 - Timer1 is a 16bit timer.
 - In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
 
-timer2:
+### timer2
 - Timer2 is a 8bit timer like Timer0.
 - In the Arduino work the tone() function uses Timer2.
 
-timer3, timer4, timer5: timer 3,4,5 are only available on Arduino Mega boards.
+### timer3, timer4, timer5
+- timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
 
- - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
- - For timer 0 you should take care of millis and it will require some modifications in arduino lib
- - see krnl.h for implications
+- krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
+- For timer 0 you should take care of millis and it will require some modifications in arduino lib
+- see krnl.h for implications
 
 Accuracy
- - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
+
+- 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
    - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
  - 16 bit timers count down is 1 millisecond for 62.5 count
  - - example 10 msec ~ 625 countdown == precise :-)
@@ -77,33 +77,13 @@ Accuracy
   - MEGAs (1280/2560) use timer 5
   - you can change it in krnl.h 
 
-- timer quants 
+### timer quants  (heartbeat)
 k_start accepts 1..10 and 20,30,40,...10000 milliseconds timer quants
 So you can not run krnl with an internal timer at 16 msec
 You can change it in k_start but be aware of implications of 8/16 bit timer usage
 
 
-See in krnl.h for information like ...
-
-... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
-
-
-
-Install from github:
-
-1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
-2) git clone https://github.com/jdn-aau/krnl.git
-
-NB NB NB - TIMER HEARTBEAT    
- 
-
-You can change it to timer0 and then by yourself maintain millis internal counter - see krnl.c ISR for more info
-
-you may use timer 0 but shall be aware of a number of Arduino libraries using millis().
-you can "hack" it by maintaining  millis counter - look in wiring.c for naming. I know it but you
-should know what you are doing so no help from here :-) 
-
-    
+### warning / info
 ... from http://arduino-info.wikispaces.com/Timers-Arduino
 
 - Servo Library uses Timer1. 
@@ -122,8 +102,22 @@ should know what you are doing so no help from here :-)
 - tone() function uses at least timer2. 
 - -  You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
 
+-----
 
-Warning 
+See in krnl.h for information like ...
+
+... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
+
+-----
+
+
+Install from github:
+
+1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
+2) git clone https://github.com/jdn-aau/krnl.git
+
+
+## Warning 
 You have from Arduino inherited many critical regions which you have to protect - like
 
 - Serial channels - only on thread at time must have access
