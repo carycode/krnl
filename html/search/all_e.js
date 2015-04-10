@@ -4,6 +4,7 @@ var searchData=
   ['pbuf',['pBuf',['../structk__msg__t.html#ac1285a0d8e7c3925b8f7671d92553ef7',1,'k_msg_t']]],
   ['pdmy',['pDmy',['../krnl_8c.html#ac0ba8f7ce796b6b1e572f969328a2ca5',1,'pDmy():&#160;krnl.c'],['../krnl_8h.html#ac0ba8f7ce796b6b1e572f969328a2ca5',1,'pDmy():&#160;krnl.c']]],
   ['pe',['pE',['../krnl_8c.html#a40fbdb3ae83ed2142131282188c01d88',1,'krnl.c']]],
+  ['pmain_5fel',['pmain_el',['../krnl_8c.html#a80e96fa9f2ed99168a71edefd1fc47ae',1,'pmain_el():&#160;krnl.c'],['../krnl_8h.html#a80e96fa9f2ed99168a71edefd1fc47ae',1,'pmain_el():&#160;krnl.c']]],
   ['popregs',['POPREGS',['../krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0',1,'krnl.h']]],
   ['pred',['pred',['../structk__t.html#a600d8611c0af5f63b647ab12d219e0fb',1,'k_t']]],
   ['prescale',['PRESCALE',['../krnl_8c.html#ab27d12aac1a3a46aed25604d4c00cc18',1,'krnl.c']]],
