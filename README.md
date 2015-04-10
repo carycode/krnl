@@ -4,6 +4,7 @@ I have found it interesting to develop an open source realtime kernel
 
 for the Arduino platform - but is also portable to other platforms
 
+latest version 1340
 
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
@@ -39,10 +40,29 @@ Some characteristics:
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
-- timers
+- Timers
+The Arduino has 3 or 6 timers (Mega has 6 the rest 3)
+
+timer0:
+- Timer0 and 2  is a 8bit timer.
+- In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
+-  If you change Timer0 registers, this may influence the Arduino timer function.
+- So you should know what you are doing.
+
+timer1:
+- Timer1 is a 16bit timer.
+- In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
+
+timer2:
+- Timer2 is a 8bit timer like Timer0.
+- In the Arduino work the tone() function uses Timer2.
+
+timer3, timer4, timer5: timer 3,4,5 are only available on Arduino Mega boards.
+- These timers are all 16bit timers.
+
  - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
  - For timer 0 you should take care of millis and it will require some modifications in arduino lib
- - see krnl.h for implications (like 
+ - see krnl.h for implications
 
 - Accuracy
  - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
@@ -50,25 +70,21 @@ Some characteristics:
  - 16 bit timers count down is 1 millisecond for 62.5 count
  - - example 10 msec ~ 625 countdown == precise :-)
 
+ - timers default
+  - all except MEGA use timer 1 ( 8 bit)
+  - MEGAs (1280/2560) use timer 5
+  - you can change it in krnl.h 
+
+- timer quants 
+k_start accepts 1..10 and 20,30,40,...10000 milliseconds timer quants
+So you can not run krnl with an internal timer at 16 msec
+You can change it in k_start but be aware of implications of 8/16 bit timer usage
+
+
 See in krnl.h for information like ...
 
 ... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
-Timer0:
-- Timer0 and 2  is a 8bit timer.
-- In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
--  If you change Timer0 registers, this may influence the Arduino timer function.
-- So you should know what you are doing.
 
-Timer1:
-- Timer1 is a 16bit timer.
-- In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
-
-Timer2:
-- Timer2 is a 8bit timer like Timer0.
-- In the Arduino work the tone() function uses Timer2.
-
-Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
-- These timers are all 16bit timers.
 
 
 Install from github:
@@ -76,20 +92,8 @@ Install from github:
 1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
 2) git clone https://github.com/jdn-aau/krnl.git
 
-NB NB NB - TIMER HEARTBEAT
- From vrs 1236 you can change which timer to use in krnl.c Just look in top of file for KRNLTMR
- - tested with uno and mega 256
-
-In krnl.c you can configure KRNL to use timer (0),1,2,3,4 or 5. (3,4,5 only for 1280/2560 mega variants)
-
-You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
-
-- Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros(). BEWARE
-- Timer1 - A 16 bit timer used by the Servo() library
-- Timer2 - An 8 bit timer used by the Tone() library
-- Timer3,4,5 16 bits
-    
-DEFAULT TIMER1 SO BEWARE OF pwm/Servo
+NB NB NB - TIMER HEARTBEAT    
+ 
 
 You can change it to timer0 and then by yourself maintain millis internal counter - see krnl.c ISR for more info
 

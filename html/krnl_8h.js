@@ -14,7 +14,6 @@ var krnl_8h =
     [ "MAIN_PRIO", "krnl_8h.html#add243159986ad4ecae03a1e77c9dea6c", null ],
     [ "MAX_INT", "krnl_8h.html#aaa1ac5caef84256eaeb39594e58e096f", null ],
     [ "MAX_SEM_VAL", "krnl_8h.html#afe39f29482489a949f24b4f4de6e9163", null ],
-    [ "MHZ", "krnl_8h.html#a91dd8b26b5bbdd9ca65de2ebb0119743", null ],
     [ "POPREGS", "krnl_8h.html#a170526ca75023d4bb1046e3b0988f6c0", null ],
     [ "PUSHREGS", "krnl_8h.html#a3ba7acce9c4a4348a166afaa07981bdc", null ],
     [ "QHD_PRIO", "krnl_8h.html#a1b9c26bcbff44833fe9893a79279d0ba", null ],

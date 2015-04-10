@@ -36,7 +36,7 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 // remember to update in krnl.c !!!
-#define KRNL_VRS 1239
+#define KRNL_VRS 1340
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -65,7 +65,7 @@ Timer2:
  -In the Arduino work the tone() function uses Timer2.
 
 Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
-- These timers are all 16bit timers.
+fe- These timers are all 16bit timers.
 
 
 On Uno
@@ -105,6 +105,7 @@ SO BEWARE !!!
 ***********************/
 
 #ifndef KRNL
+
 #define KRNL
  
 
@@ -118,21 +119,15 @@ SO BEWARE !!!
 * timer 5 (16 bit) 1280/2560 only (MEGA)
 */
 
-
+#if defined (__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#define KRNLTMR 5
+#else
 #define KRNLTMR 1
-
+#endif
 // END USER CONFIGURATION
 
-// CPU frequency - for adjusting delays
-//#define MHZ F08
-#if (F_CPU == 16000000)
-#define MHZ F16
-#pragma message "krnl detected 16 MHz" 
-#else
-#define MHZ F08
-#pragma message "krnl detected 8 MHz"
-#endif
 
+ 
 //----------------------------------------------------------
 
 #ifdef __cplusplus
@@ -154,26 +149,27 @@ extern "C" {
 #elif defined(__AVR_ATmega2560__)
 #define ARCH_SLCT 6
 #else
-#error Failing due to unknown architecture - JDN
+#error Failing due to unknown architecture - krnl
 #endif
 
-#if (MHZ != F16) && (MHZ !=F08)
-#error Bad frequency (MHZ) selected in krnl 
-#endif
+ 
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega32U4__)
 
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
 #if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2)
-#error bad timer selection for krnl heartbeat(168/328/328p/32u4)
+#error "bad timer selection for krnl heartbeat(168/328/328p/...)"
 #endif
-#endif // defined
+
+#endif
 
 #if defined (__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
-#if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2) &&(KRNLTMR != 3) &&(KRNLTMR != 4) &&(KRNLTMR != 5)
-#error bad timer for krnl heartbeat(1280/2560) in krnl
-#endif
+#if (KRNLTMR != 0) && (KRNLTMR != 1) && (KRNLTMR != 2) && (KRNLTMR != 3) && (KRNLTMR != 4) && (KRNLTMR != 5)
+#error "bad timer for krnl heartbeat(1280/2560) in krnl"
 #endif
 
+#endif
+
+ 
 // DEBUGGING
 //#define DMYBLINK     // ifdef then led (pin13) will light when dummy is running
  
@@ -195,8 +191,7 @@ struct k_t {
     struct k_t
             *next,  // task,sem: double chain lists ptr
             *pred;  // task,sem: double chain lists ptr
- #endif
-    volatile char
+   volatile char
     sp_lo,    // sem:vacant    | task: low 8 byte of stak adr
     sp_hi,    // sem: vacant   |task: high 8 byte of stak adr
     prio;     // task & sem:  priority

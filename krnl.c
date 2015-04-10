@@ -37,9 +37,16 @@
 *****************************************************/
 
 #include "krnl.h"
+ 
+// CPU frequency - for adjusting delays
+#if (F_CPU == 16000000)
+#pragma message ("krnl detected 16 MHz" )
+#else
+#pragma message ("krnl detected 8 MHz")
+#endif
 
 
-#if (KRNL_VRS != 1239)
+#if (KRNL_VRS != 1340)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
@@ -189,9 +196,9 @@ int tmr_indx; // for travelling Qs in tmr isr
     // quants in milli seconds
     // not 100% precise !!!
     l = eatTime;
-#if (MHZ == F16)
+#if (F_CPU == 16000000)
     l *=1323;
-#elif (MHZ == F08)
+#elif (F_CPU == 8000000)
     l *=661;
 #else
 #error bad cpu frequency
