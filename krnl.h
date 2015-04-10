@@ -614,17 +614,21 @@ int ki_semval(struct k_t * sem);
 * a function for overloading on usersite which is called when a semaphore is overflooding
 * no reset occur - it's only readind out semaphore idendity
 * 1: means first semahore allocated by user etc
-* Interrupt is disabled when called and must not be enabled during.. so no print etc*/
-void __attribute__ ((weak)) k_sem_clip(int nr);
+* Interrupt is disabled when called and must not be enabled during.. so no print etc
+* @param nr : id of semaphore 1,2,3,...
+* @param nrClip: number of times clip has occured (may be reset by call k_wait_lost)
+*/
+void __attribute__ ((weak)) k_sem_clip(unsigned char nr, int nrClip);
 
 /**
 * a function for overloading on usersite which is called when a msgQ is overflooding
 * no reset occur - it's only readind out smsgQ idendity
 * 1: means first msgQ allocated by user etc
 * Interrupt is disabled when called and must not be enabled during.. so no print etc
+* @param nr : id of send Q 0,1,2,...
+* @param nrClip: number of times clip has occured (may be reset by call k_receive and lost parm not eq NULL) 
 */
-
-void __attribute__ ((weak)) k_send_Q_clip(int nr);
+void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip);
 
 
 struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf);

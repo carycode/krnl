@@ -521,7 +521,7 @@ k_crt_sem (char init_val, int maxvalue)
     }
 
     sem = sem_pool + nr_sem;
-    sem->nr = sem;
+    sem->nr = nr_sem;
     nr_sem++;
 
     sem->cnt2 = 0;		// no timer running
@@ -568,7 +568,7 @@ ki_signal (struct k_t *sem)
     if (sem->maxv <= sem->cnt1) {
         if (32000 > sem->clip)
             sem->clip++;
-        k_sem_clip(0);
+        k_sem_clip(sem->nr,sem->clip);
         return (-1);
     }
 
@@ -741,6 +741,7 @@ ki_send (struct k_msg_t *pB, void *el)
         // room for a putting new msg in Q ?
         if (pB->lost_msg < 32000)
             pB->lost_msg++;
+        k_send_Q_clip(pB->nr,pB->lost_msg);
         return (-1);		// nope
     }
 
@@ -1115,11 +1116,11 @@ char k_get_preempt(void)
 }
 
 
-void __attribute__ ((weak)) k_sem_clip(int nr)
+void __attribute__ ((weak)) k_sem_clip(unsigned char nr,int nrClip)
 {
 
 }
-void __attribute__ ((weak)) k_send_Q_clip(int nr)
+void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip)
 {
 
 }

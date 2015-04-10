@@ -595,7 +595,7 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="comment">* issues a task shift - handle with care</span></div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="comment">* Not to be used by normal user</span></div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift</a>(<span class="keywordtype">void</span>) <a class="code" href="krnl_8h.html#a7283f8962ab9553867a9945c3b9c2921">__attribute__</a> ((naked));</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift</a>(<span class="keywordtype">void</span>) <a class="code" href="krnl_8h.html#afd53aa13189bcd9d4d4b5007042c0dde">__attribute__</a> ((naked));</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="comment">/**</span></div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="comment">* Set task asleep for a number of ticks.</span></div>
@@ -721,178 +721,182 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;<span class="comment">* a function for overloading on usersite which is called when a semaphore is overflooding</span></div>
 <div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;<span class="comment">* no reset occur - it&#39;s only readind out semaphore idendity</span></div>
 <div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;<span class="comment">* 1: means first semahore allocated by user etc</span></div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="comment">* Interrupt is disabled when called and must not be enabled during.. so no print etc*/</span></div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a7283f8962ab9553867a9945c3b9c2921">__attribute__</a> ((weak)) k_sem_clip(<span class="keywordtype">int</span> <a class="code" href="structk__msg__t.html#a77ce5d05e251d771c3bbdc4ca724cbf7">nr</a>);</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;<span class="comment">* a function for overloading on usersite which is called when a msgQ is overflooding</span></div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;<span class="comment">* no reset occur - it&#39;s only readind out smsgQ idendity</span></div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;<span class="comment">* 1: means first msgQ allocated by user etc</span></div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;<span class="comment">* Interrupt is disabled when called and must not be enabled during.. so no print etc</span></div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a7283f8962ab9553867a9945c3b9c2921">__attribute__</a> ((weak)) k_send_Q_clip(<span class="keywordtype">int</span> nr);</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;struct <a class="code" href="structk__msg__t.html">k_msg_t</a> * <a class="code" href="krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q</a>(<span class="keywordtype">int</span> <a class="code" href="structk__msg__t.html#ae28a828860fdf0afcd9106045d223767">nr_el</a>, <span class="keywordtype">int</span> <a class="code" href="structk__msg__t.html#a9e6cf0aaaa54e2c69938457b2a16e512">el_size</a>, <span class="keywordtype">void</span> *<a class="code" href="structk__msg__t.html#ac1285a0d8e7c3925b8f7671d92553ef7">pBuf</a>);</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="comment">* Put data (one element of el_size)in the ringbuffer if there are room for it.</span></div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="comment">* Intended for ISR use</span></div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;<span class="comment">* @param[in] el Reference to data to be put in buffer. Size if already given in k_crt_send</span></div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no room in ringbuffer</span></div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;<span class="comment">* @remark Interrupt will not enabled upon leaving, so ki_send is intended to be used from an ISR</span></div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;<span class="comment">* @remark only to be called before start of KRNL</span></div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el);</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;</div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;<span class="comment">* Put data (one element of el_size)in the ringbuffer if there are room for it.</span></div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;<span class="comment">* @param [in] el Reference to data to be put in buffer. Size if already given in k_crt_send</span></div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no room in ringbuffer</span></div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;<span class="comment">* @remark k_send does not block if no space in buffer. Instead -1 is returned</span></div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el);</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;<span class="comment">* Receive data (one element of el_size)in the ringbuffer if there are data</span></div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="comment">* @param [out] el Reference to where data shall be copied to at your site</span></div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;<span class="comment">* @param[in] timeout Max time you want to wait on data, -1: never, 0: forever, positive: nr of KRNL timer quants</span></div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="comment">* @param[out] lost_msg nr of lost messages since last receive. will clip at 10000. If lost_msg ptr is NULL then overrun counter</span></div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="comment">* is not reset to 0.</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no data in ringbuffer</span></div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a3e7f34b848366b08928c72711b6c008a">k_receive</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el, <span class="keywordtype">int</span> timeout, <span class="keywordtype">int</span> * <a class="code" href="structk__msg__t.html#aea9315f70a4c165cf9bfaef79046c184">lost_msg</a>);</div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;<span class="comment">* Receive data (one element of el_size)in the ringbuffer if there are data</span></div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;<span class="comment">* No blocking if no data</span></div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;<span class="comment">* Interrupt will not be enabled after ki_receive</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;<span class="comment">* @param[out] el Reference to where data shall be copied to at your site</span></div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="comment">* @param[out] lost_msg nr of lost messages since last receive. will clip at 10000.  If lost_msg ptr is NULL then overrun counter</span></div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;<span class="comment">* is not reset to 0</span></div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no data in ringbuffer</span></div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="comment">* @remark can be used from ISR</span></div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el, <span class="keywordtype">int</span> * lost_msg);</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;</div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="comment">* returns which timer is used</span></div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;<span class="comment">* @return 0,1,2,3,4,5 ...</span></div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a3ccf696f0ef7f772a9d339348b6b52e2">k_tmrInfo</a>(<span class="keywordtype">void</span>); <span class="comment">// tm in milliseconds</span></div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;</div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;<span class="comment">* Initialise KRNL. First function to be called.</span></div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;<span class="comment">* You have to give max number of tasks, semaphores and message queues you will use</span></div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;<span class="comment">* @param[in] nrTask ...</span></div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="comment">* @param[in] nrSem ...</span></div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;<span class="comment">* @param[in] nrMsg ...</span></div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b">k_init</a>(<span class="keywordtype">int</span> nrTask, <span class="keywordtype">int</span> nrSem, <span class="keywordtype">int</span> nrMsg);</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;<span class="comment">* start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)</span></div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="comment">* @param[in] tm Tick length in milli seconds(1..10,20,30..10000</span></div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;<span class="comment">* @return  -1-333 nr of k_Crt calls taht went wrong. krnl did not start</span></div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;<span class="comment">*          -555 negative tick parm value</span></div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;<span class="comment">*          -666 bad tick quant (legal is 1-10,20,30-10000</span></div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="comment">* @remark only to be called after init of KRNL</span></div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;<span class="comment">* @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!</span></div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb">k_start</a>(<span class="keywordtype">int</span> tm); <span class="comment">// tm in milliseconds</span></div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;<span class="comment">* stop KRNL</span></div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;<span class="comment">* @param[exitVal]  Will be returned in k_start to creator (old main)</span></div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="comment">* @remark only to be called after k_start</span></div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;<span class="comment">* @remark you will only return from k_stop if krnl is not running</span></div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop</a>(<span class="keywordtype">int</span> exitVal); <span class="comment">// tm in milliseconds</span></div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;<span class="comment">* Reset by disable interrupt plus activate watchdog (15 millisseconds) and just wait...</span></div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="comment">**/</span></div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a1403e8934fe3c3155f50aa70fb939b01">k_reset</a>();</div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;<span class="comment">* Initialise blink on pin 13</span></div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;<span class="comment">* ON when dummy is running</span></div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;<span class="comment">* Nov 2014 - fake do not use it bq it will not work</span></div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;<span class="comment">* for emergency use :-)</span></div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a5e03bf42798319958880dc799962c383">k_bugblink13</a>(<span class="keywordtype">char</span> on);</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;<span class="comment">* returns nr of unbytes bytes on stak.</span></div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;<span class="comment">* For chekking if stak is too big or to small...</span></div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="comment">* @param[in] t Reference to task (by task handle) If null then yourself</span></div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;<span class="comment">* @return: nr of unused bytes on stak (int)</span></div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;<span class="comment">* @remark no chk of if it is a valid task</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a290d756b6f6023ccc202155eb0140843">k_stk_chk</a>(struct <a class="code" href="structk__t.html">k_t</a> *t);</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="comment">* Returns amount of unused stak</span></div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="comment">* @parm t . Ptr to taskdescriptor. If NULL it is yourself</span></div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="comment">* @return: amount of unused stak(in bytes)</span></div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="comment">* @remark: a watermark philosophy is used</span></div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="comment">**/</span> </div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#aab50fd7741fd86d4215ecc6aceb892a3">k_unused_stak</a>(struct <a class="code" href="structk__t.html">k_t</a> *t);</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;</div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="comment">* Set preempt or non preempt</span></div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="comment">* @parm on : 1: preempt on, 0: off 2: no change </span></div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="comment">* @return: current state: 1 preempt sch. 0 non preempt</span></div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="comment">**/</span></div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a3f78785f06706a3135f9300d6ab0b01d">k_set_preempt</a>(<span class="keywordtype">char</span> on);</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="comment">* Get preempt or non preempt</span></div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="comment">* @return: current state: 1 preempt sch. 0 non preempt</span></div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="comment">**/</span></div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a64ccac5defa817ee73df6105c0927901">k_get_preempt</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160; <span class="comment"></span></div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="comment">* returns amount of free memory in your system</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#abde03a57484eac43bffbad24df5fc794">freeRam</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="preprocessor">#endif   // #ifndef KRNL</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="comment">* Interrupt is disabled when called and must not be enabled during.. so no print etc</span></div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;<span class="comment">* @param nr : id of semaphore 1,2,3,...</span></div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="comment">* @param nrClip: number of times clip has occured (may be reset by call k_wait_lost)</span></div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00621"></a><span class="lineno"><a class="line" href="krnl_8h.html#ae4dc017f2c559a3c2460c69f0ead9dea">  621</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#afd53aa13189bcd9d4d4b5007042c0dde">__attribute__</a> ((weak)) k_sem_clip(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structk__msg__t.html#a77ce5d05e251d771c3bbdc4ca724cbf7">nr</a>, <span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#ae4dc017f2c559a3c2460c69f0ead9dea">nrClip</a>);</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;<span class="comment">* a function for overloading on usersite which is called when a msgQ is overflooding</span></div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;<span class="comment">* no reset occur - it&#39;s only readind out smsgQ idendity</span></div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;<span class="comment">* 1: means first msgQ allocated by user etc</span></div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;<span class="comment">* Interrupt is disabled when called and must not be enabled during.. so no print etc</span></div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;<span class="comment">* @param nr : id of send Q 0,1,2,...</span></div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;<span class="comment">* @param nrClip: number of times clip has occured (may be reset by call k_receive and lost parm not eq NULL) </span></div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#afd53aa13189bcd9d4d4b5007042c0dde">__attribute__</a> ((weak)) k_send_Q_clip(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> nr, <span class="keywordtype">int</span> nrClip);</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;struct <a class="code" href="structk__msg__t.html">k_msg_t</a> * <a class="code" href="krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q</a>(<span class="keywordtype">int</span> <a class="code" href="structk__msg__t.html#ae28a828860fdf0afcd9106045d223767">nr_el</a>, <span class="keywordtype">int</span> <a class="code" href="structk__msg__t.html#a9e6cf0aaaa54e2c69938457b2a16e512">el_size</a>, <span class="keywordtype">void</span> *<a class="code" href="structk__msg__t.html#ac1285a0d8e7c3925b8f7671d92553ef7">pBuf</a>);</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;<span class="comment">* Put data (one element of el_size)in the ringbuffer if there are room for it.</span></div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;<span class="comment">* Intended for ISR use</span></div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;<span class="comment">* @param[in] el Reference to data to be put in buffer. Size if already given in k_crt_send</span></div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no room in ringbuffer</span></div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;<span class="comment">* @remark Interrupt will not enabled upon leaving, so ki_send is intended to be used from an ISR</span></div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;<span class="comment">* @remark only to be called before start of KRNL</span></div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el);</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;<span class="comment">* Put data (one element of el_size)in the ringbuffer if there are room for it.</span></div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;<span class="comment">* @param [in] el Reference to data to be put in buffer. Size if already given in k_crt_send</span></div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no room in ringbuffer</span></div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="comment">* @remark k_send does not block if no space in buffer. Instead -1 is returned</span></div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el);</div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;<span class="comment">* Receive data (one element of el_size)in the ringbuffer if there are data</span></div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;<span class="comment">* @param [out] el Reference to where data shall be copied to at your site</span></div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;<span class="comment">* @param[in] timeout Max time you want to wait on data, -1: never, 0: forever, positive: nr of KRNL timer quants</span></div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="comment">* @param[out] lost_msg nr of lost messages since last receive. will clip at 10000. If lost_msg ptr is NULL then overrun counter</span></div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;<span class="comment">* is not reset to 0.</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no data in ringbuffer</span></div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a3e7f34b848366b08928c72711b6c008a">k_receive</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el, <span class="keywordtype">int</span> timeout, <span class="keywordtype">int</span> * <a class="code" href="structk__msg__t.html#aea9315f70a4c165cf9bfaef79046c184">lost_msg</a>);</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;<span class="comment">* Receive data (one element of el_size)in the ringbuffer if there are data</span></div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;<span class="comment">* DONE BY COPY !</span></div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="comment">* No blocking if no data</span></div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;<span class="comment">* Interrupt will not be enabled after ki_receive</span></div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;<span class="comment">* @param[in] pB Ref to message buffer</span></div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="comment">* @param[out] el Reference to where data shall be copied to at your site</span></div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="comment">* @param[out] lost_msg nr of lost messages since last receive. will clip at 10000.  If lost_msg ptr is NULL then overrun counter</span></div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="comment">* is not reset to 0</span></div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;<span class="comment">* @return 0: operation did succed, -1: no data in ringbuffer</span></div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="comment">* @remark can be used from ISR</span></div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive</a>(struct <a class="code" href="structk__msg__t.html">k_msg_t</a> *pB, <span class="keywordtype">void</span> *el, <span class="keywordtype">int</span> * lost_msg);</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;<span class="comment">* returns which timer is used</span></div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;<span class="comment">* @return 0,1,2,3,4,5 ...</span></div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a3ccf696f0ef7f772a9d339348b6b52e2">k_tmrInfo</a>(<span class="keywordtype">void</span>); <span class="comment">// tm in milliseconds</span></div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;<span class="comment">* Initialise KRNL. First function to be called.</span></div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;<span class="comment">* You have to give max number of tasks, semaphores and message queues you will use</span></div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;<span class="comment">* @param[in] nrTask ...</span></div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;<span class="comment">* @param[in] nrSem ...</span></div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;<span class="comment">* @param[in] nrMsg ...</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b">k_init</a>(<span class="keywordtype">int</span> nrTask, <span class="keywordtype">int</span> nrSem, <span class="keywordtype">int</span> nrMsg);</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;<span class="comment">* start KRNL with tm tick speed (1= 1 msec, 5 = 5 msec)</span></div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="comment">* @param[in] tm Tick length in milli seconds(1..10,20,30..10000</span></div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;<span class="comment">* @return  -1-333 nr of k_Crt calls taht went wrong. krnl did not start</span></div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;<span class="comment">*          -555 negative tick parm value</span></div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;<span class="comment">*          -666 bad tick quant (legal is 1-10,20,30-10000</span></div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;<span class="comment">* @remark only to be called after init of KRNL</span></div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="comment">* @remark KRNL WILL NOT START IF YOU HAVE TRIED TO CREATE MORE TASKS/SEMS/MSG QS THAN YOU HAVE ALLOCATED SPACE FOR IN k_init !!!</span></div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb">k_start</a>(<span class="keywordtype">int</span> tm); <span class="comment">// tm in milliseconds</span></div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;<span class="comment">* stop KRNL</span></div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;<span class="comment">* @param[exitVal]  Will be returned in k_start to creator (old main)</span></div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;<span class="comment">* @remark only to be called after k_start</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;<span class="comment">* @remark you will only return from k_stop if krnl is not running</span></div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop</a>(<span class="keywordtype">int</span> exitVal); <span class="comment">// tm in milliseconds</span></div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;<span class="comment">* Reset by disable interrupt plus activate watchdog (15 millisseconds) and just wait...</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;<span class="comment">**/</span></div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a1403e8934fe3c3155f50aa70fb939b01">k_reset</a>();</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;<span class="comment">* Initialise blink on pin 13</span></div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;<span class="comment">* ON when dummy is running</span></div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;<span class="comment">* Nov 2014 - fake do not use it bq it will not work</span></div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;<span class="comment">* for emergency use :-)</span></div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;<span class="keywordtype">void</span> <a class="code" href="krnl_8h.html#a5e03bf42798319958880dc799962c383">k_bugblink13</a>(<span class="keywordtype">char</span> on);</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="comment">* returns nr of unbytes bytes on stak.</span></div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;<span class="comment">* For chekking if stak is too big or to small...</span></div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="comment">* @param[in] t Reference to task (by task handle) If null then yourself</span></div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="comment">* @return: nr of unused bytes on stak (int)</span></div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="comment">* @remark only to be called after start of KRNL</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="comment">* @remark no chk of if it is a valid task</span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#a290d756b6f6023ccc202155eb0140843">k_stk_chk</a>(struct <a class="code" href="structk__t.html">k_t</a> *t);</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="comment">* Returns amount of unused stak</span></div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="comment">* @parm t . Ptr to taskdescriptor. If NULL it is yourself</span></div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="comment">* @return: amount of unused stak(in bytes)</span></div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="comment">* @remark: a watermark philosophy is used</span></div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="comment">**/</span> </div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#aab50fd7741fd86d4215ecc6aceb892a3">k_unused_stak</a>(struct <a class="code" href="structk__t.html">k_t</a> *t);</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="comment">* Set preempt or non preempt</span></div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="comment">* @parm on : 1: preempt on, 0: off 2: no change </span></div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="comment">* @return: current state: 1 preempt sch. 0 non preempt</span></div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="comment">**/</span></div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a3f78785f06706a3135f9300d6ab0b01d">k_set_preempt</a>(<span class="keywordtype">char</span> on);</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="comment">* Get preempt or non preempt</span></div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="comment">* @return: current state: 1 preempt sch. 0 non preempt</span></div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="comment">**/</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="keywordtype">char</span> <a class="code" href="krnl_8h.html#a64ccac5defa817ee73df6105c0927901">k_get_preempt</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; <span class="comment"></span></div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;<span class="comment">* returns amount of free memory in your system</span></div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="keywordtype">int</span> <a class="code" href="krnl_8h.html#abde03a57484eac43bffbad24df5fc794">freeRam</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;<span class="preprocessor">#endif   // #ifndef KRNL</span></div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;</div>
 <div class="ttc" id="krnl_8h_html_ae12cf3a4490ccd9d1e18de83b62f7296"><div class="ttname"><a href="krnl_8h.html#ae12cf3a4490ccd9d1e18de83b62f7296">AQ</a></div><div class="ttdeci">struct k_t AQ</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00158">krnl.c:158</a></div></div>
 <div class="ttc" id="krnl_8h_html_a11c6706cca7518dfd785ea9f37a8b9c8"><div class="ttname"><a href="krnl_8h.html#a11c6706cca7518dfd785ea9f37a8b9c8">k_msg</a></div><div class="ttdeci">int k_msg</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00170">krnl.c:170</a></div></div>
-<div class="ttc" id="krnl_8h_html_a7ee5036463c30b3ba1c02a27ed96aedf"><div class="ttname"><a href="krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop</a></div><div class="ttdeci">int k_stop(int exitVal)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01054">krnl.c:1054</a></div></div>
+<div class="ttc" id="krnl_8h_html_a7ee5036463c30b3ba1c02a27ed96aedf"><div class="ttname"><a href="krnl_8h.html#a7ee5036463c30b3ba1c02a27ed96aedf">k_stop</a></div><div class="ttdeci">int k_stop(int exitVal)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01055">krnl.c:1055</a></div></div>
 <div class="ttc" id="krnl_8h_html_aab50fd7741fd86d4215ecc6aceb892a3"><div class="ttname"><a href="krnl_8h.html#aab50fd7741fd86d4215ecc6aceb892a3">k_unused_stak</a></div><div class="ttdeci">int k_unused_stak(struct k_t *t)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00460">krnl.c:460</a></div></div>
 <div class="ttc" id="krnl_8h_html_aead12f2e7f6ee98b98bb847c42d5027c"><div class="ttname"><a href="krnl_8h.html#aead12f2e7f6ee98b98bb847c42d5027c">ki_wait</a></div><div class="ttdeci">int ki_wait(struct k_t *sem, int timeout)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00622">krnl.c:622</a></div></div>
-<div class="ttc" id="krnl_8h_html_a5e03bf42798319958880dc799962c383"><div class="ttname"><a href="krnl_8h.html#a5e03bf42798319958880dc799962c383">k_bugblink13</a></div><div class="ttdeci">void k_bugblink13(char on)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00919">krnl.c:919</a></div></div>
+<div class="ttc" id="krnl_8h_html_a5e03bf42798319958880dc799962c383"><div class="ttname"><a href="krnl_8h.html#a5e03bf42798319958880dc799962c383">k_bugblink13</a></div><div class="ttdeci">void k_bugblink13(char on)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00920">krnl.c:920</a></div></div>
 <div class="ttc" id="structk__t_html_ab1bd22ca23083ad81771ed998437fdfc"><div class="ttname"><a href="structk__t.html#ab1bd22ca23083ad81771ed998437fdfc">k_t::next</a></div><div class="ttdeci">struct k_t * next</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00192">krnl.h:192</a></div></div>
 <div class="ttc" id="krnl_8h_html_adb04c7a4b69d0318cdfcf19f8bbdf2ec"><div class="ttname"><a href="krnl_8h.html#adb04c7a4b69d0318cdfcf19f8bbdf2ec">nr_task</a></div><div class="ttdeci">char nr_task</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00171">krnl.c:171</a></div></div>
 <div class="ttc" id="krnl_8h_html_a5cd13e276eb8b12ec888845f354e159c"><div class="ttname"><a href="krnl_8h.html#a5cd13e276eb8b12ec888845f354e159c">k_running</a></div><div class="ttdeci">volatile char k_running</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00176">krnl.c:176</a></div></div>
-<div class="ttc" id="krnl_8h_html_a0bc5cd2b2978ba0da05370e31b7e231d"><div class="ttname"><a href="krnl_8h.html#a0bc5cd2b2978ba0da05370e31b7e231d">k_millis</a></div><div class="ttdeci">unsigned long k_millis(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01084">krnl.c:1084</a></div></div>
+<div class="ttc" id="krnl_8h_html_a0bc5cd2b2978ba0da05370e31b7e231d"><div class="ttname"><a href="krnl_8h.html#a0bc5cd2b2978ba0da05370e31b7e231d">k_millis</a></div><div class="ttdeci">unsigned long k_millis(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01085">krnl.c:1085</a></div></div>
 <div class="ttc" id="structk__msg__t_html_abc38d50a3f77336df86ddc6a55665c0e"><div class="ttname"><a href="structk__msg__t.html#abc38d50a3f77336df86ddc6a55665c0e">k_msg_t::sem</a></div><div class="ttdeci">struct k_t * sem</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00209">krnl.h:209</a></div></div>
 <div class="ttc" id="structk__t_html_a7036cd33ce9a69edcc3cc404adf70e3f"><div class="ttname"><a href="structk__t.html#a7036cd33ce9a69edcc3cc404adf70e3f">k_t::prio</a></div><div class="ttdeci">volatile char prio</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00196">krnl.h:196</a></div></div>
 <div class="ttc" id="structk__t_html_acb129ee9a4e02ae9c68d07c72c0db02d"><div class="ttname"><a href="structk__t.html#acb129ee9a4e02ae9c68d07c72c0db02d">k_t::sp_hi</a></div><div class="ttdeci">volatile char sp_hi</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00196">krnl.h:196</a></div></div>
@@ -901,15 +905,16 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="ttc" id="krnl_8h_html_a2680e3dfc16aaf181f466757b1460793"><div class="ttname"><a href="krnl_8h.html#a2680e3dfc16aaf181f466757b1460793">krnl_preempt_flag</a></div><div class="ttdeci">volatile char krnl_preempt_flag</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00175">krnl.c:175</a></div></div>
 <div class="ttc" id="krnl_8h_html_a306bc3e4b53fc2f608e5945f20cf9ea5"><div class="ttname"><a href="krnl_8h.html#a306bc3e4b53fc2f608e5945f20cf9ea5">ki_semval</a></div><div class="ttdeci">int ki_semval(struct k_t *sem)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00718">krnl.c:718</a></div></div>
 <div class="ttc" id="krnl_8h_html_abde03a57484eac43bffbad24df5fc794"><div class="ttname"><a href="krnl_8h.html#abde03a57484eac43bffbad24df5fc794">freeRam</a></div><div class="ttdeci">int freeRam(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00440">krnl.c:440</a></div></div>
-<div class="ttc" id="krnl_8h_html_aad1cd26ac0560fb40b088b229c07f7a3"><div class="ttname"><a href="krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send</a></div><div class="ttdeci">char k_send(struct k_msg_t *pB, void *el)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00770">krnl.c:770</a></div></div>
-<div class="ttc" id="krnl_8h_html_a8ad6ae5f7e3cac59845df0de94e55c68"><div class="ttname"><a href="krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q</a></div><div class="ttdeci">struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00864">krnl.c:864</a></div></div>
+<div class="ttc" id="krnl_8h_html_aad1cd26ac0560fb40b088b229c07f7a3"><div class="ttname"><a href="krnl_8h.html#aad1cd26ac0560fb40b088b229c07f7a3">k_send</a></div><div class="ttdeci">char k_send(struct k_msg_t *pB, void *el)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00771">krnl.c:771</a></div></div>
+<div class="ttc" id="krnl_8h_html_a8ad6ae5f7e3cac59845df0de94e55c68"><div class="ttname"><a href="krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68">k_crt_send_Q</a></div><div class="ttdeci">struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00865">krnl.c:865</a></div></div>
 <div class="ttc" id="structk__t_html_a1e6a2845b26a85e548e64a8ae310d7ac"><div class="ttname"><a href="structk__t.html#a1e6a2845b26a85e548e64a8ae310d7ac">k_t::sp_lo</a></div><div class="ttdeci">volatile char sp_lo</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00196">krnl.h:196</a></div></div>
 <div class="ttc" id="structk__msg__t_html_a77ce5d05e251d771c3bbdc4ca724cbf7"><div class="ttname"><a href="structk__msg__t.html#a77ce5d05e251d771c3bbdc4ca724cbf7">k_msg_t::nr</a></div><div class="ttdeci">unsigned char nr</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00208">krnl.h:208</a></div></div>
 <div class="ttc" id="krnl_8h_html_a5f7cbf98727b1a04fadd5890d0278487"><div class="ttname"><a href="krnl_8h.html#a5f7cbf98727b1a04fadd5890d0278487">k_task</a></div><div class="ttdeci">int k_task</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00170">krnl.c:170</a></div></div>
 <div class="ttc" id="krnl_8h_html_a1159800af031443d866b321adaae60d8"><div class="ttname"><a href="krnl_8h.html#a1159800af031443d866b321adaae60d8">DMY_STK_SZ</a></div><div class="ttdeci">#define DMY_STK_SZ</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00178">krnl.h:178</a></div></div>
 <div class="ttc" id="structk__msg__t_html_aac75863785b0f241b90e49b440f9cd4a"><div class="ttname"><a href="structk__msg__t.html#aac75863785b0f241b90e49b440f9cd4a">k_msg_t::r</a></div><div class="ttdeci">volatile int r</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00218">krnl.h:218</a></div></div>
-<div class="ttc" id="krnl_8h_html_a3e7f34b848366b08928c72711b6c008a"><div class="ttname"><a href="krnl_8h.html#a3e7f34b848366b08928c72711b6c008a">k_receive</a></div><div class="ttdeci">char k_receive(struct k_msg_t *pB, void *el, int timeout, int *lost_msg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00826">krnl.c:826</a></div></div>
+<div class="ttc" id="krnl_8h_html_a3e7f34b848366b08928c72711b6c008a"><div class="ttname"><a href="krnl_8h.html#a3e7f34b848366b08928c72711b6c008a">k_receive</a></div><div class="ttdeci">char k_receive(struct k_msg_t *pB, void *el, int timeout, int *lost_msg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00827">krnl.c:827</a></div></div>
 <div class="ttc" id="krnl_8h_html_ad1488042c624f027559bf393cb60030c"><div class="ttname"><a href="krnl_8h.html#ad1488042c624f027559bf393cb60030c">send_pool</a></div><div class="ttdeci">struct k_msg_t * send_pool</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00168">krnl.c:168</a></div></div>
+<div class="ttc" id="krnl_8h_html_afd53aa13189bcd9d4d4b5007042c0dde"><div class="ttname"><a href="krnl_8h.html#afd53aa13189bcd9d4d4b5007042c0dde">__attribute__</a></div><div class="ttdeci">void __attribute__((weak)) k_sem_clip(unsigned char nr</div></div>
 <div class="ttc" id="krnl_8h_html_aba6630458cb65380757b92a0dcc85f85"><div class="ttname"><a href="krnl_8h.html#aba6630458cb65380757b92a0dcc85f85">k_sem_signals_lost</a></div><div class="ttdeci">int k_sem_signals_lost(struct k_t *sem)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00705">krnl.c:705</a></div></div>
 <div class="ttc" id="structk__t_html_ad58455e7feb435218e12629a6b8321b9"><div class="ttname"><a href="structk__t.html#ad58455e7feb435218e12629a6b8321b9">k_t::clip</a></div><div class="ttdeci">volatile int clip</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00200">krnl.h:200</a></div></div>
 <div class="ttc" id="krnl_8h_html_a9910c513b91fd26369e121b1d6d1ee72"><div class="ttname"><a href="krnl_8h.html#a9910c513b91fd26369e121b1d6d1ee72">ki_task_shift</a></div><div class="ttdeci">void ki_task_shift(void) __attribute__((naked))</div></div>
@@ -918,9 +923,9 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="ttc" id="structk__msg__t_html_ac1285a0d8e7c3925b8f7671d92553ef7"><div class="ttname"><a href="structk__msg__t.html#ac1285a0d8e7c3925b8f7671d92553ef7">k_msg_t::pBuf</a></div><div class="ttdeci">char * pBuf</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00212">krnl.h:212</a></div></div>
 <div class="ttc" id="krnl_8h_html_a38effc60e299ca322c0065e67270a933"><div class="ttname"><a href="krnl_8h.html#a38effc60e299ca322c0065e67270a933">dmy_stk</a></div><div class="ttdeci">char dmy_stk[DMY_STK_SZ]</div></div>
 <div class="ttc" id="structk__t_html"><div class="ttname"><a href="structk__t.html">k_t</a></div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00190">krnl.h:190</a></div></div>
-<div class="ttc" id="krnl_8h_html_a1403e8934fe3c3155f50aa70fb939b01"><div class="ttname"><a href="krnl_8h.html#a1403e8934fe3c3155f50aa70fb939b01">k_reset</a></div><div class="ttdeci">void k_reset()</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01076">krnl.c:1076</a></div></div>
+<div class="ttc" id="krnl_8h_html_a1403e8934fe3c3155f50aa70fb939b01"><div class="ttname"><a href="krnl_8h.html#a1403e8934fe3c3155f50aa70fb939b01">k_reset</a></div><div class="ttdeci">void k_reset()</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01077">krnl.c:1077</a></div></div>
 <div class="ttc" id="krnl_8h_html_a555ea77f9601d6f817e87e779a8283ba"><div class="ttname"><a href="krnl_8h.html#a555ea77f9601d6f817e87e779a8283ba">k_eat_time</a></div><div class="ttdeci">char k_eat_time(unsigned int eatTime)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00193">krnl.c:193</a></div></div>
-<div class="ttc" id="krnl_8h_html_ad939ea35387a46c6c94a096d41c0d18b"><div class="ttname"><a href="krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b">k_init</a></div><div class="ttdeci">int k_init(int nrTask, int nrSem, int nrMsg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00936">krnl.c:936</a></div></div>
+<div class="ttc" id="krnl_8h_html_ad939ea35387a46c6c94a096d41c0d18b"><div class="ttname"><a href="krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b">k_init</a></div><div class="ttdeci">int k_init(int nrTask, int nrSem, int nrMsg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00937">krnl.c:937</a></div></div>
 <div class="ttc" id="structk__msg__t_html_aea9315f70a4c165cf9bfaef79046c184"><div class="ttname"><a href="structk__msg__t.html#aea9315f70a4c165cf9bfaef79046c184">k_msg_t::lost_msg</a></div><div class="ttdeci">volatile int lost_msg</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00214">krnl.h:214</a></div></div>
 <div class="ttc" id="krnl_8h_html_a74756a33d34544159e50f335cb7ed9af"><div class="ttname"><a href="krnl_8h.html#a74756a33d34544159e50f335cb7ed9af">k_wait_lost</a></div><div class="ttdeci">int k_wait_lost(struct k_t *sem, int timeout, int *lost)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00693">krnl.c:693</a></div></div>
 <div class="ttc" id="krnl_8h_html_ae320347a3a0f5d049aa456b4ebf21d28"><div class="ttname"><a href="krnl_8h.html#ae320347a3a0f5d049aa456b4ebf21d28">k_err_cnt</a></div><div class="ttdeci">volatile char k_err_cnt</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00176">krnl.c:176</a></div></div>
@@ -933,7 +938,7 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="ttc" id="krnl_8h_html_a39d231356e06de7246adccc268aa1147"><div class="ttname"><a href="krnl_8h.html#a39d231356e06de7246adccc268aa1147">pAQ</a></div><div class="ttdeci">struct k_t * pAQ</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00158">krnl.c:158</a></div></div>
 <div class="ttc" id="structk__t_html_abc0705694abb02c6005759d8ba66f35e"><div class="ttname"><a href="structk__t.html#abc0705694abb02c6005759d8ba66f35e">k_t::nr</a></div><div class="ttdeci">unsigned char nr</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00191">krnl.h:191</a></div></div>
 <div class="ttc" id="krnl_8h_html_a290d756b6f6023ccc202155eb0140843"><div class="ttname"><a href="krnl_8h.html#a290d756b6f6023ccc202155eb0140843">k_stk_chk</a></div><div class="ttdeci">int k_stk_chk(struct k_t *t)</div></div>
-<div class="ttc" id="krnl_8h_html_a7283f8962ab9553867a9945c3b9c2921"><div class="ttname"><a href="krnl_8h.html#a7283f8962ab9553867a9945c3b9c2921">__attribute__</a></div><div class="ttdeci">void __attribute__((weak)) k_sem_clip(int nr)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01118">krnl.c:1118</a></div></div>
+<div class="ttc" id="krnl_8h_html_ae4dc017f2c559a3c2460c69f0ead9dea"><div class="ttname"><a href="krnl_8h.html#ae4dc017f2c559a3c2460c69f0ead9dea">nrClip</a></div><div class="ttdeci">void int nrClip</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00621">krnl.h:621</a></div></div>
 <div class="ttc" id="krnl_8h_html_ab0cfe9f72acf96b6f901b1fccf3e723f"><div class="ttname"><a href="krnl_8h.html#ab0cfe9f72acf96b6f901b1fccf3e723f">k_crt_task</a></div><div class="ttdeci">struct k_t * k_crt_task(void(*pTask)(void), char prio, char *pStk, int stkSize)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00362">krnl.c:362</a></div></div>
 <div class="ttc" id="structk__msg__t_html_ad7653be9d894a288d863062258a6c467"><div class="ttname"><a href="structk__msg__t.html#ad7653be9d894a288d863062258a6c467">k_msg_t::w</a></div><div class="ttdeci">volatile int w</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00218">krnl.h:218</a></div></div>
 <div class="ttc" id="structk__t_html_ab5c4013797f848b7f3d306c8b12375b0"><div class="ttname"><a href="structk__t.html#ab5c4013797f848b7f3d306c8b12375b0">k_t::maxv</a></div><div class="ttdeci">volatile int maxv</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00200">krnl.h:200</a></div></div>
@@ -944,30 +949,30 @@ $(document).ready(function(){initNavTree('krnl_8h_source.html','');});
 <div class="ttc" id="krnl_8h_html_ac0ba8f7ce796b6b1e572f969328a2ca5"><div class="ttname"><a href="krnl_8h.html#ac0ba8f7ce796b6b1e572f969328a2ca5">pDmy</a></div><div class="ttdeci">struct k_t * pDmy</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00158">krnl.c:158</a></div></div>
 <div class="ttc" id="krnl_8h_html_a3ba7acce9c4a4348a166afaa07981bdc"><div class="ttname"><a href="krnl_8h.html#a3ba7acce9c4a4348a166afaa07981bdc">PUSHREGS</a></div><div class="ttdeci">#define PUSHREGS()</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00390">krnl.h:390</a></div></div>
 <div class="ttc" id="structk__t_html_aec4d7232788478d29abb708ca07f6796"><div class="ttname"><a href="structk__t.html#aec4d7232788478d29abb708ca07f6796">k_t::cnt3</a></div><div class="ttdeci">volatile int cnt3</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00200">krnl.h:200</a></div></div>
-<div class="ttc" id="krnl_8h_html_a3ccf696f0ef7f772a9d339348b6b52e2"><div class="ttname"><a href="krnl_8h.html#a3ccf696f0ef7f772a9d339348b6b52e2">k_tmrInfo</a></div><div class="ttdeci">int k_tmrInfo(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01096">krnl.c:1096</a></div></div>
+<div class="ttc" id="krnl_8h_html_a3ccf696f0ef7f772a9d339348b6b52e2"><div class="ttname"><a href="krnl_8h.html#a3ccf696f0ef7f772a9d339348b6b52e2">k_tmrInfo</a></div><div class="ttdeci">int k_tmrInfo(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01097">krnl.c:1097</a></div></div>
 <div class="ttc" id="krnl_8h_html_a56febc95937d41bc48b48b6fdd6f6987"><div class="ttname"><a href="krnl_8h.html#a56febc95937d41bc48b48b6fdd6f6987">k_sleep</a></div><div class="ttdeci">int k_sleep(int time)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00452">krnl.c:452</a></div></div>
 <div class="ttc" id="krnl_8h_html_a7a1b6eda59951448ab3663c29759e898"><div class="ttname"><a href="krnl_8h.html#a7a1b6eda59951448ab3663c29759e898">ki_nowait</a></div><div class="ttdeci">int ki_nowait(struct k_t *sem)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00607">krnl.c:607</a></div></div>
 <div class="ttc" id="krnl_8h_html_a7f65c7a1cbda113524b3009faf639357"><div class="ttname"><a href="krnl_8h.html#a7f65c7a1cbda113524b3009faf639357">k_wait</a></div><div class="ttdeci">int k_wait(struct k_t *sem, int timeout)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00655">krnl.c:655</a></div></div>
 <div class="ttc" id="krnl_8h_html_a80e96fa9f2ed99168a71edefd1fc47ae"><div class="ttname"><a href="krnl_8h.html#a80e96fa9f2ed99168a71edefd1fc47ae">pmain_el</a></div><div class="ttdeci">struct k_t * pmain_el</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00158">krnl.c:158</a></div></div>
 <div class="ttc" id="structk__msg__t_html"><div class="ttname"><a href="structk__msg__t.html">k_msg_t</a></div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00207">krnl.h:207</a></div></div>
 <div class="ttc" id="krnl_8h_html_a27f33ac31a1b04e73084d19333e10486"><div class="ttname"><a href="krnl_8h.html#a27f33ac31a1b04e73084d19333e10486">k_crt_sem</a></div><div class="ttdeci">struct k_t * k_crt_sem(char init_val, int maxvalue)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00507">krnl.c:507</a></div></div>
-<div class="ttc" id="krnl_8h_html_a3f78785f06706a3135f9300d6ab0b01d"><div class="ttname"><a href="krnl_8h.html#a3f78785f06706a3135f9300d6ab0b01d">k_set_preempt</a></div><div class="ttdeci">char k_set_preempt(char on)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01103">krnl.c:1103</a></div></div>
+<div class="ttc" id="krnl_8h_html_a3f78785f06706a3135f9300d6ab0b01d"><div class="ttname"><a href="krnl_8h.html#a3f78785f06706a3135f9300d6ab0b01d">k_set_preempt</a></div><div class="ttdeci">char k_set_preempt(char on)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01104">krnl.c:1104</a></div></div>
 <div class="ttc" id="krnl_8h_html_a9309a963f9a5dfe051cc8bfbb7aa42f3"><div class="ttname"><a href="krnl_8h.html#a9309a963f9a5dfe051cc8bfbb7aa42f3">bugblink</a></div><div class="ttdeci">volatile char bugblink</div></div>
 <div class="ttc" id="krnl_8h_html_a6e675bcea12aa787eabf1ca6a9271ce8"><div class="ttname"><a href="krnl_8h.html#a6e675bcea12aa787eabf1ca6a9271ce8">pSleepSem</a></div><div class="ttdeci">struct k_t * pSleepSem</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00158">krnl.c:158</a></div></div>
-<div class="ttc" id="krnl_8h_html_a66c23bd6aa71c0d083e4a4b71b35ff71"><div class="ttname"><a href="krnl_8h.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive</a></div><div class="ttdeci">char ki_receive(struct k_msg_t *pB, void *el, int *lost_msg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00790">krnl.c:790</a></div></div>
+<div class="ttc" id="krnl_8h_html_a66c23bd6aa71c0d083e4a4b71b35ff71"><div class="ttname"><a href="krnl_8h.html#a66c23bd6aa71c0d083e4a4b71b35ff71">ki_receive</a></div><div class="ttdeci">char ki_receive(struct k_msg_t *pB, void *el, int *lost_msg)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00791">krnl.c:791</a></div></div>
 <div class="ttc" id="krnl_8h_html_a45c4a121f17683f0cd3593c0ee0bff1b"><div class="ttname"><a href="krnl_8h.html#a45c4a121f17683f0cd3593c0ee0bff1b">ki_signal</a></div><div class="ttdeci">int ki_signal(struct k_t *sem)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00565">krnl.c:565</a></div></div>
-<div class="ttc" id="krnl_8h_html_abed191616e4e3d1fa684f9ca719715fb"><div class="ttname"><a href="krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb">k_start</a></div><div class="ttdeci">int k_start(int tm)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00975">krnl.c:975</a></div></div>
+<div class="ttc" id="krnl_8h_html_abed191616e4e3d1fa684f9ca719715fb"><div class="ttname"><a href="krnl_8h.html#abed191616e4e3d1fa684f9ca719715fb">k_start</a></div><div class="ttdeci">int k_start(int tm)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00976">krnl.c:976</a></div></div>
 <div class="ttc" id="krnl_8h_html_a3612c72062520ffab60364b0d956e431"><div class="ttname"><a href="krnl_8h.html#a3612c72062520ffab60364b0d956e431">k_sem</a></div><div class="ttdeci">int k_sem</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00170">krnl.c:170</a></div></div>
 <div class="ttc" id="krnl_8h_html_a7f0e5da0dbd3154fa3b69e3e2e650bed"><div class="ttname"><a href="krnl_8h.html#a7f0e5da0dbd3154fa3b69e3e2e650bed">ki_send</a></div><div class="ttdeci">char ki_send(struct k_msg_t *pB, void *el)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l00734">krnl.c:734</a></div></div>
 <div class="ttc" id="structk__msg__t_html_ae28a828860fdf0afcd9106045d223767"><div class="ttname"><a href="structk__msg__t.html#ae28a828860fdf0afcd9106045d223767">k_msg_t::nr_el</a></div><div class="ttdeci">volatile int nr_el</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8h_source.html#l00214">krnl.h:214</a></div></div>
-<div class="ttc" id="krnl_8h_html_a64ccac5defa817ee73df6105c0927901"><div class="ttname"><a href="krnl_8h.html#a64ccac5defa817ee73df6105c0927901">k_get_preempt</a></div><div class="ttdeci">char k_get_preempt(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01112">krnl.c:1112</a></div></div>
+<div class="ttc" id="krnl_8h_html_a64ccac5defa817ee73df6105c0927901"><div class="ttname"><a href="krnl_8h.html#a64ccac5defa817ee73df6105c0927901">k_get_preempt</a></div><div class="ttdeci">char k_get_preempt(void)</div><div class="ttdef"><b>Definition:</b> <a href="krnl_8c_source.html#l01113">krnl.c:1113</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="krnl_8h.html">krnl.h</a></li>
-    <li class="footer">Generated on Fri Apr 10 2015 16:26:01 for KRNL - a kernel for Arduino by
+    <li class="footer">Generated on Fri Apr 10 2015 16:54:22 for KRNL - a kernel for Arduino by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
