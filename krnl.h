@@ -36,7 +36,7 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 // remember to update in krnl.c !!!
-#define KRNL_VRS 1340
+#define KRNL_VRS 2001
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -188,6 +188,7 @@ extern char dmy_stk[DMY_STK_SZ];
 
 /***** KeRNeL data types *****/
 struct k_t {
+    unsigned char nr;
     struct k_t
             *next,  // task,sem: double chain lists ptr
             *pred;  // task,sem: double chain lists ptr
@@ -204,6 +205,7 @@ struct k_t {
 };
 
 struct k_msg_t { // msg type
+    unsigned char nr;
     struct k_t
         *sem;
     char
@@ -223,7 +225,7 @@ extern struct k_t
         *task_pool,
         *sem_pool,
         AQ,			// activeQ
-        main_el,
+        *pmain_el,
         *pAQ,
         *pDmy, 		// ptr to dummy task descriptor
         *pRun,		// ptr to running task
@@ -237,8 +239,7 @@ extern char nr_task, nr_sem, nr_send;
 extern volatile char k_running;  // no running
 
 extern volatile char bugblink;
-extern volatile char
-k_err_cnt;	// every time an error occurs cnt is incr by one
+extern volatile char k_err_cnt;	// every time an error occurs cnt is incr by one
 
 
 /******************************************************
@@ -487,7 +488,7 @@ char k_eat_time(unsigned int eatTime);
 * issues a task shift - handle with care
 * Not to be used by normal user
 */
-    void ki_task_shift(void) __attribute__ ((naked));
+void ki_task_shift(void) __attribute__ ((naked));
 
 /**
 * Set task asleep for a number of ticks.
@@ -609,6 +610,21 @@ int ki_wait(struct k_t * sem, int timeout);
 */
 int ki_semval(struct k_t * sem);
 
+/**
+* a function for overloading on usersite which is called when a semaphore is overflooding
+* no reset occur - it's only readind out semaphore idendity
+* 1: means first semahore allocated by user etc
+*/
+void __attribute__ ((weak)) k_sem_clip(int nr);
+
+/**
+* a function for overloading on usersite which is called when a msgQ is overflooding
+* no reset occur - it's only readind out smsgQ idendity
+* 1: means first msgQ allocated by user etc
+*/
+void __attribute__ ((weak)) k_send_Q_clip(int nr);
+
+
 struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf);
 
 /**
@@ -699,10 +715,17 @@ int k_start(int tm); // tm in milliseconds
 */
 int k_stop(int exitVal); // tm in milliseconds
 
+
+/**
+* Reset by disable interrupt plus activate watchdog (15 millisseconds) and just wait...
+**/
+void k_reset();
+
 /**
 * Initialise blink on pin 13
 * ON when dummy is running
 * Nov 2014 - fake do not use it bq it will not work
+* for emergency use :-)
 */
 void k_bugblink13(char on);
 

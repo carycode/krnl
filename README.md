@@ -32,6 +32,23 @@ See some warnings in the bottom !!!
 
 ## Some characteristics:
 
+
+- Mmeory usage
+As of vrs 2001 
+-- static usage around 70B
+-- a semaphore/task occpy 18B in krnl data structure
+-- a msg-Q occupy 17B plus 18B(an internal semaphore)
+-- the two above allocated from heap
+
+So k_init(2,3,4) gives 71B global (static) and 18*((2+1)+(3+1)+4) + 4*17 = 266B which 
+
+the +1 on task for a descriptor for main/dummy
+the +1 on semaphore for the timer/sleep semaphore
+
+And then you have to add up arrays for stack for each task. Less than 50B is not a good idea.
+You can runtime check how deep the stack has been used by k_unused_stak
+
+
 - preemptive scheduling 
  - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
  - static preemptivepriority scheme

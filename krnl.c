@@ -36,8 +36,9 @@
 * seeduino 1280 and mega2560                         *
 *****************************************************/
 
+
 #include "krnl.h"
- 
+#include <avr/wdt.h>
 // CPU frequency - for adjusting delays
 #if (F_CPU == 16000000)
 #pragma message ("krnl detected 16 MHz" )
@@ -46,7 +47,7 @@
 #endif
 
 
-#if (KRNL_VRS != 1340)
+#if (KRNL_VRS != 2001)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
@@ -158,7 +159,7 @@ struct k_t
         *task_pool, // array of descriptors for tasks
         *sem_pool,  // .. for semaphores
         AQ,       // Q head for active Q
-        main_el,  // procesdecriptor for main
+        *pmain_el,  // procesdecriptor for main
         *pAQ,     // head of activeQ (AQ)
         *pDmy,    // ref to dummy task
         *pRun,    // who is running ?
@@ -169,13 +170,15 @@ struct k_msg_t *send_pool;   // ptr to array for msg sem pool
 int k_task, k_sem, k_msg; // how many di you request in k_init of descriptors ?
 char nr_task = 0,nr_sem = 0,	nr_send = 0;	// counters for created KeRNeL items
 
-char dmy_stk[DMY_STK_SZ];
+// NASTY char dmy_stk[DMY_STK_SZ];
 
 volatile char krnl_preempt_flag=1; //1: preempt, 0 : non preempt
 volatile char k_running = 0,	k_err_cnt = 0;
 volatile unsigned int tcntValue;	// counters for timer system
 volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
 fakecnt_preset;
+
+static volatile char stopp = 0;
 
 unsigned long k_millis_counter=0;
 unsigned int k_tick_size;
@@ -375,6 +378,7 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     }
 
     pT = task_pool + nr_task;	// lets take a task descriptor
+    pT->nr = nr_task;
     nr_task++;
 
     pT->cnt2 = 0;		// no time out running on you for the time being
@@ -474,8 +478,6 @@ k_unused_stak (struct k_t *t)
 }
 
 //----------------------------------------------------------------------------
-
-int
 k_set_prio (char prio)
 {
 
@@ -519,6 +521,7 @@ k_crt_sem (char init_val, int maxvalue)
     }
 
     sem = sem_pool + nr_sem;
+    sem->nr = sem;
     nr_sem++;
 
     sem->cnt2 = 0;		// no timer running
@@ -565,6 +568,7 @@ ki_signal (struct k_t *sem)
     if (sem->maxv <= sem->cnt1) {
         if (32000 > sem->clip)
             sem->clip++;
+        k_sem_clip(0);
         return (-1);
     }
 
@@ -735,7 +739,7 @@ ki_send (struct k_msg_t *pB, void *el)
 
     if (pB->nr_el <= pB->cnt) {
         // room for a putting new msg in Q ?
-        if (pB->lost_msg < 10000)
+        if (pB->lost_msg < 32000)
             pB->lost_msg++;
         return (-1);		// nope
     }
@@ -872,6 +876,7 @@ k_crt_send_Q (int nr_el, int el_size, void *pBuf)
         goto errexit;
 
     pMsg = send_pool + nr_send;
+    pMsg->nr = nr_send;
     nr_send++;
 
     pMsg->sem = k_crt_sem (0, nr_el);
@@ -918,11 +923,12 @@ void k_bugblink13(char blink)
 
 //----------------------------------------------------------------------------
 
-void
+/* NASTYvoid
 dummy_task (void)
 {
     while (1) { }
 }
+*/
 
 //----------------------------------------------------------------------------
 
@@ -952,7 +958,11 @@ k_init (int nrTask, int nrSem, int nrMsg)
     pAQ->next = pAQ->pred = pAQ;
     pAQ->prio = QHD_PRIO;
 
-    pDmy = k_crt_task (dummy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
+    // JDN pDmy = k_crt_task (dummy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
+    pmain_el = task_pool;
+    nr_task++;
+    pmain_el->prio = DMY_PRIO;
+    prio_enQ(pAQ,pmain_el); 
 
     pSleepSem = k_crt_sem (0, 2000);
 
@@ -1030,14 +1040,15 @@ else
     //  let us start the show
     TIMSKx |= (1 << TOIEx); // enable interrupt
 
-    pRun = &main_el;		// just for ki_task_shift
+    pRun = pmain_el;		// just for ki_task_shift
     k_running = 1;
 
     DI ();
     ki_task_shift ();		// bye bye from here
     EI ();
+    while (!stopp);
 
-    return (main_el.cnt1);	// haps from pocket from kstop
+    return (pmain_el->cnt1);	// haps from pocket from kstop
 }
 
 int k_stop(int exitVal)
@@ -1050,17 +1061,24 @@ int k_stop(int exitVal)
         return -1;
     }
 
-    main_el.cnt1 = exitVal; // transfer in pocket
-
+    pmain_el->cnt1 = exitVal; // transfer in pocket
+    //NASTY
     // stop tick timer isr
     TIMSKx &= ~(1 << TOIEx);
 
+    stopp = 1;
     // back to main
-    AQ.next = &main_el; // we will be the next
+    AQ.next = pmain_el; // we will be the next BRUTAL WAY TO DO IT NASTY
     ki_task_shift();
     while (1); // you will never come here
 }
 
+void k_reset()
+{
+    DI();
+    wdt_enable(WDTO_15MS);
+    while(1);
+}
 //-------------------------------------------------------------------------------------------
 
 unsigned long k_millis(void)
@@ -1094,6 +1112,16 @@ return krnl_preempt_flag;
 char k_get_preempt(void)
 {
   return krnl_preempt_flag;
+}
+
+
+void __attribute__ ((weak)) k_sem_clip(int nr)
+{
+
+}
+void __attribute__ ((weak)) k_send_Q_clip(int nr)
+{
+
 }
 
 
