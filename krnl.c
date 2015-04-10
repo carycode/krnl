@@ -39,7 +39,7 @@
 #include "krnl.h"
 
 
-#if (KRNL_VRS != 1238)
+#if (KRNL_VRS != 1239)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
@@ -123,7 +123,7 @@
 #define DIVV 62.5
 #define DIVV8 31.25
 
-'#elif (KRNLTMR == 5)
+#elif (KRNLTMR == 5)
 
 #define KRNLTMRVECTOR TIMER5_OVF_vect
 #define TCNTx TCNT5
@@ -383,6 +383,7 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     for (i = 0; i < stkSize; i++)	// put hash code on stak to be used by k_unused_stak()
         pStk[i] = STAK_HASH;
 
+    // HW DEPENDENT PART
     s = pStk + stkSize - 1;	// now we point on top of stak
     *(s--) = 0x00;		    // 1 byte safety distance
     *(s--) = lo8 (pTask);	//  so top now holds address of function
@@ -408,7 +409,8 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
 
     pT->sp_lo = lo8 (s);	// now we just need to save stakptr
     pT->sp_hi = hi8 (s);	// in thread descriptor
-    //HW_DE_ENDE
+
+    // HW DEPENDENT PART - ENDE
 
     pT->prio = prio;		// maxv for holding org prio for inheritance
     pT->maxv = (int) prio;
@@ -421,6 +423,7 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     return(NULL);
 }
 
+//----------------------------------------------------------------------------
 
 int
 freeRam (void)
@@ -693,6 +696,7 @@ k_sem_signals_lost (struct k_t *sem)
     int x;
     DI();
     x = sem->clip;
+    sem->clip = 0;
     EI();
     return x;
 }

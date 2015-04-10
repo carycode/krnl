@@ -36,7 +36,7 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 // remember to update in krnl.c !!!
-#define KRNL_VRS 1238
+#define KRNL_VRS 1239
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -50,28 +50,13 @@ When using a timer you must be aware of that it will prohibit you from things li
 - tone (pwm sound) uses timer2
 
 ... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
+
 Timer0:
 - Timer0 is a 8bit timer.
 - In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
 -  If you change Timer0 registers, this may influence the Arduino timer function.
 - So you should know what you are doing.
 
-Timer1:#include <krnl.h>
-// one task loops and blink
-// k_sleep is used for delay - and ensure no busy waiting
-// if delay(...) is used then you use cpu time
-
-struct k_t *p;
-char stak[100];
-
-void t1()
-{
-  while (1) {
-
-    k_sleep(500);
-    digitalWrite(13,HIGH);
-
-    k_sleep(500);
 - Timer1 is a 16bit timer.
 - In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
 
@@ -83,7 +68,7 @@ Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
 
 
-On uno
+On Uno
 - Pins 5 and 6: controlled by timer0
 - Pins 9 and 10: controlled by timer1
 - Pins 11 and 3: controlled by timer2
@@ -122,13 +107,31 @@ SO BEWARE !!!
 #ifndef KRNL
 #define KRNL
  
-// which timer to use for heartbeat (0 - occupied by millis),1,2, and 3,4 if its a Mega
+
+// USER CONFIGURATION PART
+/* which timer to use for krnl heartbeat 
+* timer 0 ( 8 bit) is normally used by millis - avoid !
+* timer 1 (16 bit)  DEFAULT
+* timer 2 ( 8 bit)
+* timer 3 (16 bit) 1280/2560 only (MEGA)
+* timer 4 (16 bit) 1280/2560 only (MEGA)
+* timer 5 (16 bit) 1280/2560 only (MEGA)
+*/
+
+
 #define KRNLTMR 1
 
+// END USER CONFIGURATION
 
 // CPU frequency - for adjusting delays
 //#define MHZ F08
+#if (F_CPU == 16000000)
 #define MHZ F16
+#pragma message "krnl detected 16 MHz" 
+#else
+#define MHZ F08
+#pragma message "krnl detected 8 MHz"
+#endif
 
 //----------------------------------------------------------
 
@@ -155,43 +158,36 @@ extern "C" {
 #endif
 
 #if (MHZ != F16) && (MHZ !=F08)
-#error Bad frequency (MHZ) selected  - JDN
+#error Bad frequency (MHZ) selected in krnl 
 #endif
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)|| defined(__AVR_ATmega328__) ||defined(__AVR_ATmega32U4__)
 #if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2)
-#error bad timer for krnl heartbeat(168/328/328p/32u4) - JDN
+#error bad timer selection for krnl heartbeat(168/328/328p/32u4)
 #endif
 #endif // defined
 
 #if defined (__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 #if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2) &&(KRNLTMR != 3) &&(KRNLTMR != 4) &&(KRNLTMR != 5)
-#error bad timer for krnl heartbeat(1280/2560) - JDN
+#error bad timer for krnl heartbeat(1280/2560) in krnl
 #endif
 #endif
 
 // DEBUGGING
 //#define DMYBLINK     // ifdef then led (pin13) will light when dummy is running
-
-// prioinheritance - prototype dont use it !
-// #define PRIOINHERITANCE
-
-extern int k_task;
-extern int k_sem;
-extern int k_msg;
-extern volatile char krnl_preempt_flag;
-
-
-#define QHD_PRIO 100			      // Queue head prio - for sentinel use
-#define DMY_PRIO (QHD_PRIO-2)	  // dummy task prio (0 == highest prio)
-#define DMY_STK_SZ	90		  	  // staksize for dummy
-#define MAIN_PRIO 	50  		    // main task prio
-#define STAK_HASH 	0x5c	 	    // just a hashcode
+ 
+#define QHD_PRIO 100                  // Queue head prio - for sentinel use
+#define DMY_PRIO (QHD_PRIO-2)     // dummy task prio (0 == highest prio)
+#define DMY_STK_SZ  90            // staksize for dummy
+#define MAIN_PRIO   50              // main task prio
+#define STAK_HASH   0x5c            // just a hashcode
 #define MAX_SEM_VAL 50          // NB is also max for nr elem in msgQ !
 #define MAX_INT 0x7FFF
 #define SEM_MAX_DEFAULT 50
-// #define PRIOINHERITANCE
+
+extern int k_task, k_sem, k_msg;
+extern volatile char krnl_preempt_flag;
 extern char dmy_stk[DMY_STK_SZ];
 
 /***** KeRNeL data types *****/
@@ -199,10 +195,7 @@ struct k_t {
     struct k_t
             *next,  // task,sem: double chain lists ptr
             *pred;  // task,sem: double chain lists ptr
-#ifdef PRIOINHERITANCE
-    struct k_t
-            *elm;   // task: ptr to owner of mutex etc only prioinheritance
-#endif
+ #endif
     volatile char
     sp_lo,    // sem:vacant    | task: low 8 byte of stak adr
     sp_hi,    // sem: vacant   |task: high 8 byte of stak adr
@@ -217,17 +210,17 @@ struct k_t {
 
 struct k_msg_t { // msg type
     struct k_t
-            *sem;
+        *sem;
     char
-    *pBuf;    // ptr to user supplied ringbuffer
+       *pBuf;    // ptr to user supplied ringbuffer
     volatile int
-    nr_el,
-    el_size,
-    lost_msg;
+        nr_el,
+        el_size,
+        lost_msg;
     volatile int
-    r,
-    w,
-    cnt;
+        r,
+        w,
+        cnt;
 };
 
 /***** KeRNeL variables *****/
@@ -316,7 +309,7 @@ r1 is always assumd to be zero in c code
 "push r1  \n\t" \
 "push r0  \n\t" \
 "in r0, __SREG__ \n\t" \
-"cli \n\t" \
+"cli \n\t" \            // gcc requires r1 to be 0 in "all" architectures
 "push r0  \n\t" \
 "in r0 , 0x3b \n\t" \
 "push r0 \n\t" \
