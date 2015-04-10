@@ -91,7 +91,7 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
     
 DEFAULT TIMER1 SO BEWARE OF pwm/Servo
 
-You can change it to timer0 and then maintain millis internal counter - see krnl.c ISR for more info
+You can change it to timer0 and then by yourself maintain millis internal counter - see krnl.c ISR for more info
 
 you may use timer 0 but shall be aware of a number of Arduino libraries using millis().
 you can "hack" it by maintaining  millis counter - look in wiring.c for naming. I know it but you
