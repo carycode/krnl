@@ -53,8 +53,14 @@
 
 #include <avr/interrupt.h>
 #include <stdlib.h>
+/*
+#ifdef __cplusplus
+extern "C" {
+#endif
+*/
 
 #if (KRNLTMR == 0)
+
 // normally not goood bq of arduino sys timer so you wil get a compile error
 // 8 bit timer !!!
 #define KRNLTMRVECTOR TIMER0_OVF_vect
@@ -906,7 +912,7 @@ k_round_robbin (void)
     
 //----------------------------------------------------------------------------
 
-/* NASTYvoid
+/* NASTYvoid from vrs 2001 it is main itself can be changed back
 dummy_task (void)
 {
     while (1) { }
@@ -941,6 +947,7 @@ k_init (int nrTask, int nrSem, int nrMsg)
     pAQ->next = pAQ->pred = pAQ;
     pAQ->prio = QHD_PRIO;
 
+    // crt dummy
     // JDN pDmy = k_crt_task (dummy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
     pmain_el = task_pool;
     pmain_el->nr = 0;
@@ -1005,6 +1012,8 @@ k_start (int tm)
     
     DI (); // silencio
     k_tick_size = tm;
+
+//  outdated ? JDN NASTY
 #if defined(__AVR_ATmega32U4__)
     // 32u4 have no intern/extern clock source register
 #else
@@ -1030,6 +1039,8 @@ else
     DI ();
     ki_task_shift ();		// bye bye from here
     EI ();
+
+    // this while loop bq main are dummy
     while (!stopp);
 
     return (pmain_el->cnt1);	// haps from pocket from kstop
@@ -1111,3 +1122,8 @@ void __attribute__ ((weak)) k_sem_clip(unsigned char nr,int nrClip) {}
 void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip) {}
 
 /* EOF - JDN */
+/*
+#ifdef __cplusplus
+}
+#endif
+*/

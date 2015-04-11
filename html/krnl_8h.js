@@ -74,5 +74,7 @@ var krnl_8h =
     [ "pSleepSem", "krnl_8h.html#a6e675bcea12aa787eabf1ca6a9271ce8", null ],
     [ "sem_pool", "krnl_8h.html#a7734e7465577a12ef1bee5923cc7b121", null ],
     [ "send_pool", "krnl_8h.html#ad1488042c624f027559bf393cb60030c", null ],
+    [ "SPH", "krnl_8h.html#ac21c5c6e81ad9acb76fa87e96bfc5032", null ],
+    [ "SPL", "krnl_8h.html#a03c46bba28fefff108b69037bffec016", null ],
     [ "task_pool", "krnl_8h.html#ae8508664812d71fc106d8929f6104cf6", null ]
 ];

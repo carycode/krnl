@@ -108,6 +108,8 @@ SO BEWARE !!!
 
 #define KRNL
  
+// DISPLAY OF PROCESS ID BY LEDS if you want to 
+#define KRNLBUG
 
 // USER CONFIGURATION PART
 /* which timer to use for krnl heartbeat 
@@ -126,8 +128,6 @@ SO BEWARE !!!
 #endif
 // END USER CONFIGURATION
 
-// DISPLAY OF PROCESS ID BY LEDS
-#define KRNLBUG
 
 
  
@@ -291,8 +291,7 @@ if (pRun != AQ.next) {  \
   pRun->sp_lo = SPL;    \
   pRun->sp_hi = SPH;    \
   pRun = AQ.next;       \
-  if (k_breakout)       \
-    k_breakout();       \
+  k_breakout();         \  
   SPL = pRun->sp_lo;    \
   SPH = pRun->sp_hi;    \
 }
@@ -316,9 +315,7 @@ if (pRun != AQ.next) {  \
 #define EI()   asm volatile ("sei")
 #define RETI() asm volatile ("reti") 
 
-/*
-r1 is always assumd to be zero in c code 
-*/
+/* below: r1 is always assumd to be zero in c code (gcc issue I think) */
 
 #if defined (__AVR_ATmega2560__) || defined (__AVR_ATmega1280__)
 
@@ -326,7 +323,7 @@ r1 is always assumd to be zero in c code
 "push r1  \n\t" \
 "push r0  \n\t" \
 "in r0, __SREG__ \n\t" \
-"cli \n\t" \            // gcc requires r1 to be 0 in "all" architectures
+"cli \n\t" \           
 "push r0  \n\t" \
 "in r0 , 0x3b \n\t" \
 "push r0 \n\t" \
@@ -796,7 +793,6 @@ int freeRam(void);
 #ifdef KRNLBUG
  void __attribute__((weak)) k_breakout();
 #endif
-
 
 #ifdef __cplusplus
 }
