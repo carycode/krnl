@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['k_5fbugblink13',['k_bugblink13',['../krnl_8c.html#a1b11fe2eb20afe1d8ff91f013620b190',1,'k_bugblink13(char blink):&#160;krnl.c'],['../krnl_8h.html#a5e03bf42798319958880dc799962c383',1,'k_bugblink13(char on):&#160;krnl.c']]],
+  ['k_5fbugblink13',['k_bugblink13',['../krnl_8h.html#a5e03bf42798319958880dc799962c383',1,'krnl.h']]],
   ['k_5fcrt_5fsem',['k_crt_sem',['../krnl_8c.html#a27f33ac31a1b04e73084d19333e10486',1,'k_crt_sem(char init_val, int maxvalue):&#160;krnl.c'],['../krnl_8h.html#a27f33ac31a1b04e73084d19333e10486',1,'k_crt_sem(char init_val, int maxvalue):&#160;krnl.c']]],
   ['k_5fcrt_5fsend_5fq',['k_crt_send_Q',['../krnl_8c.html#a8ad6ae5f7e3cac59845df0de94e55c68',1,'k_crt_send_Q(int nr_el, int el_size, void *pBuf):&#160;krnl.c'],['../krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68',1,'k_crt_send_Q(int nr_el, int el_size, void *pBuf):&#160;krnl.c']]],
   ['k_5fcrt_5ftask',['k_crt_task',['../krnl_8c.html#ab0cfe9f72acf96b6f901b1fccf3e723f',1,'k_crt_task(void(*pTask)(void), char prio, char *pStk, int stkSize):&#160;krnl.c'],['../krnl_8h.html#ab0cfe9f72acf96b6f901b1fccf3e723f',1,'k_crt_task(void(*pTask)(void), char prio, char *pStk, int stkSize):&#160;krnl.c']]],

@@ -192,24 +192,11 @@ int tmr_indx; // for travelling Qs in tmr isr
  */
  char k_eat_time(unsigned int eatTime)
  {
-    unsigned long l;
-    // tested on uno for 5 msec and 500 msec
-    // if you are preempted then ... :-(
-
-    // quants in milli seconds
-    // not 100% precise !!!
-    l = eatTime;
-#if (F_CPU == 16000000)
-    l *=1323;
-#elif (F_CPU == 8000000)
-    l *=661;
-#else
-#error bad cpu frequency
-#endif
-
-    while (l--) {
-        asm("nop \n\t nop \n\t nop \n\t nop \n\t nop \n\t nop");
+    while (eatTime > 10) {
+        delayMicroseconds(10000);
+        eatTime-=10;
     }
+    delayMicroseconds(eatTime*1000);
 }
 
 //---QOPS---------------------------------------------------------------------
@@ -915,13 +902,8 @@ k_round_robbin (void)
     EI ();
 }
 
-//---------------------------------------------------------------------fakecnt-------
-
-void k_bugblink13(char blink)
-{
-    /*not impl anymore */
-}
-
+  
+    
 //----------------------------------------------------------------------------
 
 /* NASTYvoid
@@ -961,6 +943,7 @@ k_init (int nrTask, int nrSem, int nrMsg)
 
     // JDN pDmy = k_crt_task (dummy_task, DMY_PRIO, dmy_stk, DMY_STK_SZ);
     pmain_el = task_pool;
+    pmain_el->nr = 0;
     nr_task++;
     pmain_el->prio = DMY_PRIO;
     prio_enQ(pAQ,pmain_el); 
@@ -1115,15 +1098,16 @@ char k_get_preempt(void)
   return krnl_preempt_flag;
 }
 
+//-------------------------------------------------------------------------------------------
 
-void __attribute__ ((weak)) k_sem_clip(unsigned char nr,int nrClip)
-{
+void __attribute__ ((weak)) k_breakout() {}
 
-}
-void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip)
-{
+//-------------------------------------------------------------------------------------------
 
-}
+void __attribute__ ((weak)) k_sem_clip(unsigned char nr,int nrClip) {}
 
+//-------------------------------------------------------------------------------------------
+
+void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip) {}
 
 /* EOF - JDN */

@@ -18,7 +18,6 @@ var krnl_8c =
     [ "enQ", "krnl_8c.html#ab750c904258e717b40c17f55400ca3b2", null ],
     [ "freeRam", "krnl_8c.html#abde03a57484eac43bffbad24df5fc794", null ],
     [ "ISR", "krnl_8c.html#a790cb408825575b88d1107608b1ff389", null ],
-    [ "k_bugblink13", "krnl_8c.html#a1b11fe2eb20afe1d8ff91f013620b190", null ],
     [ "k_crt_sem", "krnl_8c.html#a27f33ac31a1b04e73084d19333e10486", null ],
     [ "k_crt_send_Q", "krnl_8c.html#a8ad6ae5f7e3cac59845df0de94e55c68", null ],
     [ "k_crt_task", "krnl_8c.html#ab0cfe9f72acf96b6f901b1fccf3e723f", null ],

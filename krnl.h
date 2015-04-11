@@ -126,6 +126,9 @@ SO BEWARE !!!
 #endif
 // END USER CONFIGURATION
 
+// DISPLAY OF PROCESS ID BY LEDS
+#define KRNLBUG
+
 
  
 //----------------------------------------------------------
@@ -238,7 +241,6 @@ extern char nr_task, nr_sem, nr_send;
 
 extern volatile char k_running;  // no running
 
-extern volatile char bugblink;
 extern volatile char k_err_cnt;	// every time an error occurs cnt is incr by one
 
 
@@ -280,14 +282,33 @@ extern volatile char k_err_cnt;	// every time an error occurs cnt is incr by one
 #define lo8(X) ((unsigned char)((unsigned int)(X)))
 #define hi8(X) ((unsigned char)((unsigned int)(X) >> 8))
 
+extern volatile char k_bug_on;
+
+#ifdef KRNLBUG
+
 #define K_CHG_STAK()    \
 if (pRun != AQ.next) {  \
   pRun->sp_lo = SPL;    \
   pRun->sp_hi = SPH;    \
   pRun = AQ.next;       \
+  if (k_breakout)       \
+    k_breakout();       \
   SPL = pRun->sp_lo;    \
   SPH = pRun->sp_hi;    \
 }
+
+#else
+
+#define K_CHG_STAK()    \
+if (pRun != AQ.next) {  \
+  pRun->sp_lo = SPL;    \
+  pRun->sp_hi = SPH;    \
+  pRun = AQ.next;       \   
+  SPL = pRun->sp_lo;    \
+  SPH = pRun->sp_hi;    \
+}
+
+#endif
 
 // MISSING no code 1284p
 
@@ -771,6 +792,10 @@ char k_get_preempt(void);
 * returns amount of free memory in your system
 */
 int freeRam(void);
+
+#ifdef KRNLBUG
+ void __attribute__((weak)) k_breakout();
+#endif
 
 
 #ifdef __cplusplus

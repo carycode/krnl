@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['el_5fsize',['el_size',['../structk__msg__t.html#a9e6cf0aaaa54e2c69938457b2a16e512',1,'k_msg_t']]]
+  ['fakecnt',['fakecnt',['../krnl_8c.html#ab6049c624c71022617cb364ecab34dba',1,'krnl.c']]],
+  ['fakecnt_5fpreset',['fakecnt_preset',['../krnl_8c.html#ab86ac5ffb302fcda5e40378d29e70d40',1,'krnl.c']]]
 ];
