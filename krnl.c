@@ -495,6 +495,7 @@ k_set_prio (char prio)
 }
 
 //----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 struct k_t *
 k_crt_sem (char init_val, int maxvalue)
@@ -503,7 +504,7 @@ k_crt_sem (char init_val, int maxvalue)
     struct k_t *sem;
 
     if (k_running)
-        return (NULL);
+       return (NULL);
 
     if ((init_val < 0) || (32000 < init_val) || (maxvalue < -32000) || (32000 < maxvalue)) {
         goto badexit;
@@ -720,6 +721,48 @@ ki_semval (struct k_t *sem)
     return (i);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+struct k_msg_t *
+k_crt_send_Q (int nr_el, int el_size, void *pBuf)
+{
+
+    struct k_msg_t *pMsg;
+
+    if (k_running)
+        return (NULL);
+
+    if (k_msg <= nr_send)
+        goto errexit;
+
+    if (k_sem <= nr_sem)
+        goto errexit;
+
+    pMsg = send_pool + nr_send;
+    pMsg->nr = nr_send;
+    nr_send++;
+
+    pMsg->sem = k_crt_sem (0, nr_el);
+
+    if (pMsg->sem == NULL)
+        goto errexit;
+
+    pMsg->pBuf = (char *) pBuf;
+    pMsg->r = pMsg->w = -1;
+    pMsg->el_size = el_size;
+    pMsg->nr_el = nr_el;
+    pMsg->lost_msg = 0;
+    pMsg->cnt = 0; // elm in Q
+
+    return (pMsg);
+
+    errexit:
+    k_err_cnt++;
+    return (NULL);
+}
+
 //----------------------------------------------------------------------------
 
 char
@@ -849,46 +892,6 @@ k_receive (struct k_msg_t *pB, void *el, int timeout, int *lost_msg)
 
     EI ();
     return (-1);		// nothing for you my friend
-}
-
-//----------------------------------------------------------------------------
-
-struct k_msg_t *
-k_crt_send_Q (int nr_el, int el_size, void *pBuf)
-{
-
-    struct k_msg_t *pMsg;
-
-    if (k_running)
-        return (NULL);
-
-    if (k_msg <= nr_send)
-        goto errexit;
-
-    if (k_sem <= nr_sem)
-        goto errexit;
-
-    pMsg = send_pool + nr_send;
-    pMsg->nr = nr_send;
-    nr_send++;
-
-    pMsg->sem = k_crt_sem (0, nr_el);
-
-    if (pMsg->sem == NULL)
-        goto errexit;
-
-    pMsg->pBuf = (char *) pBuf;
-    pMsg->r = pMsg->w = -1;
-    pMsg->el_size = el_size;
-    pMsg->nr_el = nr_el;
-    pMsg->lost_msg = 0;
-    pMsg->cnt = 0;
-
-    return (pMsg);
-
-    errexit:
-    k_err_cnt++;
-    return (NULL);
 }
 
 
