@@ -27,7 +27,7 @@ var krnl_8h =
     [ "k_crt_sem", "krnl_8h.html#a27f33ac31a1b04e73084d19333e10486", null ],
     [ "k_crt_send_Q", "krnl_8h.html#a8ad6ae5f7e3cac59845df0de94e55c68", null ],
     [ "k_crt_task", "krnl_8h.html#ab0cfe9f72acf96b6f901b1fccf3e723f", null ],
-    [ "k_eat_time", "krnl_8h.html#a555ea77f9601d6f817e87e779a8283ba", null ],
+    [ "k_eat_time", "krnl_8h.html#a3e8ab1f77d989a595c25a3d306056276", null ],
     [ "k_get_preempt", "krnl_8h.html#a64ccac5defa817ee73df6105c0927901", null ],
     [ "k_init", "krnl_8h.html#ad939ea35387a46c6c94a096d41c0d18b", null ],
     [ "k_millis", "krnl_8h.html#a0bc5cd2b2978ba0da05370e31b7e231d", null ],

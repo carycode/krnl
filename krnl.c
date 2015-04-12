@@ -196,7 +196,7 @@ int tmr_indx; // for travelling Qs in tmr isr
  * just for eating time
  * eatTime in msec's
  */
- char k_eat_time(unsigned int eatTime)
+ char k_eat_time(unsigned long eatTime)
  {
     while (eatTime > 10) {
         delayMicroseconds(10000);
@@ -505,7 +505,7 @@ k_crt_sem (char init_val, int maxvalue)
     if (k_running)
         return (NULL);
 
-    if ((init_val < 0) || (maxvalue < 0)) {
+    if ((init_val < 0) || (32000 < init_val) || (maxvalue < -32000) || (32000 < maxvalue)) {
         goto badexit;
     }
 
@@ -521,11 +521,10 @@ k_crt_sem (char init_val, int maxvalue)
     sem->next = sem->pred = sem;
     sem->prio = QHD_PRIO;
     sem->cnt1 = init_val;
-    if (0 < maxvalue && 32000 > maxvalue)
-        sem->maxv = maxvalue;
-    else
-        sem->maxv = SEM_MAX_DEFAULT;
+
+    sem->maxv = maxvalue;
     sem->clip = 0;
+
     return (sem);
 
     badexit:
@@ -558,7 +557,7 @@ int
 ki_signal (struct k_t *sem)
 {
 	DI(); // just in case
-    if (sem->maxv <= sem->cnt1) {
+    if (sem->maxv < sem->cnt1) {
         if (32000 > sem->clip)
             sem->clip++;
         k_sem_clip(sem->nr,sem->clip);
@@ -921,8 +920,7 @@ dummy_task (void)
 
 //----------------------------------------------------------------------------
 
-int
-k_init (int nrTask, int nrSem, int nrMsg)
+int k_init(int nrTask, int nrSem, int nrMsg)
 {
 
     if (k_running)  // are you a fool ???
@@ -930,8 +928,8 @@ k_init (int nrTask, int nrSem, int nrMsg)
 
     k_task = nrTask + 1;	// +1 due to dummy
     k_sem = nrSem + nrMsg + 1;	// due to that every msgQ has a builtin semaphore
-    k_msg = nrMsg;
-
+    k_msg = nrMsg+1;  // to align so first user msgQ has index 1
+    nr_send++; // to align so we waste one but ... better equal access
     task_pool = (struct k_t *) malloc (k_task * sizeof (struct k_t));
     sem_pool = (struct k_t *) malloc (k_sem * sizeof (struct k_t));
     send_pool = (struct k_msg_t *) malloc (k_msg * sizeof (struct k_msg_t));

@@ -2,8 +2,10 @@
        
 I have found it interesting to develop an open source realtime kernel for the Arduino platform - but is also portable to other platforms
 
-* latest version 2001 *
+* latest version 2002 *
 
+
+changes about clip of semaphores so Liy & Layland RMA is detectable (when it fails deadlines)
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
 - Now doxygen docu at html directory :-)
