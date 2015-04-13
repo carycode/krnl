@@ -14,6 +14,8 @@ changes about clip of semaphores so Liy & Layland RMA is detectable (when it fai
 - - 8/16 MHz setting
 - - etc
 
+See github.com/jdn-aau  or http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl
+
 See some warnings in the bottom !!!
 
 ## Some highlights
