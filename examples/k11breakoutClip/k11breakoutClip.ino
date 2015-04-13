@@ -1,4 +1,4 @@
-
+  
 /* (C) 2012,2013,2014,2015                           *
 *                                                    *
 * Jens Dalsgaard Nielsen <jdn@es.aau.dk>             *
@@ -150,62 +150,4 @@ extern "C" {
   // port K (adc8-15) seems feasible
 }
 
- 
-  pt3 = k_crt_task(lowprio, 30, st3, STK); //declared first so it get tasknr 1
-  pt2 = k_crt_task(medprio, 20, st2, STK); // 2 ...
-  pt1 = k_crt_task(highprio, 10, st1, STK); // 3
-}
-
-void initSemaphores()
-{
-  sem1 = k_crt_sem(0, -1); // get nr 1 -  -1 is highest acceptable value before a signal issued by timer
-  sem2 = k_crt_sem(0, -1); // get nr 2 - ...
-  sem3 = k_crt_sem(0, -1); // get nr 3 - ...
-
-  k_set_sem_timer(sem3, 3000 / TICKSPEED);
-  k_set_sem_timer(sem2, 1000 / TICKSPEED );
-  k_set_sem_timer(sem1, 200 / TICKSPEED);
-}
-
-void setup()
-{
-  initLED();
-  // LED13 is pin5 at PORTB
-  k_init(3, 3, 0);   // dummy get tasknr 0
-
-  initTasks();
-  initSemaphores();
-
-  k_start(TICKSPEED); // 10 millisecond heartbeat
-}
-
-void loop() {}
-
-
-/************************ DEBUG CALLBACK BREAKOUT PART ****************/
-// must be extern C ! its not mandatory to supply with these  functions - only if you need
-
-extern "C" {
-
-  // called when a semphore is clipping - nr is id of semaphore and i os nr of times clip has occured
-  void k_sem_clip(unsigned char nr, int i)
-  {
-    led13 = 0x20; // LED13 is bit 5 so sem overflow will in fct below switch on LED13
-    if (nr == 3)
-      led13 |= 0x10;
-  }
-
-  /* void k_send_Q_clip(unsigned char nr, int i) {} */
-
-  void k_breakout() // called every task shift from dispatcher
-  {
-    unsigned char c;
-    PORTB  = (1 << pRun->nr) | led13; // arduino uno !! specific usage of PORTB
-  }
-  // for a MEGA you have to find another port :-)
-  // port K (adc8-15) seems feasible
-}
-
-
-
-
+  
