@@ -1,6 +1,0 @@
-<map id="ki_signal" name="ki_signal">
-<area shape="rect" id="node2" href="$krnltst_8c.html#a790cb408825575b88d1107608b1ff389" title="ISR" alt="" coords="147,5,189,32"/>
-<area shape="rect" id="node3" href="$krnltst_8c.html#a0c2f743e45400c5d9ac04457b78d3d97" title="k_signal" alt="" coords="131,56,205,83"/>
-<area shape="rect" id="node4" href="$krnltst_8c.html#a7f0e5da0dbd3154fa3b69e3e2e650bed" title="ki_send" alt="" coords="133,107,203,133"/>
-<area shape="rect" id="node5" href="$krnltst_8c.html#aad1cd26ac0560fb40b088b229c07f7a3" title="k_send" alt="" coords="253,107,320,133"/>
-</map>
