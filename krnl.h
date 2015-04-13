@@ -315,7 +315,7 @@ if (pRun != AQ.next) {  \
 #define EI()   asm volatile ("sei")
 #define RETI() asm volatile ("reti") 
 
-/* below: r1 is always assumd to be zero in c code (gcc issue I think) */
+/* below: r1 must/shall always assumd to be zero in c code (gcc issue I think) */
 
 #if defined (__AVR_ATmega2560__) || defined (__AVR_ATmega1280__)
 
@@ -636,8 +636,9 @@ int ki_semval(struct k_t * sem);
 * @param nr : id of semaphore 1,2,3,...
 * @param nrClip: number of times clip has occured (may be reset by call k_wait_lost)
 */
+#ifdef KRNLBUG
 void __attribute__ ((weak)) k_sem_clip(unsigned char nr, int nrClip);
-
+#endif
 /**
 * a function for overloading on usersite which is called when a msgQ is overflooding
 * no reset occur - it's only readind out smsgQ idendity
@@ -646,8 +647,9 @@ void __attribute__ ((weak)) k_sem_clip(unsigned char nr, int nrClip);
 * @param nr : id of send Q 0,1,2,...
 * @param nrClip: number of times clip has occured (may be reset by call k_receive and lost parm not eq NULL) 
 */
+#ifdef KRNLBUG
 void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip);
-
+#endif
 
 struct k_msg_t * k_crt_send_Q(int nr_el, int el_size, void *pBuf);
 
@@ -791,6 +793,9 @@ char k_get_preempt(void);
 int freeRam(void);
 
 #ifdef KRNLBUG
+/**
+* Breakout functino called from scheduler 
+**/
  void __attribute__((weak)) k_breakout();
 #endif
 

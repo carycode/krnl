@@ -561,7 +561,9 @@ ki_signal (struct k_t *sem)
     if (sem->maxv < sem->cnt1) {
         if (32000 > sem->clip)
             sem->clip++;
+        #ifdef KRNLBUG
         k_sem_clip(sem->nr,sem->clip);
+        #endif
         return (-1);
     }
 
@@ -776,7 +778,9 @@ ki_send (struct k_msg_t *pB, void *el)
         // room for a putting new msg in Q ?
         if (pB->lost_msg < 32000)
             pB->lost_msg++;
+        #ifdef KRNLBUG
         k_send_Q_clip(pB->nr,pB->lost_msg);
+        #endif
         return (-1);		// nope
     }
 
@@ -1111,7 +1115,7 @@ char k_get_preempt(void)
 }
 
 //-------------------------------------------------------------------------------------------
-
+#ifdef KRNLBUG
 void __attribute__ ((weak)) k_breakout() {}
 
 //-------------------------------------------------------------------------------------------
@@ -1121,6 +1125,7 @@ void __attribute__ ((weak)) k_sem_clip(unsigned char nr,int nrClip) {}
 //-------------------------------------------------------------------------------------------
 
 void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip) {}
+#endif
 
 /* EOF - JDN */
 /*
