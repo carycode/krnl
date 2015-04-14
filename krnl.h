@@ -512,7 +512,7 @@ unsigned long k_millis(void);
  * Eats CPU time in 1 msec quants
  * @param[in] eatTime  number of milliseconds to eay (<= 10000
  */
-char k_eat_time(unsigned long eatTime);
+void k_eat_time(unsigned int eatTime);
 
 /**
 * issues a task shift - handle with care

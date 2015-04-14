@@ -196,11 +196,13 @@ int tmr_indx; // for travelling Qs in tmr isr
  * just for eating time
  * eatTime in msec's
  */
- char k_eat_time(unsigned long eatTime)
+ void k_eat_time(unsigned int eatTime)
  {
-    while (eatTime > 10) {
+ 
+    while (eatTime > 10 ) {
+        eatTime-=10;       
+        // NASTY wiring.c multiply by 4 so your max value here is 65535/4 = 16383
         delayMicroseconds(10000);
-        eatTime-=10;
     }
     delayMicroseconds(eatTime*1000);
 }
