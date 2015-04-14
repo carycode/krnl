@@ -108,6 +108,8 @@ SO BEWARE !!!
 
 #define KRNL
  
+ // if krnl shall support EDF scheduling
+ #define EDF
 // DISPLAY OF PROCESS ID BY LEDS if you want to 
 #define KRNLBUG
 
@@ -185,6 +187,10 @@ extern "C" {
 #define MAX_INT 0x7FFF
 #define SEM_MAX_DEFAULT 50
 
+#ifdef EDF
+    #define EDF_PRIO_LIMIT 29999
+#endif
+
 extern int k_task, k_sem, k_msg;
 extern volatile char krnl_preempt_flag;
 extern char dmy_stk[DMY_STK_SZ];
@@ -197,7 +203,13 @@ struct k_t {
             *pred;  // task,sem: double chain lists ptr
    volatile char
     sp_lo,    // sem:vacant    | task: low 8 byte of stak adr
-    sp_hi,    // sem: vacant   |task: high 8 byte of stak adr
+    sp_hi;    // sem: vacant   |task: high 8 byte of stak adr
+    // edf needs large prio for having long deadlines
+    #ifdef EDF
+    int
+    #else
+    char
+    #endif
     prio;     // task & sem:  priority
     volatile int
     cnt1,    // sem: sem counter | task: ptr to stak
@@ -572,6 +584,17 @@ int ki_signal(struct k_t * sem);
 int k_signal(struct k_t * sem);
 
 /**
+* Signal a semaphore. Task shift will task place if a task is started by the signal and has higher priority than you.
+* you shall supply with priority for prio ceiling protocol
+* @param[in] sem semaphore handle
+* @return 0: ok , -1: max value of semaphore reached
+* @remark The ki_ indicates that interrups is NOT enabled when leaving ki_signal
+* @remark only to be called after start of KRNL
+*/
+int k_prio_signal(struct k_t *sem,char prio); 
+
+
+/**
 * Wait on a semaphore. Task shift will task place if you are blocked.
 * @param[in] sem semaphore handle
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
@@ -579,6 +602,17 @@ int k_signal(struct k_t * sem);
 * @remark only to be called after start of KRNL
 */
 int k_wait(struct k_t * sem, int timeout);
+
+
+/**
+* Wait on a semaphore. Task shift will task place if you are blocked.
+* you shall supply with priority for prio ceiling protocol
+* @param[in] sem semaphore handle
+* @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
+* @return 0: ok , -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
+* @remark only to be called after start of KRNL
+*/
+int k_prio_wait (struct k_t *sem, int timeout,char prio);
 
 /**
 * Wait on a semaphore. Task shift will task place if you are blocked.
@@ -600,16 +634,6 @@ int k_wait_lost(struct k_t * sem, int timeout, int *lost);
 int
 k_sem_signals_lost (struct k_t *sem);
 
-
-/**
-* Do a wait if no blocking will occur.
-* @param[in] sem semaphore handle
-* @return 0: ok , -1: could do wait bw blocking would have taken place
-* @remark The ki_ indicates that interrups is NOT enabled when leaving ki_nowait
-* @remark only to be called after start of KRNL
-*/
-int ki_nowait(struct k_t * sem);
-
 /**
 * Like k_wait with the exception interrupt is NOT enabled when leaving
 * @param[in] sem semaphore handle
@@ -624,6 +648,8 @@ int ki_wait(struct k_t * sem, int timeout);
 * returns value of semaphore
 * @param[in] sem semaphore handle
 * @return 0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ...
+* @return -99 : timeout
+* @return -1 no wait maybe bq no timeout was allowed
 * @remark only to be called after start of KRNL
 */
 int ki_semval(struct k_t * sem);

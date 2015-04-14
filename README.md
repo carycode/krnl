@@ -33,6 +33,7 @@ See some warnings in the bottom !!!
 
 - automatic recognition of Arduino architeture
  - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
+- Priority ceiling supported with k_prio_wait and k_prio_signal where you supply with task priorities
 
 ## Some characteristics:
 

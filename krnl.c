@@ -307,7 +307,7 @@ prio_enQ (struct k_t *Q, struct k_t *el)
         if (0 < pE->cnt2) {                        // timer active on task ?
             pE->cnt2--;                              // yep so let us do one down count
             if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 )
-                pE->cnt2 = -1;	                       // indicate timeout inis semQ
+                pE->cnt2 = -99;	                       // indicate timeout inis semQ
                 prio_enQ (pAQ, deQ (pE));	             // to AQ
             }
         }
@@ -580,6 +580,28 @@ ki_signal (struct k_t *sem)
 //----------------------------------------------------------------------------
 
 int
+k_prio_signal(struct k_t *sem,char prio)
+{
+    int res;
+
+    DI ();
+
+    res = ki_signal (sem);
+    
+    // set prio
+    pRun->prio = prio;
+    prio_enQ (pAQ, deQ (pRun));
+
+    ki_task_shift ();
+
+    EI ();
+
+    return (res);
+}
+
+//----------------------------------------------------------------------------
+
+int
 k_signal (struct k_t *sem)
 {
     int res;
@@ -599,21 +621,6 @@ k_signal (struct k_t *sem)
 //----------------------------------------------------------------------------
 
 int
-ki_nowait (struct k_t *sem)
-{
-
-    DI ();			// DI just to be sure
-    if (0 < sem->cnt1) {
-        //      lucky that we do not need to wait ?
-        sem->cnt1--;		// Salute to Dijkstra
-        return (0);
-    } else
-    return (-1);
-}
-
-//----------------------------------------------------------------------------
-
-int
 ki_wait (struct k_t *sem, int timeout)
 {
 // used by msg system
@@ -627,7 +634,7 @@ ki_wait (struct k_t *sem, int timeout)
 
     if (timeout == -1) {
         // no luck, dont want to wait so bye bye
-        return (-2);
+        return (-1);
     }
 
     // from here we want to wait
@@ -644,6 +651,7 @@ ki_wait (struct k_t *sem, int timeout)
     return ((char) (pRun->cnt2));	// 0: ok, -1: timeout
 }
 
+ 
 //----------------------------------------------------------------------------
 
 int
@@ -681,6 +689,54 @@ int retval;
     EI ();
 
     return  retval;	// 0: ok, -1: timeout
+}
+
+//----------------------------------------------------------------------------
+
+int
+k_prio_wait (struct k_t *sem, int timeout,char prio)
+{
+
+int retval;
+    // copy of ki_wait just with EI()'s before leaving
+    DI ();
+
+    if (0 < sem->cnt1) {     // lucky that we do not need to wait ?
+        sem->cnt1--;               // Salute to Dijkstra
+            // set prio
+        pRun->prio = prio;
+        // no need bq we are alrdy in front prio_enQ (pAQ, deQ (pRun));        
+        EI ();
+        return (0);
+    }
+
+    if (timeout == -1) {     // no luck, dont want to wait so bye
+
+        EI ();
+        return (-2);
+    }
+
+    // from here we have to wait
+    pRun->cnt2 = timeout;   // if 0 then wait forever
+
+    if (timeout)
+        pRun->cnt3 = (int) sem; // nasty keep ref to semaphore,
+    //  so we can be removed if timeout occurs
+    sem->cnt1--;        // Salute to Dijkstra
+
+    enQ (sem, deQ (pRun));
+    ki_task_shift ();       // call enables interrupt on return
+    pRun->cnt3 = 0; // reset ref to timer semaphore
+    retval =  pRun->cnt2;
+    if (retval == 0) {
+            // set prio
+        pRun->prio = prio;
+        // no need prio_enQ (pAQ, deQ (pRun));
+   }
+
+    EI ();
+
+    return  retval; // 0: ok, -1: timeout
 }
 
 //----------------------------------------------------------------------------
@@ -836,7 +892,7 @@ ki_receive (struct k_msg_t *pB, void *el, int *lost_msg)
     // can be called from ISR bq no blocking
     DI ();			// just to be sure
 
-    if (ki_nowait (pB->sem) == 0) {
+    if (ki_wait (pB->sem,-1) == 0) {
 
         pDst = (char *) el;
         pB->r++;
