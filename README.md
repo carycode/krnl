@@ -36,6 +36,11 @@ See some warnings in the bottom !!!
 - Priority ceiling supported with k_prio_wait and k_prio_signal where you supply with task priorities
 
 
+## Return codes - general rule
+- negativ value in return - error
+- 0 or positive in return - call is a success
+
+
 ## Timeliness
 
 All receiving/waiting call now returns:
