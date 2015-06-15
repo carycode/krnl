@@ -310,9 +310,8 @@ prio_enQ (struct k_t *Q, struct k_t *el)
         if (0 < pE->cnt2) {                        // timer active on task ?
             pE->cnt2--;                              // yep so let us do one down count
             if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 )
-                pE->cnt2 = -1;	                       // indicate timeout in this semQ
                 ki_signal((struct k_t *)(pE->cnt3));
-                //prio_enQ (pAQ, deQ (pE));	             // to AQ
+                pE->cnt2 = -1;	                       // indicate timeout in this semQ 
             }
         }
         pE++;
@@ -555,7 +554,7 @@ int
 ki_signal (struct k_t *sem)
 {
 	DI(); // just in case
-    if (sem->maxv > sem->cnt1)
+    if ( sem->cnt1 < sem->maxv )
         goto normal;
 
     if (32000 > sem->clip)
@@ -652,7 +651,7 @@ ki_wait (struct k_t *sem, int timeout)
     ki_task_shift ();	 
 
     // back again - have semaphore received signal or just timeout ?
- 	  pRun->cnt3 = 0; // reset ref to timer semaphores
+ 	pRun->cnt3 = 0; // reset ref to timer semaphores
 
     return ((char) (pRun->cnt2));	// 0: ok, -1: timeout
 }
