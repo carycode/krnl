@@ -585,7 +585,7 @@ int ki_signal(struct k_t * sem);
 * @remark only to be called after start of KRNL
 */
 int k_signal(struct k_t * sem);
-
+ 
 /**
 * Signal a semaphore. Task shift will task place if a task is started by the signal and has higher priority than you.
 * you shall supply with priority for prio ceiling protocol

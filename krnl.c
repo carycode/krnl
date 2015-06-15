@@ -311,7 +311,8 @@ prio_enQ (struct k_t *Q, struct k_t *el)
             pE->cnt2--;                              // yep so let us do one down count
             if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 )
                 pE->cnt2 = -1;	                       // indicate timeout in this semQ
-                prio_enQ (pAQ, deQ (pE));	             // to AQ
+                ki_signal((struct k_t *)(pE->cnt3));
+                //prio_enQ (pAQ, deQ (pE));	             // to AQ
             }
         }
         pE++;
@@ -931,7 +932,7 @@ k_receive (struct k_msg_t *pB, void *el, int timeout, int *lost_msg)
 
     DI ();
 
-    if ((r=ki_wait (pB->sem, timeout)) >= 0) {
+    if (0 <= (r=ki_wait (pB->sem, timeout)) ) {
         // ki_wait bq then intr is not enabled when coming back
         pDst = (char *) el;
         pB->r++;
