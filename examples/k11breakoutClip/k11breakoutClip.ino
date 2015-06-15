@@ -101,9 +101,9 @@ void initTasks()
 
 void initSemaphores()
 {
-  sem1 = k_crt_sem(0, -1); // get nr 1 -  -1 is highest acceptable value before a signal issued by timer
-  sem2 = k_crt_sem(0, -1); // get nr 2 - ...  meaning at elast one task has to wait at the semaphore
-  sem3 = k_crt_sem(0, -1); // get nr 3 - ...   used to test if task i ready for next cycle or if its lagging behind
+  sem1 = k_crt_sem(0, 0); // get nr 1 -  0 is highest acceptable value on a semaphore ...
+  sem2 = k_crt_sem(0, 0); // get nr 2 - ...  meaning at elast one task has to wait at the semaphore
+  sem3 = k_crt_sem(0, 0); // get nr 3 - ...   used to test if task i ready for next cycle or if its lagging behind
 
   k_set_sem_timer(sem3, 3000 / TICKSPEED);
   k_set_sem_timer(sem2, 1000 / TICKSPEED );

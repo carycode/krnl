@@ -35,6 +35,17 @@ See some warnings in the bottom !!!
  - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
 - Priority ceiling supported with k_prio_wait and k_prio_signal where you supply with task priorities
 
+
+## Timeliness
+
+All receiving/waiting call now returns:
+
+- 1  - ok. I have not been waiting bq signal/message was waiting on me
+-- can be used for goth scheduling (liek RMA test etc)
+- 0  - ok. I have been blocked bq no signal/message was waiting on me
+- -1 - no ok. Timeout has occured and I have not received anything
+
+
 ## Some characteristics:
 
 
@@ -148,6 +159,10 @@ You have from Arduino inherited many critical regions which you have to protect 
 - Serial channels - only on thread at time must have access
 - digital and analog IO (digitalRead, AnalogRead,...)
 - and in general all libraries - so take care
+
+The Arduino has problems with serial.print and nnumbers so please use i2a.h library for a two step procedure:
+1. convert number to string (zero terminated)
+2. print string 
 
 This is NOT an Ardunio problem but a standard feature i multithreaded systems :-)
 

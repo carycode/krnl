@@ -41,7 +41,7 @@ void t1(void) {
   int i;
   while (1) {
     delay(100);
-    if (0 == k_receive(pMsg2,&i,-1,NULL) ) {
+    if (0 <= k_receive(pMsg2,&i,-1,NULL) ) {
       doBlink();
     }
   }

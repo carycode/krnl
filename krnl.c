@@ -36,7 +36,7 @@
 * seeduino 1280 and mega2560                         *
 *****************************************************/
 
-
+//http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_cplusplus nice info
 #include "krnl.h"
 #include <avr/wdt.h>
 // CPU frequency - for adjusting delays
@@ -47,7 +47,7 @@
 #endif
 
 
-#if (KRNL_VRS != 2001)
+#if (KRNL_VRS != 2002)
 #error "KRNL VERSION NOT UPDATED in krnl.c /JDN"
 #endif
 
@@ -74,7 +74,7 @@ extern "C" {
 #define PRESCALE 0x07
 #define COUNTMAX 255
 #define DIVV 15.625
-#define DIVV8 7.812 
+#define DIVV8 7.812
 
 #elif (KRNLTMR == 1)
 
@@ -90,7 +90,7 @@ extern "C" {
 #define COUNTMAX 65535
 #define DIVV 62.5
 #define DIVV8 31.25
- 
+
 #elif (KRNLTMR == 2)
 
 // 8 bit timer !!!
@@ -105,7 +105,7 @@ extern "C" {
 #define PRESCALE 0x07
 #define COUNTMAX 255
 #define DIVV 15.625
-#define DIVV8 7.812 
+#define DIVV8 7.812
 
 #elif (KRNLTMR == 3)
 
@@ -158,33 +158,32 @@ extern "C" {
 
 #endif
 
-// can be 1,2,3,4,5,6
+ 
 //----------------------------------------------------------------------------
-
+ 
 struct k_t
-        *task_pool, // array of descriptors for tasks
-        *sem_pool,  // .. for semaphores
-        AQ,       // Q head for active Q
-        *pmain_el,  // procesdecriptor for main
-        *pAQ,     // head of activeQ (AQ)
-        *pDmy,    // ref to dummy task
-        *pRun,    // who is running ?
-        *pSleepSem; // one semaphor for all to sleep at
+        *task_pool,     // array of descriptors for tasks
+        *sem_pool,      // .. for semaphores
+        AQ,             // Q head for active Q
+        *pmain_el,      // procesdecriptor for main
+        *pAQ,           // head of activeQ (AQ)
+        *pDmy,          // ref to dummy task
+        *pRun,          // who is running ?
+        *pSleepSem;     // one semaphor for all to sleep at
 
 struct k_msg_t *send_pool;   // ptr to array for msg sem pool
 
-int k_task, k_sem, k_msg; // how many di you request in k_init of descriptors ?
+int k_task, k_sem, k_msg;                       // how many did you request in k_init of descriptors ?
 char nr_task = 0,nr_sem = 0,	nr_send = 0;	// counters for created KeRNeL items
 
-// NASTY char dmy_stk[DMY_STK_SZ];
-
-volatile char krnl_preempt_flag=1; //1: preempt, 0 : non preempt
-volatile char k_running = 0,	k_err_cnt = 0;
+volatile char krnl_preempt_flag=1;  //1: preempt, 0 : non preempt
+volatile char k_running = 0,	
+            k_err_cnt = 0;
 volatile unsigned int tcntValue;	// counters for timer system
-volatile int fakecnt, // counters for letting timer ISR go multipla faster than krnl timer
-fakecnt_preset;
+volatile int fakecnt,               // counters for letting timer ISR go multipla faster than krnl timer
+fakecnt_preset;                     // ...
 
-static volatile char stopp = 0;
+static volatile char stopp = 0;  // main will loop on stop as dummy task
 
 unsigned long k_millis_counter=0;
 unsigned int k_tick_size;
@@ -198,10 +197,11 @@ int tmr_indx; // for travelling Qs in tmr isr
  */
  void k_eat_time(unsigned int eatTime)
  {
- 
+   // delayMicroseconds (in wiring.c) do busy waiting by running in a loop and execute 
+   // a well known number og asm instruction with known time lenght
+   // so its only  pure straight math
     while (eatTime > 10 ) {
-        eatTime-=10;       
-        // NASTY wiring.c multiply by 4 so your max value here is 65535/4 = 16383
+        eatTime-=10;         
         delayMicroseconds(10000);
     }
     delayMicroseconds(eatTime*1000);
@@ -249,6 +249,10 @@ prio_enQ (struct k_t *Q, struct k_t *el)
 }
 
 //---HW timer IRS-------------------------------------------------------------
+//---HW timer IRS-------------------------------------------------------------
+//---HW timer IRS-------------------------------------------------------------
+//---HW timer IRS-------------------------------------------------------------
+//---HW timer IRS-------------------------------------------------------------
 //------------timer section---------------------------------------------------
 /*
  * The KRNL Timer is driven by timer
@@ -281,13 +285,10 @@ prio_enQ (struct k_t *Q, struct k_t *el)
 
     k_millis_counter+=k_tick_size; // my own millis counter
 
-    // here you may maintain Arduinos msec defined in wiring.c as
-    //unsigned long m  timer0_millis;
-    // It looks maybe crazy to go through all semaphores and tasks
-    // but
-    // you may have 3-4 tasks and 3-6 semaphores in your code
-    // so...
-    // and - it's a good idea not to init krnl with more items (tasks/Sem/msg descriptors than needed)
+    // the following may look crazy: to go through all semaphores and tasks
+    // but you may have 3-4 tasks and 3-6 semaphores in your code
+    // so - seesm to be efficient :-) 
+    // so - it's a good idea not to init krnl with more items (tasks/Sem/msg descriptors than needed)
 
 
     pE = sem_pool;		// Semaphore timer - check timers on semaphores - they may be cyclic
@@ -309,7 +310,7 @@ prio_enQ (struct k_t *Q, struct k_t *el)
         if (0 < pE->cnt2) {                        // timer active on task ?
             pE->cnt2--;                              // yep so let us do one down count
             if (pE->cnt2 <= 0) {                     // timeout ? ( == 0 )
-                pE->cnt2 = -99;	                       // indicate timeout inis semQ
+                pE->cnt2 = -1;	                       // indicate timeout in this semQ
                 prio_enQ (pAQ, deQ (pE));	             // to AQ
             }
         }
@@ -331,14 +332,12 @@ prio_enQ (struct k_t *Q, struct k_t *el)
 // inspired from ...
 // http://arduinomega.blogspot.dk/2011/05/timer2-and-overflow-interrupt-lets-get.html
 // Inspiration from  http://popdevelop.com/2010/04/mastering-timer-interrupts-on-the-arduino/
-//TIMSK2 &= ~(1 << TOIE2);  // Disable the timer overflow interrupt while we're configuring
-//TCCR2B &= ~(1 << WGM22);
-// JDN
-
-//----------------------------------------------------------------------------
 // Inspiration from "Multitasking on an AVR" by Richard Barry, March 2004
+// and  http://www.control.aau.dk/~jdn/kernels/krnl/
+//----------------------------------------------------------------------------
 // avrfreaks.net
 // and my old kernel from last century
+// and a lot other stuff
 // basic concept from my own very old kernels dated back bef millenium
 
 void __attribute__ ((naked, noinline)) ki_task_shift (void)
@@ -349,49 +348,37 @@ void __attribute__ ((naked, noinline)) ki_task_shift (void)
     RETI ();			        // and do a reti NB this also enables interrupt !!!
 }
 
-// HW_DEP_ENDE
-
 //----------------------------------------------------------------------------
-
-struct k_t *
+ struct k_t *
 k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
 {
 
     struct k_t *pT;
     int i;
     char *s;
-
-    if (k_running)
-        goto badexit;
-
-    if ((prio <= 0 ) || (DMY_PRIO < prio)) {
+ 
+    if ( (k_running)  ||  ((prio <= 0 ) || (DMY_PRIO < prio))  ||  (k_task <= nr_task) )   {
         goto badexit;
     }
-
-    if (k_task <= nr_task) { // no vacant elm in buffer
-        goto badexit; 
-    }
-
+  
+    // let's go
     pT = task_pool + nr_task;	// lets take a task descriptor
     pT->nr = nr_task;
     nr_task++;
 
     pT->cnt2 = 0;		// no time out running on you for the time being
-    pT->cnt3 = 0;		// no time out semaphore 
+    pT->cnt3 = 0;		// no time out semaphore
 
-    // HW_DEP_START
-    // inspiration from http://dev.bertos.org/doxygen/frame_8h_source.html
-    // and http://www.control.aau.dk/~jdn/kernels/krnl/
-    // now we are going to precook stak
 
-    pT->cnt1 = (int) (pStk);
+    pT->cnt1 = (int) (pStk);        // ref to my stack
 
+    // stack paint :-)
     for (i = 0; i < stkSize; i++)	// put hash code on stak to be used by k_unused_stak()
         pStk[i] = STAK_HASH;
 
-    // HW DEPENDENT PART
     s = pStk + stkSize - 1;	// now we point on top of stak
     *(s--) = 0x00;		    // 1 byte safety distance
+    // an interrupt do only push PC on stack by HW - can be 2 or 3 bytes depending ogf 368/.../1280/2560
     *(s--) = lo8 (pTask);	//  so top now holds address of function
     *(s--) = hi8 (pTask);	// which is code body for task
 
@@ -400,6 +387,9 @@ k_crt_task (void (*pTask) (void), char prio, char *pStk, int stkSize)
     *(s--) = EIND;		// best guess : 3 byte addresses !!!
 #endif
 
+// r1 is the socalled zero value register
+// see https://gcc.gnu.org/wiki/avr-gcc
+// can tmp be non zero (multiplication etc)
     *(s--) = 0x00;		// r1
     *(s--) = 0x00;		// r0
     *(s--) = 0x00;		// sreg
@@ -437,6 +427,7 @@ freeRam (void)
     extern int __heap_start, *__brkval;
     int v;
 
+    // ho
     return ((int) &v -
         (__brkval == 0 ? (int) &__heap_start : (int) __brkval));
 }
@@ -463,6 +454,7 @@ k_unused_stak (struct k_t *t)
         pstk = (char *) (pRun->cnt1);
 
     DI ();
+    // look for stack paint
     while (*pstk == STAK_HASH) {
         pstk++;
         i++;
@@ -473,9 +465,10 @@ k_unused_stak (struct k_t *t)
 }
 
 //----------------------------------------------------------------------------
-k_set_prio (char prio)
-{
 
+int k_set_prio (char prio)
+{
+  int i;
     if (!k_running)
         return (-1);
 
@@ -486,6 +479,7 @@ k_set_prio (char prio)
         EI ();
         return (-2);
     }
+    i = pRun->prio;
 
     pRun->prio = prio;
     prio_enQ (pAQ, deQ (pRun));
@@ -493,7 +487,7 @@ k_set_prio (char prio)
 
     EI ();
 
-    return (0);
+    return (i);
 }
 
 //----------------------------------------------------------------------------
@@ -560,14 +554,21 @@ int
 ki_signal (struct k_t *sem)
 {
 	DI(); // just in case
-    if (sem->maxv < sem->cnt1) {
-        if (32000 > sem->clip)
-            sem->clip++;
-        #ifdef KRNLBUG
-        k_sem_clip(sem->nr,sem->clip);
-        #endif
-        return (-1);
-    }
+    if (sem->maxv > sem->cnt1)
+        goto normal;
+
+    if (32000 > sem->clip)
+      sem->clip++;
+
+
+     // here we are on bad clip failure no signal takes place
+     // signal is lost !!!
+    #ifdef KRNLBUG
+    k_sem_clip(sem->nr,sem->clip);
+    #endif
+    return (-1);
+
+normal:
 
     sem->cnt1++;		// Salute to Dijkstra
 
@@ -589,7 +590,7 @@ k_prio_signal(struct k_t *sem,char prio)
     DI ();
 
     res = ki_signal (sem);
-    
+
     // set prio
     pRun->prio = prio;
     prio_enQ (pAQ, deQ (pRun));
@@ -629,31 +630,32 @@ ki_wait (struct k_t *sem, int timeout)
     DI ();
 
     if (0 < sem->cnt1) {
-        //      lucky that we do not need to wait ?
         sem->cnt1--;		// Salute to Dijkstra
-        return (0);
+        return (1);         // 1 bq we are not suspended
     }
 
-    if (timeout == -1) {
-        // no luck, dont want to wait so bye bye
+    if (timeout == -1) {    // no luck, dont want to wait so bye bye
         return (-1);
     }
 
     // from here we want to wait
-    pRun->cnt2 = timeout;	// if 0 then wait forever
+    pRun->cnt2 = timeout;	    //  0 == wait forever
 
     if (timeout)
-        pRun->cnt3 = (int) sem;	// nasty keep ref to semaphor
-    //  so we can be removed if timeout occurs
-    sem->cnt1--;		// Salute to Dijkstra
+        pRun->cnt3 = (int) sem;	// nasty keep ref to semaphore
+                                //  so we can be removed if timeout occurs
+
+    sem->cnt1--;		        // Salute to Dijkstra
 
     enQ (sem, deQ (pRun));
-    ki_task_shift ();		// call enables NOT interrupt on return
- 	pRun->cnt3 = 0; // reset ref to timer semaphores
+    ki_task_shift ();	 
+
+    // back again - have semaphore received signal or just timeout ?
+ 	  pRun->cnt3 = 0; // reset ref to timer semaphores
+
     return ((char) (pRun->cnt2));	// 0: ok, -1: timeout
 }
 
- 
 //----------------------------------------------------------------------------
 
 int
@@ -664,34 +666,60 @@ int retval;
     // copy of ki_wait just with EI()'s before leaving
     DI ();
 
-    if (0 < sem->cnt1) {     // lucky that we do not need to wait ?
-        sem->cnt1--;		       // Salute to Dijkstra
+    if (0 < sem->cnt1) {            // lucky that we do not need to wait ?
+        sem->cnt1--;		        // Salute to Dijkstra
         EI ();
-        return (0);
+        return (1);                 // 1 bq we have not been suspended
     }
 
-    if (timeout == -1) {     // no luck, dont want to wait so bye
+    if (timeout == -1) {            // no luck, dont want to wait so bye
 
         EI ();
         return (-2);
     }
 
     // from here we have to wait
-    pRun->cnt2 = timeout;	// if 0 then wait forever
+    pRun->cnt2 = timeout;	        //  if 0 == wait forever
 
     if (timeout)
-        pRun->cnt3 = (int) sem;	// nasty keep ref to semaphore,
-    //  so we can be removed if timeout occurs
-    sem->cnt1--;		// Salute to Dijkstra
+        pRun->cnt3 = (int) sem;	    // nasty keep ref to semaphore,
+                                    //  so we can be removed if timeout occurs
+                                    
+    sem->cnt1--;		            // Salute to Dijkstra
 
     enQ (sem, deQ (pRun));
-    ki_task_shift ();		// call enables interrupt on return
-    pRun->cnt3 = 0; // reset ref to timer semaphore
+    ki_task_shift ();		        // call enables interrupt on return
+    pRun->cnt3 = 0;                 // reset ref to timer semaphore
     retval =  pRun->cnt2;
     EI ();
 
-    return  retval;	// 0: ok, -1: timeout
+    return  retval;	                // 0: ok, -1: timeout
 }
+
+//----------------------------------------------------------------------------
+int
+k_wait_lost (struct k_t *sem, int timeout, int *lost)
+{
+    DI();
+    if (lost != NULL) {
+        *lost = sem->clip;
+        sem->clip = 0;
+    }
+    return k_wait(sem,timeout);
+}
+
+//----------------------------------------------------------------------------
+int
+k_sem_signals_lost (struct k_t *sem)
+{
+    int x;
+    DI();
+    x = sem->clip;
+    sem->clip = 0;
+    EI();
+    return x;
+}
+
 
 //----------------------------------------------------------------------------
 
@@ -700,6 +728,8 @@ k_prio_wait (struct k_t *sem, int timeout,char prio)
 {
 
 int retval;
+
+    return -1; // no rdy for use
     // copy of ki_wait just with EI()'s before leaving
     DI ();
 
@@ -707,7 +737,7 @@ int retval;
         sem->cnt1--;               // Salute to Dijkstra
             // set prio
         pRun->prio = prio;
-        // no need bq we are alrdy in front prio_enQ (pAQ, deQ (pRun));        
+        // no need bq we are alrdy in front prio_enQ (pAQ, deQ (pRun));
         EI ();
         return (0);
     }
@@ -741,29 +771,6 @@ int retval;
     return  retval; // 0: ok, -1: timeout
 }
 
-//----------------------------------------------------------------------------
-int
-k_wait_lost (struct k_t *sem, int timeout, int *lost)
-{
-    DI();
-    if (lost != NULL) {
-        *lost = sem->clip;
-        sem->clip = 0;
-    }
-    return k_wait(sem,timeout);
-}
-
-//----------------------------------------------------------------------------
-int
-k_sem_signals_lost (struct k_t *sem)
-{
-    int x;
-    DI();
-    x = sem->clip;
-    sem->clip = 0;
-    EI();
-    return x;
-}
 
 //----------------------------------------------------------------------------
 
@@ -771,14 +778,9 @@ int
 ki_semval (struct k_t *sem)
 {
 
-    int i;
-
-    DI (); // just to be sure
-    // bq we ant it to be atomic
-    i = sem->cnt1;
-    //   EI (); NOPE dont enable ISR my friend
-
-    return (i);
+    DI (); 
+ 
+    return (sem->cnt1);
 }
 
 
@@ -801,7 +803,7 @@ k_crt_send_Q (int nr_el, int el_size, void *pBuf)
         goto errexit;
 
     pMsg = send_pool + nr_send;
-    pMsg->nr = nr_send;
+    pMsg->nr = nr_send; // I am element nr nr_send in msgQ pool
     nr_send++;
 
     pMsg->sem = k_crt_sem (0, nr_el);
@@ -814,7 +816,7 @@ k_crt_send_Q (int nr_el, int el_size, void *pBuf)
     pMsg->el_size = el_size;
     pMsg->nr_el = nr_el;
     pMsg->lost_msg = 0;
-    pMsg->cnt = 0; // elm in Q
+    pMsg->cnt = 0; // count nr elm in Q
 
     return (pMsg);
 
@@ -833,7 +835,7 @@ ki_send (struct k_msg_t *pB, void *el)
     char *pSrc, *pDst;
 
     if (pB->nr_el <= pB->cnt) {
-        // room for a putting new msg in Q ?
+        // nope - no room for a putting new msg in Q ?
         if (pB->lost_msg < 32000)
             pB->lost_msg++;
         #ifdef KRNLBUG
@@ -889,12 +891,12 @@ ki_receive (struct k_msg_t *pB, void *el, int *lost_msg)
 {
 
     int i;
-    char *pSrc, *pDst;
+    char r,*pSrc, *pDst;
 
     // can be called from ISR bq no blocking
     DI ();			// just to be sure
 
-    if (ki_wait (pB->sem,-1) == 0) {
+    if ((r=ki_wait (pB->sem,-1)) >= 0) {
 
         pDst = (char *) el;
         pB->r++;
@@ -912,7 +914,7 @@ ki_receive (struct k_msg_t *pB, void *el, int *lost_msg)
             *lost_msg = pB->lost_msg;
             pB->lost_msg = 0;
         }
-        return (0);		// yes
+        return (r);		// yes
     }
 
     return (-1);		// nothing for you my friend
@@ -925,11 +927,11 @@ k_receive (struct k_msg_t *pB, void *el, int timeout, int *lost_msg)
 {
 
     int i;
-    char *pSrc, *pDst;
+    char r, *pSrc, *pDst;
 
     DI ();
 
-    if (ki_wait (pB->sem, timeout) == 0) {
+    if ((r=ki_wait (pB->sem, timeout)) >= 0) {
         // ki_wait bq then intr is not enabled when coming back
         pDst = (char *) el;
         pB->r++;
@@ -943,13 +945,14 @@ k_receive (struct k_msg_t *pB, void *el, int timeout, int *lost_msg)
         for (i = 0; i < pB->el_size; i++) {
             *(pDst++) = *(pSrc++);
         }
+
         if (lost_msg) {
             *lost_msg = pB->lost_msg;
             pB->lost_msg = 0;
         }
 
         EI ();
-        return (0);		// yes
+        return (r);		// 1 if no suspension bq msg arf already present
     }
 
     EI ();
@@ -972,8 +975,8 @@ k_round_robbin (void)
     EI ();
 }
 
-  
-    
+
+
 //----------------------------------------------------------------------------
 
 /* NASTYvoid from vrs 2001 it is main itself can be changed back
@@ -1015,8 +1018,8 @@ int k_init(int nrTask, int nrSem, int nrMsg)
     pmain_el = task_pool;
     pmain_el->nr = 0;
     nr_task++;
-    pmain_el->prio = DMY_PRIO;
-    prio_enQ(pAQ,pmain_el); 
+    pmain_el->prio = DMY_PRIO;  // main is dummy
+    prio_enQ(pAQ,pmain_el);
 
     pSleepSem = k_crt_sem (0, 2000);
 
@@ -1072,7 +1075,7 @@ k_start (int tm)
     } else {
         return -666;
     }
-    
+
     DI (); // silencio
     k_tick_size = tm;
 
@@ -1111,7 +1114,7 @@ else
 
 int k_stop(int exitVal)
 {
-// DANGEROUS - handle with care - no isr timer control etc etc 
+// DANGEROUS - handle with care - no isr timer control etc etc
 // I WILL NEVER USE IT
     DI(); // silencio
     if (!k_running) {
@@ -1142,7 +1145,7 @@ void k_reset()
 unsigned long k_millis(void)
 {
 unsigned long l;
- 
+
     DI();
     l = k_millis_counter;
     EI();
@@ -1174,6 +1177,8 @@ char k_get_preempt(void)
 
 //-------------------------------------------------------------------------------------------
 #ifdef KRNLBUG
+
+// defined as weak so compiler will take yours instead of mine
 void __attribute__ ((weak)) k_breakout() {}
 
 //-------------------------------------------------------------------------------------------

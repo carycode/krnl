@@ -36,7 +36,7 @@
  * seeduino 1280 and mega2560                         *
  *****************************************************/
 // remember to update in krnl.c !!!
-#define KRNL_VRS 2001
+#define KRNL_VRS 2002
 
 /***********************
 NB NB ABOUT TIMERS PORTS ETC
@@ -107,14 +107,14 @@ SO BEWARE !!!
 #ifndef KRNL
 
 #define KRNL
- 
+
  // if krnl shall support EDF scheduling
  #define EDF
-// DISPLAY OF PROCESS ID BY LEDS if you want to 
+// DISPLAY OF PROCESS ID BY LEDS if you want to
 #define KRNLBUG
 
 // USER CONFIGURATION PART
-/* which timer to use for krnl heartbeat 
+/* which timer to use for krnl heartbeat
 * timer 0 ( 8 bit) is normally used by millis - avoid !
 * timer 1 (16 bit)  DEFAULT
 * timer 2 ( 8 bit)
@@ -132,7 +132,7 @@ SO BEWARE !!!
 
 
 
- 
+
 //----------------------------------------------------------
 
 #ifdef __cplusplus
@@ -157,7 +157,7 @@ extern "C" {
 #error Failing due to unknown architecture - krnl
 #endif
 
- 
+
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega32U4__)
 
 #if (KRNLTMR != 0) && (KRNLTMR != 1) &&(KRNLTMR != 2)
@@ -174,10 +174,10 @@ extern "C" {
 
 #endif
 
- 
+
 // DEBUGGING
 //#define DMYBLINK     // ifdef then led (pin13) will light when dummy is running
- 
+
 #define QHD_PRIO 100                  // Queue head prio - for sentinel use
 #define DMY_PRIO (QHD_PRIO-2)     // dummy task prio (0 == highest prio)
 #define DMY_STK_SZ  90            // staksize for dummy
@@ -303,7 +303,7 @@ if (pRun != AQ.next) {  \
   pRun->sp_lo = SPL;    \
   pRun->sp_hi = SPH;    \
   pRun = AQ.next;       \
-  k_breakout();         \  
+  k_breakout();         \
   SPL = pRun->sp_lo;    \
   SPH = pRun->sp_hi;    \
 }
@@ -314,7 +314,7 @@ if (pRun != AQ.next) {  \
 if (pRun != AQ.next) {  \
   pRun->sp_lo = SPL;    \
   pRun->sp_hi = SPH;    \
-  pRun = AQ.next;       \   
+  pRun = AQ.next;       \
   SPL = pRun->sp_lo;    \
   SPH = pRun->sp_hi;    \
 }
@@ -325,17 +325,20 @@ if (pRun != AQ.next) {  \
 
 #define DI()   asm volatile ("cli")
 #define EI()   asm volatile ("sei")
-#define RETI() asm volatile ("reti") 
+#define RETI() asm volatile ("reti")
 
-/* below: r1 must/shall always assumd to be zero in c code (gcc issue I think) */
+/* below: r1 must/shall always assumed to be zero in c code (gcc issue I think) */
 
 #if defined (__AVR_ATmega2560__) || defined (__AVR_ATmega1280__)
+
+// 0x3b RAMPZ extended z-pointer register
+// 0x3c EIND extended indirect register
 
 #define PUSHREGS() asm volatile ( \
 "push r1  \n\t" \
 "push r0  \n\t" \
 "in r0, __SREG__ \n\t" \
-"cli \n\t" \           
+"cli \n\t" \
 "push r0  \n\t" \
 "in r0 , 0x3b \n\t" \
 "push r0 \n\t" \
@@ -503,7 +506,7 @@ if (pRun != AQ.next) {  \
 
 
 /**
-* millis in krnle - NB steps equals milli seconds given in k_start 
+* millis in krnle - NB steps equals milli seconds given in k_start
 */
 unsigned long k_millis(void);
 
@@ -591,14 +594,16 @@ int k_signal(struct k_t * sem);
 * @remark The ki_ indicates that interrups is NOT enabled when leaving ki_signal
 * @remark only to be called after start of KRNL
 */
-int k_prio_signal(struct k_t *sem,char prio); 
+int k_prio_signal(struct k_t *sem,char prio);
 
 
 /**
 * Wait on a semaphore. Task shift will task place if you are blocked.
 * @param[in] sem semaphore handle
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
-* @return 0: ok , -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
+* @return 1: ok there was a signal hanging - so no suspension
+* @return 0: ok- you have been suspended
+* @return -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
 * @remark only to be called after start of KRNL
 */
 int k_wait(struct k_t * sem, int timeout);
@@ -609,7 +614,7 @@ int k_wait(struct k_t * sem, int timeout);
 * you shall supply with priority for prio ceiling protocol
 * @param[in] sem semaphore handle
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
-* @return 0: ok , -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
+* @return 1, ok : no suspension, 0: ok you ahv ebeen sleeping, -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
 * @remark only to be called after start of KRNL
 */
 int k_prio_wait (struct k_t *sem, int timeout,char prio);
@@ -647,8 +652,7 @@ int ki_wait(struct k_t * sem, int timeout);
 /**
 * returns value of semaphore
 * @param[in] sem semaphore handle
-* @return 0: semaphore value, negative: tasks are waiting, 0: nothing, positive: ...
-* @return -99 : timeout
+* @return 1: ok not suspended, 0: ok you have been suspended
 * @return -1 no wait maybe bq no timeout was allowed
 * @remark only to be called after start of KRNL
 */
@@ -656,7 +660,8 @@ int ki_semval(struct k_t * sem);
 
 /**
 * a function for overloading on usersite which is called when a semaphore is overflooding
-* no reset occur - it's only readind out semaphore idendity
+* no reset occur - it's only reading out semaphore idendity
+* Signal operations has not taken place !
 * 1: means first semahore allocated by user etc
 * Interrupt is disabled when called and must not be enabled during.. so no print etc
 * @param nr : id of semaphore 1,2,3,...
@@ -665,13 +670,14 @@ int ki_semval(struct k_t * sem);
 #ifdef KRNLBUG
 void __attribute__ ((weak)) k_sem_clip(unsigned char nr, int nrClip);
 #endif
+
 /**
 * a function for overloading on usersite which is called when a msgQ is overflooding
 * no reset occur - it's only readind out smsgQ idendity
 * 1: means first msgQ allocated by user etc
 * Interrupt is disabled when called and must not be enabled during.. so no print etc
 * @param nr : id of send Q 0,1,2,...
-* @param nrClip: number of times clip has occured (may be reset by call k_receive and lost parm not eq NULL) 
+* @param nrClip: number of times clip has occured (may be reset by call k_receive and lost parm not eq NULL)
 */
 #ifdef KRNLBUG
 void __attribute__ ((weak)) k_send_Q_clip(unsigned char nr, int nrClip);
@@ -711,7 +717,7 @@ char k_send(struct k_msg_t *pB, void *el);
 * @param[in] timeout Max time you want to wait on data, -1: never, 0: forever, positive: nr of KRNL timer quants
 * @param[out] lost_msg nr of lost messages since last receive. will clip at 10000. If lost_msg ptr is NULL then overrun counter
 * is not reset to 0.
-* @return 0: operation did succed, -1: no data in ringbuffer
+* @return 1: ok no suspension, 0: operation did succed, -1: no data in ringbuffer
 * @remark only to be called after start of KRNL
 */
 char k_receive(struct k_msg_t *pB, void *el, int timeout, int * lost_msg);
@@ -725,7 +731,7 @@ char k_receive(struct k_msg_t *pB, void *el, int timeout, int * lost_msg);
 * @param[out] el Reference to where data shall be copied to at your site
 * @param[out] lost_msg nr of lost messages since last receive. will clip at 10000.  If lost_msg ptr is NULL then overrun counter
 * is not reset to 0
-* @return 0: operation did succed, -1: no data in ringbuffer
+* @return 1: data was rdy no suspension, 0: ok you have been suspended , -1: no data in ringbuffer
 * @remark can be used from ISR
 * @remark only to be called after start of KRNL
 */
@@ -796,13 +802,13 @@ int k_stk_chk(struct k_t *t);
 * @parm t . Ptr to taskdescriptor. If NULL it is yourself
 * @return: amount of unused stak(in bytes)
 * @remark: a watermark philosophy is used
-**/ 
+**/
 int k_unused_stak(struct k_t *t);
 
 
 /**
 * Set preempt or non preempt
-* @parm on : 1: preempt on, 0: off 2: no change 
+* @parm on : 1: preempt on, 0: off 2: no change
 * @return: current state: 1 preempt sch. 0 non preempt
 **/
 char k_set_preempt(char on);
@@ -812,7 +818,7 @@ char k_set_preempt(char on);
 * @return: current state: 1 preempt sch. 0 non preempt
 **/
 char k_get_preempt(void);
- 
+
 /**
 * returns amount of free memory in your system
 */
@@ -820,7 +826,7 @@ int freeRam(void);
 
 #ifdef KRNLBUG
 /**
-* Breakout functino called from scheduler 
+* Breakout functino called from scheduler
 **/
  void __attribute__((weak)) k_breakout();
 #endif
@@ -830,5 +836,3 @@ int freeRam(void);
 #endif
 
 #endif   // #ifndef KRNL
-
-

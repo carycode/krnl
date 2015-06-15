@@ -37,7 +37,7 @@ void t1(void) {
   int i;
   while (1) {
     delay(100);
-    if (0 == k_receive(pMsg2,&i,-1,NULL) ) {
+    if (0 <= k_receive(pMsg2,&i,-1,NULL) ) {
       doBlink();
     }
   }
@@ -47,7 +47,7 @@ void t2(void) {
   int i;
   i = 0;
   while (1) {
-    if (0 == k_receive(pMsg,&i,0,NULL) ) {
+    if (0 <= k_receive(pMsg,&i,0,NULL) ) {
       Serial.println(i);
       k_send(pMsg2,&i);
     }
