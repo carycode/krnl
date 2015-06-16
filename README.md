@@ -38,6 +38,16 @@ Some characteristics:
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
+- supervision og KeRNeL calls
+- all suspending calls (like k_wait, k_receive) returns 
+-- 1 if there was a signal/message waiting for you have not been on hold
+-- 0 is you have been suspended but later receive signal/message
+-- -1 : timeout
+- all signalling calls (like k_signal, k_send) returns
+-- 1 if signal/message has been delivered but no receiver present at primitive
+-- 0 if signal/message has been delivered and receiever was present and was moved to activeQ
+-- -1 if max limit of semaphore/msg Q has been exceeded 
+
 - timers
  - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
  - For timer 0 you should take care of millis and it will require some modifications in arduino lib
