@@ -1,10 +1,11 @@
-      >>>  KRNL - a small preemptive kernel for small systems <<<
+# KRNL - a small preemptive kernel for small systems 
        
-I have found it interesting to develop an open source realtime kernel 
+I have found it interesting to develop an open source realtime kernel for the Arduino platform - but is also portable to other platforms
 
-for the Arduino platform - but is also portable to other platforms
+* latest version 2001 *
 
 
+changes about clip of semaphores so Liy & Layland RMA is detectable (when it fails deadlines)
 
 - SEE SOME NOTES BELOW ABOUT TIMERS AND PINS 
 - Now doxygen docu at html directory :-)
@@ -13,9 +14,12 @@ for the Arduino platform - but is also portable to other platforms
 - - 8/16 MHz setting
 - - etc
 
+See github.com/jdn-aau  or http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl
 
-Some highlights
----------------
+See some warnings in the bottom !!!
+
+## Some highlights
+
 
 - open source (beer license)
 - well suited for teaching
@@ -29,77 +33,82 @@ Some highlights
 
 - automatic recognition of Arduino architeture
  - supports all atmega variants I have had available (168,328,1280,2560 - uno, duemillanove, mega 1280 and 2560)
-Some characteristics:
+- Priority ceiling supported with k_prio_wait and k_prio_signal where you supply with task priorities
+
+## Some characteristics:
+
+
+- Mmeory usage
+As of vrs 2001 
+-- static usage around 70B
+-- a semaphore/task occpy 18B in krnl data structure
+-- a msg-Q occupy 17B plus 18B(an internal semaphore)
+-- the two above allocated from heap
+
+So k_init(2,3,4) gives 71B global (static) and 18*((2+1)+(3+1)+4) + 4*17 = 266B which 
+
+the +1 on task for a descriptor for main/dummy
+the +1 on semaphore for the timer/sleep semaphore
+
+And then you have to add up arrays for stack for each task. Less than 50B is not a good idea.
+You can runtime check how deep the stack has been used by k_unused_stak
+
 
 - preemptive scheduling 
  - Basic heart beat at 1 kHz. SNOT can have heeartbeat in quants of milli seconds
- - static priority scheme
+ - static preemptivepriority scheme
 -  support task, semaphores, message queues
  - All elements shall be allocated prior to start of KRNL
 - support user ISRs and external interrupts
 
-Supervision og KeRNeL calls
+## Timers
 
-- all suspending calls (like k_wait, k_receive) returns 
- - 1 if there was a signal/message waiting for you have not been on hold
- - 0 is you have been suspended but later receive signal/message
- - -1 : timeout
-- all signalling calls (like k_signal, k_send) returns
- - 1 if signal/message has been delivered but no receiver present at primitive
- - 0 if signal/message has been delivered and receiever was present and was moved to activeQ
- - -1 if max limit of semaphore/msg Q has been exceeded 
+The Arduino has 3 or 6 timers (Mega has 6 the rest has 3)
 
-- timers
- - krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
- - For timer 0 you should take care of millis and it will require some modifications in arduino lib
- - see krnl.h for implications (like 
-
-- Accuracy
- - 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
-   - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
- - 16 bit timers count down is 1 millisecond for 62.5 count
- - - example 10 msec ~ 625 countdown == precise :-)
-
-See in krnl.h for information like ...
-
-... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
-Timer0:
+### timer0
 - Timer0 and 2  is a 8bit timer.
 - In the Arduino world Timer0 is been used for the timer functions, like delay(), millis() and micros().
 -  If you change Timer0 registers, this may influence the Arduino timer function.
 - So you should know what you are doing.
 
-Timer1:
+### timer1
 - Timer1 is a 16bit timer.
 - In the Arduino world the Servo library uses Timer1 on Arduino Uno (Timer5 on Arduino Mega).
 
-Timer2:
+### timer2
 - Timer2 is a 8bit timer like Timer0.
 - In the Arduino work the tone() function uses Timer2.
 
-Timer3, Timer4, Timer5: Timer 3,4,5 are only available on Arduino Mega boards.
+### timer3, timer4, timer5
+- timer 3,4,5 are only available on Arduino Mega boards.
 - These timers are all 16bit timers.
 
+- krnl can be configures to use tmr 1,2 and for mega also 3,4,5 for running krnl tick
+- For timer 0 you should take care of millis and it will require some modifications in arduino lib
+- see krnl.h for implications
 
-Install from github:
+Accuracy
 
-1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
-2) git clone https://github.com/jdn-aau/krnl.git
+- 8 bit timers (0,2) 1 millisecond is 15.625 countdown on timer
+   - example 10 msec 156 instead of 156.25 so an error of 0.25/156.25 ~= 0.2%
+ - 16 bit timers count down is 1 millisecond for 62.5 count
+ - - example 10 msec ~ 625 countdown == precise :-)
 
-NB NB NB - TIMER HEARTBEAT
- From vrs 1236 you can change which timer to use in krnl.c Just look in top of file for KRNLTMR
- - tested with uno and mega 256
+ - timers default
+  - all except MEGA use timer 1 ( 8 bit)
+  - MEGAs (1280/2560) use timer 5
+  - you can change it in krnl.h 
 
-In krnl.c you can configure KRNL to use timer (0),1,2,3,4 or 5. (3,4,5 only for 1280/2560 mega variants)
+### timer quants  (heartbeat)
+k_start accepts 1..10 and 20,30,40,...10000 milliseconds timer quants
+So you can not run krnl with an internal timer at 16 msec
+You can change it in k_start but be aware of implications of 8/16 bit timer usage
 
-You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 
-- Timer0 - An 8 bit timer used by Arduino functions delay(), millis() and micros(). BEWARE
-- Timer1 - A 16 bit timer used by the Servo() library
-- Timer2 - An 8 bit timer used by the Tone() library
-- Timer3,4,5 16 bits
-    
-    
+### Overflow detection
+The user can provide two functions which will be called when a semaphore/msgQ are overflooding
+
+### warning / info
 ... from http://arduino-info.wikispaces.com/Timers-Arduino
 
 - Servo Library uses Timer1. 
@@ -118,6 +127,30 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
 - tone() function uses at least timer2. 
 - -  You can’t use PWM on Pin 3,11 when you use the tone() function an Arduino and Pin 9,10 on Arduino Mega.
 
+-----
+
+See in krnl.h for information like ...
+
+... from http://blog.oscarliang.net/arduino-timer-and-interrupt-tutorial/
+
+-----
+
+
+Install from github:
+
+1) cd whatever/sketchbook/libraries   - see Preferences for path to sketchbook
+2) git clone https://github.com/jdn-aau/krnl.git
+
+
+## Warning 
+You have from Arduino inherited many critical regions which you have to protect - like
+
+- Serial channels - only on thread at time must have access
+- digital and analog IO (digitalRead, AnalogRead,...)
+- and in general all libraries - so take care
+
+This is NOT an Ardunio problem but a standard feature i multithreaded systems :-)
+
 (c)
 * "THE BEER-WARE LICENSE" (frit efter PHK)           *
  * <jdn@es.aau.dk> wrote this file. As long as you    *
@@ -130,8 +163,14 @@ You can select heartbeat between 1 and 200 milliseconds in 1 msec steps.
  *                                                    *
  * Use it at your own risk - no warranty       
 
+
+
 Happy hacking
 
 See also http://es.aau.dk/staff/jdn/edu/doc/arduino/krnl
 
 /Jens
+
+
+and https://github.com/greiman/FreeRTOS-Arduino
+has freertos for Arduino and Arduino Due

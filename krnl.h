@@ -587,6 +587,7 @@ int k_signal (struct k_t *sem);
 * Signal a semaphore. Task shift will task place if a task is started by the signal and has higher priority than you.
 * you shall supply with priority for prio ceiling protocol
 * @param[in] sem semaphore handle
+* @param[in] prio NOT WORKING DONT USE CALL 
 * @return 0: ok , -1: max value of semaphore reached
 * @remark The ki_ indicates that interrups is NOT enabled when leaving ki_signal
 * @remark only to be called after start of KRNL
@@ -610,6 +611,7 @@ int k_wait (struct k_t *sem, int timeout);
 * Wait on a semaphore. Task shift will task place if you are blocked.
 * you shall supply with priority for prio ceiling protocol
 * @param[in] sem semaphore handle
+* @param[in] prio NOT WORKING DONT USE CALL 
 * @param[in] timeout "<0" you will be started after timeout ticks, "=0" wait forever "-1" you will not wait
 * @return 1, ok : no suspension, 0: ok you ahv ebeen sleeping, -1: timeout has occured, -2 no wait bq timeout was -1 and semaphore was negative
 * @remark only to be called after start of KRNL
@@ -660,8 +662,8 @@ int ki_semval (struct k_t *sem);
 * Signal operations has not taken place !
 * 1: means first semahore allocated by user etc
 * Interrupt is disabled when called and must not be enabled during.. so no print etc
-* @param nr : id of semaphore 1,2,3,...
-* @param nrClip: number of times clip has occured (may be reset by call k_wait_lost)
+* @param[in] nr  id of semaphore 1,2,3,...
+* @param[in] nrClip number of times clip has occured (may be reset by call k_wait_lost)
 */
 #ifdef KRNLBUG
 void __attribute__ ((weak)) k_sem_clip (unsigned char nr, int nrClip);
@@ -763,7 +765,7 @@ int k_start (int tm);	// tm in milliseconds
 
 /**
 * stop KRNL
-* @param[exitVal]  Will be returned in k_start to creator (old main)
+* @param[in] exitVal  Will be returned in k_start to creator (old main)
 * @remark only to be called after k_start
 * @remark you will only return from k_stop if krnl is not running
 */
@@ -795,7 +797,7 @@ int k_stk_chk (struct k_t *t);
 
 /**
 * Returns amount of unused stak
-* @parm t . Ptr to taskdescriptor. If NULL it is yourself
+* @param[in] t  Ptr to taskdescriptor. If NULL it is yourself
 * @return: amount of unused stak(in bytes)
 * @remark: a watermark philosophy is used
 **/
@@ -804,7 +806,7 @@ int k_unused_stak (struct k_t *t);
 
 /**
 * Set preempt or non preempt
-* @parm on : 1: preempt on, 0: off 2: no change
+* @param[in] on : 1: preempt on, 0: off 2: no change
 * @return: current state: 1 preempt sch. 0 non preempt
 **/
 char k_set_preempt (char on);
@@ -823,9 +825,9 @@ int freeRam (void);
 #ifdef KRNLBUG
 
 /**
-* Breakout functino called from scheduler
+* Breakout function called from scheduler
 **/
-void __attribute__ ((weak)) k_breakout ();
+void __attribute__ ((weak)) k_breakout (void);
 #endif
 
 #ifdef __cplusplus

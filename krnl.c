@@ -1213,7 +1213,7 @@ k_get_preempt (void)
 #ifdef KRNLBUG
 
 // defined as weak so compiler will take yours instead of mine
-void __attribute__ ((weak)) k_breakout ()
+void __attribute__ ((weak)) k_breakout (void)
 {
 }
 
