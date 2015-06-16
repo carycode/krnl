@@ -1,4 +1,4 @@
-    >>>  KRNL - a small preemptive kernel for small systems <<<
+      >>>  KRNL - a small preemptive kernel for small systems <<<
        
 I have found it interesting to develop an open source realtime kernel 
 
